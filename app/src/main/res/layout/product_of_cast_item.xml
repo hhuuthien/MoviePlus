@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <ImageView
+            android:id="@+id/poc_poster"
+            android:layout_margin="5dp"
+            android:layout_width="60dp"
+            android:layout_height="90dp"/>
+
+    <TextView
+        android:textSize="12dp"
+        android:textColor="@color/colorBlueDark"
+        android:id="@+id/poc_title"
+        android:layout_alignTop="@id/poc_poster"
+        android:layout_toEndOf="@id/poc_poster"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:textSize="10dp"
+        android:layout_toEndOf="@id/poc_poster"
+        android:id="@+id/poc_char"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/poc_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

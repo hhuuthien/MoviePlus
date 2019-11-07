@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText">
+
+    <item
+        android:id="@+id/bottom_cast_nav_info"
+        android:icon="@drawable/ic_info"
+        android:title="Thông tin" />
+
+    <item
+        android:id="@+id/bottom_cast_nav_movie"
+        android:icon="@drawable/ic_movie"
+        android:title="Phim" />
+
+    <item
+        android:id="@+id/bottom_cast_nav_show"
+        android:icon="@drawable/ic_show"
+        android:title="TV show" />
+
+    <item
+        android:id="@+id/bottom_cast_nav_image"
+        android:icon="@drawable/ic_image"
+        android:title="Hình ảnh" />
+</menu>

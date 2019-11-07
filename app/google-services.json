@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "310839673864",
+    "firebase_url": "https://movie-plus-bbeb6.firebaseio.com",
+    "project_id": "movie-plus-bbeb6",
+    "storage_bucket": "movie-plus-bbeb6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310839673864:android:0307eb975b67ba3353fdbd",
+        "android_client_info": {
+          "package_name": "com.thien.movieplus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310839673864-ej0b11vb2f3noegugj7t0359r0cnviee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thien.movieplus",
+            "certificate_hash": "0669c28ff515635d4d24ba0c5da4762f2a2357ab"
+          }
+        },
+        {
+          "client_id": "310839673864-kr2kokdub0jc6oir2oi2js4ln0n8ajjs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwkm_KeM9O3n_8g3jm5mlRVpfnGtmFs8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310839673864-kr2kokdub0jc6oir2oi2js4ln0n8ajjs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

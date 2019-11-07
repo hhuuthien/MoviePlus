@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="HardcodedText, SpUsage, ContentDescription"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textColor="@color/colorBlueDark"
+            android:textSize="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/ds_overview"
+            android:text=""/>
+
+        <TextView
+            android:textColor="@color/colorBlueDark"
+            android:textSize="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/ds_numEp"
+            android:layout_below="@id/ds_overview"
+            android:text=""/>
+
+        <TextView
+            android:textColor="@color/colorBlueDark"
+            android:textSize="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/ds_date"
+            android:layout_below="@id/ds_numEp"
+            android:text=""/>
+
+        <TextView
+            android:textColor="@color/colorBlueDark"
+            android:textSize="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/ds_date2"
+            android:layout_below="@id/ds_date"
+            android:text=""/>
+
+        <ProgressBar
+            android:layout_centerHorizontal="true"
+            android:layout_margin="12dp"
+            android:id="@+id/ds_loading_1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+    </RelativeLayout>
+</ScrollView>

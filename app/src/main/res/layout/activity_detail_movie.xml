@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailMovieActivity"
+    tools:ignore="HardcodedText, SpUsage, ContentDescription">
+
+    <RelativeLayout
+        android:id="@+id/dm_layout_poster"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/dm_backdrop"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:src="@drawable/logo_accent" />
+
+        <ImageView
+            android:id="@+id/dm_love"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_below="@id/dm_backdrop"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/ic_favorite_no" />
+
+        <ImageView
+            android:id="@+id/dm_poster"
+            android:layout_width="120dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="140dp"
+            android:layout_marginBottom="8dp"
+            android:background="#FFFFFF"
+            android:padding="2dp"
+            android:src="@drawable/logo_accent" />
+
+        <TextView
+            android:id="@+id/dm_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dm_backdrop"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/dm_love"
+            android:layout_toEndOf="@id/dm_poster"
+            android:text="Movie tittle"
+            android:textColor="@color/colorBlueDark"
+            android:textSize="18dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dm_title"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_toEndOf="@id/dm_poster">
+
+            <RelativeLayout
+                android:id="@+id/lay1"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true">
+
+                <com.timqi.sectorprogressview.ColorfulRingProgressView
+                    android:id="@+id/dm_score"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    app:bgColor="@color/colorAccent2"
+                    app:fgColorEnd="@color/colorPrimaryDark"
+                    app:fgColorStart="@color/colorPrimary"
+                    app:percent="0"
+                    app:startAngle="0"
+                    app:strokeWidth="3dp" />
+
+                <TextView
+                    android:id="@+id/dm_score_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/dm_score"
+                    android:layout_alignTop="@id/dm_score"
+                    android:layout_alignEnd="@id/dm_score"
+                    android:layout_alignBottom="@id/dm_score"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/colorBlueDark"
+                    android:textSize="14dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_toStartOf="@id/lay3"
+                android:layout_toEndOf="@id/lay1">
+
+                <TextView
+                    android:id="@+id/dm_genre_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textSize="11dp" />
+
+                <TextView
+                    android:id="@+id/dm_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dm_genre_info"
+                    android:layout_marginTop="3dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text=""
+                    android:textSize="11dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/lay3"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp">
+
+                <ImageView
+                    android:id="@+id/dm_trailer"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/youtube" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/dm_trailer"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Trailer"
+                    android:textAlignment="center"
+                    android:textSize="10dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/dm_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/dm_navigation"
+        android:layout_below="@id/dm_layout_poster" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/dm_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:elevation="4dp"
+        app:itemIconTint="@color/colorAccent2"
+        app:itemTextColor="@color/colorAccent2"
+        app:menu="@menu/navigation_for_movie" />
+</RelativeLayout>

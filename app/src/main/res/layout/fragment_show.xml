@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ShowFragment"
+    tools:ignore="HardcodedText, SpUsage, ContentDescription">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/fs_layout_airing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/fs_text_airing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Tập mới hôm nay"
+                android:textColor="@color/colorBlueDark"
+                android:textSize="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fs_list_airing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fs_text_airing"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:scrollbars="horizontal" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fs_layout_nowshowing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fs_layout_airing"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/fs_text_nowshowing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Đang chiếu"
+                android:textColor="@color/colorBlueDark"
+                android:textSize="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fs_list_nowshowing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fs_text_nowshowing"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:scrollbars="horizontal" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fs_layout_popular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fs_layout_nowshowing"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/fs_text_popular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Phổ biến"
+                android:textColor="@color/colorBlueDark"
+                android:textSize="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fs_list_popular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fs_text_popular"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:scrollbars="horizontal" />
+
+            <ProgressBar
+                android:id="@+id/fs_loading_popular"
+                android:layout_below="@id/fs_text_popular"
+                android:layout_alignStart="@id/fs_text_popular"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fs_layout_toprated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fs_layout_popular"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/fs_text_toprated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Được đánh giá cao"
+                android:textColor="@color/colorBlueDark"
+                android:textSize="16dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fs_list_toprated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fs_text_toprated"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:scrollbars="horizontal" />
+
+            <ProgressBar
+                android:id="@+id/fs_loading_toprated"
+                android:layout_below="@id/fs_text_toprated"
+                android:layout_alignStart="@id/fs_text_toprated"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+        </RelativeLayout>
+    </RelativeLayout>
+</ScrollView>
