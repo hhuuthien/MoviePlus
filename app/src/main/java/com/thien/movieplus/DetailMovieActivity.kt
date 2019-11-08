@@ -13,6 +13,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -22,16 +23,26 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Item
+import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.activity_detail_movie.*
+import kotlinx.android.synthetic.main.list_create_layout.view.*
+import kotlinx.android.synthetic.main.list_layout.*
+import kotlinx.android.synthetic.main.list_layout.view.*
+import kotlinx.android.synthetic.main.list_layout_item.view.*
 import kotlinx.android.synthetic.main.progress.view.*
 import okhttp3.*
 import java.io.IOException
+
 
 class DetailMovieActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
+
     companion object {
         var exist: Boolean = false
     }
@@ -186,9 +197,9 @@ class DetailMovieActivity : AppCompatActivity(),
         auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         if (currentUser == null) {
-            dm_love.visibility = GONE
+            layout_2.visibility = GONE
         } else {
-            dm_love.visibility = VISIBLE
+            layout_2.visibility = VISIBLE
             //check if exist
             database = FirebaseDatabase.getInstance()
             val myRef = database.getReference(currentUser.uid).child("love_movie")
@@ -211,59 +222,119 @@ class DetailMovieActivity : AppCompatActivity(),
         }
 
         dm_love.setOnClickListener {
-            if (!exist) {
-                database = FirebaseDatabase.getInstance()
-                val myRef = database.getReference(currentUser!!.uid).child("love_movie")
-                    .child(movieId.toString())
-                myRef.setValue(
-                    MovieLove(
-                        movieId,
-                        intent.getStringExtra("MOVIE_TITLE"),
-                        intent.getStringExtra("MOVIE_POSTER"),
-                        intent.getStringExtra("MOVIE_BACKDROP"),
-                        intent.getDoubleExtra("MOVIE_VOTE", -1.0),
-                        intent.getStringExtra("MOVIE_DATE")
-                    )
-                ).addOnSuccessListener {
-                    Toast.makeText(
-                        this,
-                        "Đã thêm vào danh sách yêu thích",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    dm_love.setImageResource(R.drawable.ic_favorite_yes)
-                    exist = true
-                }.addOnFailureListener {
-                    Toast.makeText(
-                        this,
-                        "Có lỗi xảy ra. Vui lòng thử lại",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    dm_love.setImageResource(R.drawable.ic_favorite_no)
-                    exist = false
+            try {
+                if (!exist) {
+                    database = FirebaseDatabase.getInstance()
+                    val myRef = database.getReference(currentUser!!.uid).child("love_movie")
+                        .child(movieId.toString())
+                    myRef.setValue(
+                        MovieLove(
+                            movieId,
+                            intent.getStringExtra("MOVIE_TITLE"),
+                            intent.getStringExtra("MOVIE_POSTER"),
+                            intent.getStringExtra("MOVIE_BACKDROP"),
+                            intent.getDoubleExtra("MOVIE_VOTE", -1.0),
+                            intent.getStringExtra("MOVIE_DATE")
+                        )
+                    ).addOnSuccessListener {
+                        Toast.makeText(
+                            this,
+                            "Đã thêm vào danh sách yêu thích",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        dm_love.setImageResource(R.drawable.ic_favorite_yes)
+                        exist = true
+                    }.addOnFailureListener {
+                        Toast.makeText(
+                            this,
+                            "Có lỗi xảy ra. Vui lòng thử lại",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        dm_love.setImageResource(R.drawable.ic_favorite_no)
+                        exist = false
+                    }
+                } else {
+                    database = FirebaseDatabase.getInstance()
+                    val myRef = database.getReference(currentUser!!.uid).child("love_movie")
+                        .child(movieId.toString())
+                    myRef.removeValue().addOnSuccessListener {
+                        Toast.makeText(
+                            this,
+                            "Đã xoá khỏi danh sách yêu thích",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        dm_love.setImageResource(R.drawable.ic_favorite_no)
+                        exist = false
+                    }.addOnFailureListener {
+                        Toast.makeText(
+                            this,
+                            "Có lỗi xảy ra. Vui lòng thử lại",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        dm_love.setImageResource(R.drawable.ic_favorite_yes)
+                        exist = true
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("error", e.toString())
+            }
+        }
+
+        dm_add.setOnClickListener {
+            val list = ArrayList<UserList>()
+            val adapter = GroupAdapter<ViewHolder>()
+
+            val myLayout = layoutInflater.inflate(R.layout.list_layout, null)
+            myLayout.layoutlist_create.setOnClickListener {
+                create()
+            }
+            val dialog = AlertDialog.Builder(this)
+                .setView(myLayout)
+                .create()
+            dialog.show()
+
+            database = FirebaseDatabase.getInstance()
+            val ref = database.getReference(currentUser!!.uid).child("list")
+            val listener = object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.hasChildren()) {
+                        val userList = UserList(p0.toString())
+                        list.add(userList)
+                        adapter.add(ListItem(userList))
+                    }
                 }
             }
-            else {
-                database = FirebaseDatabase.getInstance()
-                val myRef = database.getReference(currentUser!!.uid).child("love_movie")
-                    .child(movieId.toString())
-                myRef.removeValue().addOnSuccessListener {
-                    Toast.makeText(
-                        this,
-                        "Đã xoá khỏi danh sách yêu thích",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    dm_love.setImageResource(R.drawable.ic_favorite_no)
-                    exist = false
-                }.addOnFailureListener {
-                    Toast.makeText(
-                        this,
-                        "Có lỗi xảy ra. Vui lòng thử lại",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    dm_love.setImageResource(R.drawable.ic_favorite_yes)
-                    exist = true
-                }
-            }
+            ref.addValueEventListener(listener)
+
+            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            myLayout.layoutlist_list.layoutManager = layoutManager
+
+            myLayout.layoutlist_list.adapter = adapter
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun create() {
+        val myLayout = layoutInflater.inflate(R.layout.list_create_layout, null)
+        val dialog = AlertDialog.Builder(this)
+            .setView(myLayout)
+            .create()
+        dialog.show()
+
+        myLayout.listcreate_ok.setOnClickListener {
+            val auth = FirebaseAuth.getInstance()
+            val database = FirebaseDatabase.getInstance()
+
+            val name = myLayout.listcreate_name.text.toString()
+            val timestamp = System.currentTimeMillis()
+            val id = timestamp.toString()
+
+            val ref = database.getReference(auth.currentUser!!.uid).child("list").child(id)
+            ref.setValue(UserList(name))
+            dialog.dismiss()
         }
     }
 
@@ -364,3 +435,17 @@ class Video(
     val site: String,
     val key: String
 )
+
+class UserList(
+    val name: String
+)
+
+class ListItem(private val list: UserList) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.list_layout_item
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        viewHolder.itemView.nameOfList.text = list.name
+    }
+}

@@ -73,9 +73,15 @@ class AccountActivity : AppCompatActivity() {
             dialog.show()
 
             acc_love_layout.visibility = GONE
+            acc_list_layout.visibility = GONE
         } else {
             acc_love_layout.visibility = VISIBLE
-            fetch()
+            acc_list_layout.visibility = VISIBLE
+            try {
+                fetch()
+            } catch (e:Exception) {
+                Log.d("error",e.toString())
+            }
         }
     }
 

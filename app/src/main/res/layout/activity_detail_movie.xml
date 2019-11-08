@@ -19,16 +19,6 @@
             android:src="@drawable/logo_accent" />
 
         <ImageView
-            android:id="@+id/dm_love"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_below="@id/dm_backdrop"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:src="@drawable/ic_favorite_no" />
-
-        <ImageView
             android:id="@+id/dm_poster"
             android:layout_width="120dp"
             android:layout_height="180dp"
@@ -46,14 +36,14 @@
             android:layout_below="@id/dm_backdrop"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
-            android:layout_toStartOf="@id/dm_love"
+            android:layout_marginEnd="12dp"
             android:layout_toEndOf="@id/dm_poster"
             android:text="Movie tittle"
             android:textColor="@color/colorBlueDark"
             android:textSize="18dp" />
 
         <RelativeLayout
+            android:id="@+id/layout_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/dm_title"
@@ -149,6 +139,34 @@
                     android:textAlignment="center"
                     android:textSize="10dp" />
             </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_2"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_1"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_toEndOf="@id/dm_poster">
+
+            <ImageView
+                android:id="@+id/dm_love"
+                android:layout_marginEnd="8dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_favorite_no" />
+
+            <ImageView
+                android:id="@+id/dm_add"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/dm_love"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_add"/>
         </RelativeLayout>
     </RelativeLayout>
 

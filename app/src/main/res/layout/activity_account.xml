@@ -38,7 +38,45 @@
             android:layout_margin="8dp"
             android:text="Chưa có phim yêu thích"
             android:layout_below="@id/acc_love_list"
-            android:textSize="14dp"
+            android:textSize="12dp"
+            tools:ignore="SpUsage" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/acc_list_layout"
+        android:layout_below="@id/acc_love_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:id="@+id/acc_list_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Danh sách của bạn"
+            android:textColor="@color/colorBlueDark"
+            android:textSize="16dp"
+            tools:ignore="SpUsage" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/acc_list_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/acc_list_text"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:scrollbars="horizontal" />
+
+        <TextView
+            android:id="@+id/acc_list_noti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Bạn chưa tạo danh sách nào"
+            android:layout_below="@id/acc_list_list"
+            android:textSize="12dp"
             tools:ignore="SpUsage" />
     </RelativeLayout>
 </RelativeLayout>
