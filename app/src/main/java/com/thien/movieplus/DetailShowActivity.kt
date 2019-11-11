@@ -7,10 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail_movie.*
@@ -32,6 +38,10 @@ class DetailShowActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
     private var showId: Int = -1
     private var posterPath : String = ""
     private var backdropPath : String = ""
+
+    companion object {
+        var exist: Boolean = false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,6 +153,88 @@ class DetailShowActivity : AppCompatActivity(), BottomNavigationView.OnNavigatio
                 intent.putExtra("imageString", backdropPath)
                 startActivity(intent)
                 overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+            }
+        }
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            slayout_2.visibility = View.GONE
+        } else {
+            slayout_2.visibility = View.VISIBLE
+            //check if exist
+            val database = FirebaseDatabase.getInstance()
+            val myRef = database.getReference(currentUser.uid).child("love_show")
+
+            val listener = object : ValueEventListener {
+                override fun onDataChange(p0: DataSnapshot) {
+                    val string = p0.toString()
+                    if (string.contains(showId.toString())) {
+                        ds_love.setImageResource(R.drawable.ic_favorite_yes)
+                        exist = true
+                    } else {
+                        ds_love.setImageResource(R.drawable.ic_favorite_no)
+                        exist = false
+                    }
+                }
+
+                override fun onCancelled(p0: DatabaseError) {}
+            }
+            myRef.addListenerForSingleValueEvent(listener)
+        }
+
+        ds_love.setOnClickListener {
+            try {
+                if (!exist) {
+                    val myRef = FirebaseDatabase.getInstance().getReference(currentUser!!.uid).child("love_show")
+                        .child(showId.toString())
+                    myRef.setValue(
+                        Show(
+                            intent.getStringExtra("SHOW_POSTER"),
+                            showId,
+                            intent.getStringExtra("SHOW_TITLE"),
+                            intent.getDoubleExtra("SHOW_VOTE",-1.0),
+                            intent.getStringExtra("SHOW_BACKDROP"),
+                            "")
+                    ).addOnSuccessListener {
+                        Toast.makeText(
+                            this,
+                            "Đã thêm vào danh sách yêu thích",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        ds_love.setImageResource(R.drawable.ic_favorite_yes)
+                        exist = true
+                    }.addOnFailureListener {
+                        Toast.makeText(
+                            this,
+                            "Có lỗi xảy ra. Vui lòng thử lại",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        ds_love.setImageResource(R.drawable.ic_favorite_no)
+                        exist = false
+                    }
+                } else {
+                    val myRef = FirebaseDatabase.getInstance().getReference(currentUser!!.uid).child("love_show")
+                        .child(showId.toString())
+                    myRef.removeValue().addOnSuccessListener {
+                        Toast.makeText(
+                            this,
+                            "Đã xoá khỏi danh sách yêu thích",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        ds_love.setImageResource(R.drawable.ic_favorite_no)
+                        exist = false
+                    }.addOnFailureListener {
+                        Toast.makeText(
+                            this,
+                            "Có lỗi xảy ra. Vui lòng thử lại",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        ds_love.setImageResource(R.drawable.ic_favorite_yes)
+                        exist = true
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("error", e.toString())
             }
         }
     }

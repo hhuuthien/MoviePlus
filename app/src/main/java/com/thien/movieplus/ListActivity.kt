@@ -1,13 +1,20 @@
 package com.thien.movieplus
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.gson.GsonBuilder
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -31,6 +38,7 @@ class ListActivity : AppCompatActivity() {
             2 -> fetch("124046")
             3 -> fetch("124047")
             4 -> fetch("124053")
+            101 -> fetchUserList()
         }
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -46,6 +54,104 @@ class ListActivity : AppCompatActivity() {
             intent.putExtra("MOVIE_VOTE", movieItem.movie.vote_average)
             intent.putExtra("MOVIE_DATE", movieItem.movie.release_date)
             startActivity(intent)
+        }
+
+        adapter.setOnItemLongClickListener { item, _ ->
+            val movieItem = item as MovieItemRow
+            if (movieItem.movie.overview.equals("Mô tả phim đang được cập nhật")) {
+                val dialog = AlertDialog.Builder(this)
+                    .setMessage("Xoá phim \"${movieItem.movie.title}\" khỏi list?")
+                    .setPositiveButton("Xoá") { _, _ ->
+                        val currentUser = FirebaseAuth.getInstance().currentUser
+                        val database = FirebaseDatabase.getInstance()
+                        val ref = database
+                            .getReference(currentUser!!.uid).child("list").child(
+                                intent.getStringExtra("listID")!!
+                            ).child("movies").child(movieItem.movie.id.toString())
+                        ref.removeValue().addOnCompleteListener {
+                            Toast.makeText(
+                                this,
+                                "Đã xoá",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
+                    }
+                    .setNegativeButton("Huỷ bỏ") { _, _ ->
+                        return@setNegativeButton
+                    }
+                    .setCancelable(true)
+                    .create()
+                dialog.show()
+            }
+            false
+        }
+    }
+
+    private fun fetchUserList() {
+        list_list.visibility = INVISIBLE
+        list_progress.visibility = VISIBLE
+
+        val listId = intent.getStringExtra("listID")
+        if (listId != null && listId.isNotEmpty()) {
+            val listName = intent.getStringExtra("listName")
+            if (listName != null && listName.isNotEmpty()) supportActionBar?.title = listName
+
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val database = FirebaseDatabase.getInstance()
+            val ref =
+                database.getReference(currentUser!!.uid).child("list").child(listId).child("movies")
+
+            val listener = object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    list.clear()
+                    adapter.clear()
+
+                    if (p0.childrenCount == 0.toLong()) {
+                        Snackbar
+                            .make(list_layout, "Không có phim nào trong list này", Snackbar.LENGTH_LONG)
+                            .show()
+                    } else {
+                        for (p in p0.children) {
+                            val string = p.value.toString()
+                            val movieTitle =
+                                string.substringAfter("title=").substringBefore(", poster=")
+                            val movieId = string.substringAfter("id=").substringBefore(", title=")
+                            val moviePoster =
+                                string.substringAfter("poster=").substringBefore(", vote=")
+                            val movieBackdrop =
+                                string.substringAfter("backdrop=").substringBefore(", id=")
+                            val movieDate =
+                                string.substringAfter("date=").substringBefore(", backdrop=")
+                            val movieVote = string.substringAfter("vote=").substringBeforeLast("}")
+                            val movie = Movie(
+                                moviePoster,
+                                movieBackdrop,
+                                movieId.toInt(),
+                                movieTitle,
+                                movieDate,
+                                movieVote.toDouble(),
+                                "Mô tả phim đang được cập nhật"
+                            )
+                            list.add(movie)
+                            adapter.add(MovieItemRow(movie))
+                        }
+                    }
+                }
+            }
+            ref.addValueEventListener(listener)
+            list_list.adapter = adapter
+            adapter.notifyDataSetChanged()
+
+            list_list.visibility = VISIBLE
+            list_progress.visibility = INVISIBLE
+
+        } else {
+            Toast.makeText(this, "Có lỗi xảy ra. Vui lòng thử lại", Toast.LENGTH_LONG).show()
+            return
         }
     }
 

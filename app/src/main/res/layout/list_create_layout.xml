@@ -2,23 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:paddingTop="24dp"
+    android:paddingBottom="12dp"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp">
 
     <EditText
         android:id="@+id/listcreate_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tên danh sách"
-        android:inputType="textPersonName"
+        android:hint="Nhập tên list"
+        android:textAlignment="center"
+        android:inputType="textPersonName|textCapSentences"
+        android:background="@android:color/transparent"
         android:textSize="16dp" />
 
     <Button
+        android:id="@+id/listcreate_ok"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tạo"
-        android:layout_margin="12dp"
+        android:layout_below="@+id/listcreate_name"
         android:layout_centerHorizontal="true"
-        android:id="@+id/listcreate_ok"
-        android:layout_below="@+id/listcreate_name"/>
+        android:layout_marginTop="8dp"
+        android:text="Tạo list"
+        android:textAllCaps="false"
+        android:textSize="14dp" />
 </RelativeLayout>

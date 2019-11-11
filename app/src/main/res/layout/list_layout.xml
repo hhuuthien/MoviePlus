@@ -2,19 +2,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:padding="12dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/layoutlist_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="Danh sách của bạn"
+        android:textColor="@color/colorBlueDark"
+        android:textSize="16dp"
+        tools:ignore="SpUsage" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/layoutlist_list"
+        android:layout_below="@id/layoutlist_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp" />
+        android:layout_height="250dp"
+        android:layout_margin="8dp"/>
 
     <Button
         android:id="@+id/layoutlist_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutlist_list"
-        android:layout_margin="12dp"
+        android:layout_marginTop="8dp"
+        android:textSize="14dp"
+        android:layout_centerHorizontal="true"
+        android:textAllCaps="false"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:text="Tạo danh sách mới" />
 </RelativeLayout>

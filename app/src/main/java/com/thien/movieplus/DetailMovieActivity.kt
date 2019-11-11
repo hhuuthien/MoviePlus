@@ -26,10 +26,8 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 import kotlinx.android.synthetic.main.list_create_layout.view.*
-import kotlinx.android.synthetic.main.list_layout.*
 import kotlinx.android.synthetic.main.list_layout.view.*
 import kotlinx.android.synthetic.main.list_layout_item.view.*
 import kotlinx.android.synthetic.main.progress.view.*
@@ -281,60 +279,115 @@ class DetailMovieActivity : AppCompatActivity(),
         }
 
         dm_add.setOnClickListener {
-            val list = ArrayList<UserList>()
-            val adapter = GroupAdapter<ViewHolder>()
+            try {
+                val list = ArrayList<UserList>()
+                val adapter = GroupAdapter<ViewHolder>()
 
-            val myLayout = layoutInflater.inflate(R.layout.list_layout, null)
-            myLayout.layoutlist_create.setOnClickListener {
-                create()
+                val myLayout = layoutInflater.inflate(R.layout.list_layout, null)
+
+                val dialog = AlertDialog.Builder(this)
+                    .setView(myLayout)
+                    .create()
+                dialog.show()
+
+                myLayout.layoutlist_create.setOnClickListener {
+                    createList()
+                }
+
+                database = FirebaseDatabase.getInstance()
+                val ref = database.getReference(currentUser!!.uid).child("list")
+                val listener = object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {
+                    }
+
+                    override fun onDataChange(p0: DataSnapshot) {
+                        adapter.clear()
+                        list.clear()
+
+                        if (p0.hasChildren()) {
+                            myLayout.layoutlist_text.text = "Thêm vào list"
+                            myLayout.layoutlist_create.text = "Tạo list khác"
+                            myLayout.layoutlist_list.visibility = VISIBLE
+                            for (p in p0.children) {
+                                val name =
+                                    p.value.toString()
+                                        .substringAfter("name=")
+                                        .substringBefore(", id=")
+                                val id =
+                                    p.value.toString()
+                                        .substringAfterLast("id=")
+                                        .substring(0,13)
+                                val userList = UserList(id, name)
+                                list.add(userList)
+                                adapter.add(ListItem(userList))
+                            }
+                        } else {
+                            myLayout.layoutlist_text.text = "Chưa có list nào"
+                            myLayout.layoutlist_create.text = "Tạo list mới"
+                            myLayout.layoutlist_list.visibility = GONE
+                        }
+                    }
+                }
+                ref.addValueEventListener(listener)
+
+                val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+                myLayout.layoutlist_list.layoutManager = layoutManager
+
+                myLayout.layoutlist_list.adapter = adapter
+                adapter.notifyDataSetChanged()
+
+                adapter.setOnItemClickListener { item, _ ->
+                    val auth = FirebaseAuth.getInstance()
+                    val data = FirebaseDatabase.getInstance()
+                    val myItem = item as ListItem
+                    val listId = myItem.list.id
+                    val refe = data.getReference(auth.currentUser!!.uid).child("list/$listId/movies/$movieId")
+                    refe.setValue(
+                        MovieLove(
+                            movieId,
+                            intent.getStringExtra("MOVIE_TITLE"),
+                            intent.getStringExtra("MOVIE_POSTER"),
+                            intent.getStringExtra("MOVIE_BACKDROP"),
+                            intent.getDoubleExtra("MOVIE_VOTE", -1.0),
+                            intent.getStringExtra("MOVIE_DATE")
+                        )
+                    ).addOnCompleteListener {
+                        dialog.dismiss()
+                        val movieName = intent.getStringExtra("MOVIE_TITLE")
+                        val listName = item.list.name
+                        Toast.makeText(this, "Đã thêm phim \"$movieName\" vào list \"$listName\"", Toast.LENGTH_LONG).show()
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("error", e.toString())
             }
+        }
+    }
+
+    private fun createList() {
+        try {
+            val myLayout = layoutInflater.inflate(R.layout.list_create_layout, null)
             val dialog = AlertDialog.Builder(this)
                 .setView(myLayout)
                 .create()
             dialog.show()
 
-            database = FirebaseDatabase.getInstance()
-            val ref = database.getReference(currentUser!!.uid).child("list")
-            val listener = object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
+            myLayout.listcreate_ok.setOnClickListener {
+                val auth = FirebaseAuth.getInstance()
+                val database = FirebaseDatabase.getInstance()
 
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.hasChildren()) {
-                        val userList = UserList(p0.toString())
-                        list.add(userList)
-                        adapter.add(ListItem(userList))
-                    }
+                val name = myLayout.listcreate_name.text.toString().trim()
+                val timestamp = System.currentTimeMillis()
+                val id = timestamp.toString()
+
+                val ref = database.getReference(auth.currentUser!!.uid).child("list").child(id)
+                ref.setValue(UserList(id, name)).addOnSuccessListener {
+                    Toast.makeText(this, "Đã tạo list \"$name\"", Toast.LENGTH_LONG).show()
                 }
+                dialog.dismiss()
             }
-            ref.addValueEventListener(listener)
-
-            val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-            myLayout.layoutlist_list.layoutManager = layoutManager
-
-            myLayout.layoutlist_list.adapter = adapter
-            adapter.notifyDataSetChanged()
-        }
-    }
-
-    private fun create() {
-        val myLayout = layoutInflater.inflate(R.layout.list_create_layout, null)
-        val dialog = AlertDialog.Builder(this)
-            .setView(myLayout)
-            .create()
-        dialog.show()
-
-        myLayout.listcreate_ok.setOnClickListener {
-            val auth = FirebaseAuth.getInstance()
-            val database = FirebaseDatabase.getInstance()
-
-            val name = myLayout.listcreate_name.text.toString()
-            val timestamp = System.currentTimeMillis()
-            val id = timestamp.toString()
-
-            val ref = database.getReference(auth.currentUser!!.uid).child("list").child(id)
-            ref.setValue(UserList(name))
-            dialog.dismiss()
+        } catch (e: Exception) {
+            Log.d("error", e.toString())
         }
     }
 
@@ -437,10 +490,11 @@ class Video(
 )
 
 class UserList(
+    val id: String,
     val name: String
 )
 
-class ListItem(private val list: UserList) : Item<ViewHolder>() {
+class ListItem(val list: UserList) : Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.list_layout_item
     }
