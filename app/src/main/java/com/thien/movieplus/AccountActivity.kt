@@ -130,6 +130,10 @@ class AccountActivity : AppCompatActivity() {
             dialog.show()
             false
         }
+
+        acc_info_image.setOnClickListener {
+            startActivity(Intent(this, PermissionActivity::class.java))
+        }
     }
 
     override fun onResume() {
@@ -152,18 +156,63 @@ class AccountActivity : AppCompatActivity() {
             acc_love_layout.visibility = GONE
             acc_loveshow_layout.visibility = GONE
             acc_list_layout.visibility = GONE
+            acc_info_layout.visibility = GONE
         } else {
             acc_love_layout.visibility = VISIBLE
             acc_loveshow_layout.visibility = VISIBLE
             acc_list_layout.visibility = VISIBLE
+            acc_info_layout.visibility = VISIBLE
             try {
                 fetch()
                 fetchShow()
                 fetchList()
+                fetchImage()
+                fetchInfo()
+                acc_info_email.text = FirebaseAuth.getInstance().currentUser!!.email
             } catch (e: Exception) {
                 Log.d("error", e.toString())
             }
         }
+    }
+
+    private fun fetchInfo() {
+        val ref =
+            FirebaseDatabase.getInstance()
+                .getReference(FirebaseAuth.getInstance().currentUser!!.uid).child("user_name")
+        val listener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val name = p0.value.toString()
+                if (name == "null") {
+                    acc_info_name.text = "Username"
+                } else {
+                    acc_info_name.text = name
+                }
+            }
+        }
+        ref.addValueEventListener(listener)
+    }
+
+    private fun fetchImage() {
+        val ref =
+            FirebaseDatabase.getInstance()
+                .getReference(FirebaseAuth.getInstance().currentUser!!.uid).child("user_image")
+        val listener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val link = p0.value.toString()
+                Picasso.get()
+                    .load(link)
+                    .placeholder(R.drawable.logo_accent)
+                    .fit()
+                    .into(acc_info_image)
+            }
+        }
+        ref.addValueEventListener(listener)
     }
 
     private fun fetchShow() {
@@ -315,8 +364,34 @@ class AccountActivity : AppCompatActivity() {
                 Toast.makeText(this, "Đã đăng xuất", Toast.LENGTH_LONG).show()
                 finish()
             }
+            R.id.menu_change_name -> {
+                changeName()
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun changeName() {
+        val myLayout = layoutInflater.inflate(R.layout.list_create_layout, null)
+        myLayout.listcreate_name.setText("")
+        myLayout.listcreate_name.hint = "Nhập tên mới"
+        myLayout.listcreate_ok.text = "Đổi tên"
+
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(myLayout)
+            .create()
+        dialog.show()
+
+        myLayout.listcreate_ok.setOnClickListener {
+            val newName = myLayout.listcreate_name.text.toString().trim()
+            val ref =
+                FirebaseDatabase.getInstance()
+                    .getReference(FirebaseAuth.getInstance().currentUser!!.uid).child("user_name")
+            ref.setValue(newName).addOnSuccessListener {
+                Toast.makeText(this, "Đã đổi tên", Toast.LENGTH_LONG).show()
+                dialog.dismiss()
+            }
+        }
     }
 }
 
