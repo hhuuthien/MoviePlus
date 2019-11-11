@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ShowFragment"
     tools:ignore="HardcodedText, SpUsage, ContentDescription">
 
@@ -10,8 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ir.apend.slider.ui.Slider
+            android:layout_margin="5dp"
+            android:id="@+id/show_image_slider"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            app:animateIndicators="true"
+            app:defaultIndicators="circle"
+            app:indicatorSize="5dp"
+            app:intervalSecond="5"
+            app:loopSlides="true" />
+
         <RelativeLayout
             android:id="@+id/fs_layout_airing"
+            android:layout_below="@id/show_image_slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp">

@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.activity_list.*
 import okhttp3.*
 import java.io.IOException
 
-
 class ListActivity : AppCompatActivity() {
 
     private var list = ArrayList<Movie>()
@@ -56,7 +55,7 @@ class ListActivity : AppCompatActivity() {
                 intent.putExtra("MOVIE_VOTE", movieItem.movie.vote_average)
                 intent.putExtra("MOVIE_DATE", movieItem.movie.release_date)
                 startActivity(intent)
-            } catch (e:Exception) {
+            } catch (e: Exception) {
                 val intent = Intent(this, DetailShowActivity::class.java)
                 val showItem = item as ShowItemRow
                 intent.putExtra("SHOW_ID", showItem.show.id)
@@ -98,7 +97,7 @@ class ListActivity : AppCompatActivity() {
                         .create()
                     dialog.show()
                 }
-            } catch (e:Exception) {
+            } catch (e: Exception) {
                 val showItem = item as ShowItemRow
                 if (showItem.show.overview.equals("Mô tả TV show đang được cập nhật")) {
                     val dialog = AlertDialog.Builder(this)

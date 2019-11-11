@@ -18,6 +18,8 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import ir.apend.slider.model.Slide
+import ir.apend.slider.ui.Slider
 import kotlinx.android.synthetic.main.fragment_show.*
 import kotlinx.android.synthetic.main.movie_item.view.*
 import okhttp3.*
@@ -105,6 +107,18 @@ class ShowFragment : Fragment() {
 
         listShowAiring = activity?.intent?.getSerializableExtra("listShowAiring") as ArrayList<Show>
         listShowNowShowing = activity?.intent?.getSerializableExtra("listShowNowShowing") as ArrayList<Show>
+
+        val listBackDrop = ArrayList<String>()
+        for (m in listShowAiring) {
+            listBackDrop.add("https://image.tmdb.org/t/p/w500/${m.backdrop_path.toString()}")
+        }
+
+        val slider = view.findViewById<Slider>(R.id.show_image_slider)
+        val slideList = ArrayList<Slide>()
+        for (i in 0 until listBackDrop.size) {
+            slideList.add(Slide(i,listBackDrop[i],0))
+        }
+        slider.addSlides(slideList)
 
         adapterShowAiring.clear()
         for (m in listShowAiring) {

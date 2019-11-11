@@ -17,25 +17,13 @@
 
     <TextView
         android:layout_toEndOf="@id/nh_image"
-        android:layout_above="@id/nh_email"
+        android:layout_alignBottom="@id/nh_image"
         android:layout_marginStart="8dp"
         android:id="@+id/nh_appname"
         android:textStyle="bold"
-        android:textSize="14dp"
+        android:textSize="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:text="@string/app_name"
-        android:textColor="@color/colorAccent2" />
-
-    <TextView
-        android:id="@+id/nh_email"
-        android:layout_toEndOf="@id/nh_image"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="8dp"
-        android:textSize="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hhuuthien@gmail.com"
         android:textColor="@color/colorAccent2" />
 </RelativeLayout>

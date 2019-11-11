@@ -6,25 +6,20 @@
     <item
         android:id="@+id/nav_login"
         android:icon="@drawable/ic_account"
-        android:title="Trang cá nhân"/>
+        android:title="Trang cá nhân" />
 
     <item
         android:id="@+id/nav_search"
         android:icon="@drawable/ic_search"
         android:title="Tìm kiếm" />
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_movie"
-            android:icon="@drawable/ic_movie"
-            android:title="Phim" />
-        <item
-            android:id="@+id/nav_show"
-            android:icon="@drawable/ic_show"
-            android:title="TV show" />
-        <item
-            android:id="@+id/nav_list"
-            android:icon="@drawable/ic_list"
-            android:title="Danh sách phổ biến" />
-    </group>
+    <item
+        android:id="@+id/nav_movie"
+        android:icon="@drawable/ic_movie"
+        android:title="Phim" />
+
+    <item
+        android:id="@+id/nav_show"
+        android:icon="@drawable/ic_show"
+        android:title="TV show" />
 </menu>

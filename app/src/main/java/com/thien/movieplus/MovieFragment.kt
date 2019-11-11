@@ -1,7 +1,6 @@
 package com.thien.movieplus
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,18 +9,20 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.activity_start.*
+import ir.apend.slider.model.Slide
+import ir.apend.slider.ui.Slider
 import kotlinx.android.synthetic.main.fragment_movie.*
+import kotlinx.android.synthetic.main.genre_item.view.*
 import kotlinx.android.synthetic.main.movie_item.view.*
 import kotlinx.android.synthetic.main.movie_item_row.view.*
 import okhttp3.*
@@ -61,6 +62,57 @@ class MovieFragment : Fragment() {
 
         val layoutManager4 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fm_list_toprated).layoutManager = layoutManager4
+
+        val layoutManager5 = StaggeredGridLayoutManager(2,LinearLayoutManager.HORIZONTAL)
+        view.findViewById<RecyclerView>(R.id.fm_list_genre).layoutManager = layoutManager5
+
+        val listGenre = ArrayList<Genre>()
+        listGenre.add(Genre(28,"Hành động"))
+        listGenre.add(Genre(16,"Hoạt hình"))
+        listGenre.add(Genre(878,"Khoa học viễn tưởng"))
+        listGenre.add(Genre(35,"Hài kịch"))
+        listGenre.add(Genre(10749,"Lãng mạn"))
+        listGenre.add(Genre(27,"Kinh dị"))
+        listGenre.add(Genre(80,"Tội phạm"))
+        listGenre.add(Genre(18,"Chính kịch"))
+        listGenre.add(Genre(10751,"Gia đình"))
+        listGenre.add(Genre(10402,"Âm nhạc"))
+        listGenre.add(Genre(10752,"Chiến tranh"))
+
+        val adapterGenre = GroupAdapter<ViewHolder>()
+        for (m in listGenre) {
+            adapterGenre.add(GenreItem(m))
+        }
+        view.findViewById<RecyclerView>(R.id.fm_list_genre).adapter = adapterGenre
+
+        adapterGenre.setOnItemClickListener { item, _ ->
+            val myItem = item as GenreItem
+            val intent = Intent(context,ListByGenreActivity::class.java)
+            intent.putExtra("genre_id",myItem.genre.id)
+            intent.putExtra("genre_name",myItem.genre.name)
+            startActivity(intent)
+        }
+
+        view.findViewById<RelativeLayout>(R.id.flm_1).setOnClickListener {
+            val intent = Intent(context,ListActivity::class.java)
+            intent.putExtra("type",1)//marvel
+            startActivity(intent)
+        }
+        view.findViewById<RelativeLayout>(R.id.flm_2).setOnClickListener {
+            val intent = Intent(context,ListActivity::class.java)
+            intent.putExtra("type",2)//vietnam
+            startActivity(intent)
+        }
+        view.findViewById<RelativeLayout>(R.id.flm_3).setOnClickListener {
+            val intent = Intent(context,ListActivity::class.java)
+            intent.putExtra("type",3)//pixar
+            startActivity(intent)
+        }
+        view.findViewById<RelativeLayout>(R.id.flm_4).setOnClickListener {
+            val intent = Intent(context,ListActivity::class.java)
+            intent.putExtra("type",4)//oscar
+            startActivity(intent)
+        }
 
         adapterNowShowing.setOnItemClickListener { item, _ ->
             val myItem = item as MovieItem
@@ -119,6 +171,18 @@ class MovieFragment : Fragment() {
         listMovieUpComing =
             activity?.intent?.getSerializableExtra("listMovieUpComing") as ArrayList<Movie>
 
+        val listBackDrop = ArrayList<String>()
+        for (m in listMovieNowShowing) {
+            listBackDrop.add("https://image.tmdb.org/t/p/w500/${m.backdrop_path.toString()}")
+        }
+
+        val slider = view.findViewById<Slider>(R.id.image_slider)
+        val slideList = ArrayList<Slide>()
+        for (i in 0 until listBackDrop.size) {
+            slideList.add(Slide(i,listBackDrop[i],0))
+        }
+        slider.addSlides(slideList)
+
         adapterNowShowing.clear()
         for (m in listMovieNowShowing) {
             if (m.poster_path != null) adapterNowShowing.add(MovieItem(m))
@@ -167,6 +231,7 @@ class MovieFragment : Fragment() {
             }
         })
     }
+
     private fun fetchTopRated(view: View) {
         view.findViewById<ProgressBar>(R.id.fm_loading_toprated).visibility = VISIBLE
         val request = Request.Builder()
@@ -214,10 +279,10 @@ class Movie(
 class MovieLove(
     var id: Int,
     var title: String,
-    var poster:String?,
+    var poster: String?,
     var backdrop: String?,
-    var vote:Double,
-    var date:String?
+    var vote: Double,
+    var date: String?
 ) : Serializable
 
 class Result(val results: ArrayList<Movie>)
@@ -293,5 +358,15 @@ class ShowItemRow(val show: Show) : Item<ViewHolder>() {
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }
+    }
+}
+
+class GenreItem(val genre: Genre) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.genre_item
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        viewHolder.itemView.genre_name.text = genre.name
     }
 }

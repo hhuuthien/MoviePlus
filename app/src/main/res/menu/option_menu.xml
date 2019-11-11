@@ -6,4 +6,8 @@
     <item
         android:id="@+id/menu_refresh"
         android:title="Làm mới dữ liệu"/>
+
+    <item
+        android:id="@+id/menu_info"
+        android:title="Thông tin ứng dụng"/>
 </menu>

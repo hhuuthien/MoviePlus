@@ -13,12 +13,12 @@ import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val movieFragment = MovieFragment()
     private val showFragment = ShowFragment()
     private val searchFragment = SearchFragment()
-    private val listFragment = ListFragment()
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -36,11 +36,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.m_fragment_container, searchFragment).commit()
                 m_toolbar.title = "Tìm kiếm"
-            }
-            R.id.nav_list -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.m_fragment_container, listFragment).commit()
-                m_toolbar.title = "Danh sách phổ biến"
             }
             R.id.nav_login -> {
                 startActivity(Intent(this, AccountActivity::class.java))
@@ -98,6 +93,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     }
                     .setCancelable(true)
+                    .create()
+                dialog.show()
+            }
+            R.id.menu_info -> {
+                val myLayout = layoutInflater.inflate(R.layout.info_layout,null)
+                val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setView(myLayout)
                     .create()
                 dialog.show()
             }

@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".PermissionActivity"></activity>
+        <activity android:name=".ListByGenreActivity"></activity>
+        <activity android:name=".PermissionActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".AccountActivity" />

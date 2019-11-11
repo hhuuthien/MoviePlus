@@ -3,14 +3,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:ignore="HardcodedText, SpUsage, ContentDescription">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <ir.apend.slider.ui.Slider
+            android:layout_margin="5dp"
+            android:id="@+id/image_slider"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            app:animateIndicators="true"
+            app:defaultIndicators="circle"
+            app:indicatorSize="5dp"
+            app:intervalSecond="5"
+            app:loopSlides="true" />
+
         <RelativeLayout
             android:id="@+id/fm_layout_nowshowing"
+            android:layout_below="@id/image_slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp">
@@ -36,11 +49,21 @@
                 android:scrollbars="horizontal" />
         </RelativeLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fm_list_genre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fm_layout_nowshowing"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:scrollbars="horizontal" />
+
         <RelativeLayout
             android:id="@+id/fm_layout_upcoming"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fm_layout_nowshowing"
+            android:layout_below="@id/fm_list_genre"
             android:layout_margin="5dp">
 
             <TextView
@@ -63,11 +86,165 @@
                 android:scrollbars="horizontal" />
         </RelativeLayout>
 
+        <LinearLayout
+            android:id="@+id/fm_layout_list_12"
+            android:orientation="horizontal"
+            android:layout_below="@id/fm_layout_upcoming"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/flm_1"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="5dp">
+
+                <ImageView
+                    android:id="@+id/flm_1_image"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/marvel"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/flm_1_image_bg"
+                    android:src="@drawable/bg_backdrop"
+                    android:layout_alignTop="@id/flm_1_image"
+                    android:layout_alignBottom="@id/flm_1_image"
+                    android:layout_alignStart="@id/flm_1_image"
+                    android:layout_alignEnd="@id/flm_1_image"/>
+
+                <TextView
+                    android:id="@+id/flm_1_text"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Marvel"
+                    android:textColor="@android:color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/flm_2"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_margin="5dp">
+
+                <ImageView
+                    android:id="@+id/flm_2_image"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/vietnam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"/>
+
+                <ImageView
+                    android:id="@+id/flm_2_image_bg"
+                    android:src="@drawable/bg_backdrop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/flm_2_image"
+                    android:layout_alignBottom="@id/flm_2_image"
+                    android:layout_alignStart="@id/flm_2_image"
+                    android:layout_alignEnd="@id/flm_2_image"/>
+
+                <TextView
+                    android:id="@+id/flm_2_text"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phim Việt Nam"
+                    android:textColor="@android:color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fm_layout_list_34"
+            android:orientation="horizontal"
+            android:layout_below="@id/fm_layout_list_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/flm_3"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:layout_margin="5dp">
+
+                <ImageView
+                    android:id="@+id/flm_3_image"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/pixar"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"/>
+
+                <ImageView
+                    android:id="@+id/flm_3_image_bg"
+                    android:src="@drawable/bg_backdrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"/>
+
+                <TextView
+                    android:id="@+id/flm_3_text"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pixar"
+                    android:textColor="@android:color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/flm_4"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="80dp"
+                android:layout_margin="5dp">
+
+                <ImageView
+                    android:id="@+id/flm_4_image"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/oscar"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"/>
+
+                <ImageView
+                    android:id="@+id/flm_4_image_bg"
+                    android:src="@drawable/bg_backdrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"/>
+
+                <TextView
+                    android:id="@+id/flm_4_text"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Hoạt hình Oscar"
+                    android:textColor="@android:color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage" />
+            </RelativeLayout>
+        </LinearLayout>
+
         <RelativeLayout
             android:id="@+id/fm_layout_popular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fm_layout_upcoming"
+            android:layout_below="@id/fm_layout_list_34"
             android:layout_margin="5dp">
 
             <TextView
