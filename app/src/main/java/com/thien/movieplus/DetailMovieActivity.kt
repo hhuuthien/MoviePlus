@@ -311,7 +311,7 @@ class DetailMovieActivity : AppCompatActivity(),
                             for (p in p0.children) {
                                 val name =
                                     p.value.toString()
-                                        .substringAfter("name=")
+                                        .substringAfterLast("name=")
                                         .substringBefore(", id=")
                                 val id =
                                     p.value.toString()

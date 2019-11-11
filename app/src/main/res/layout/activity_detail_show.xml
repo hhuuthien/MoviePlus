@@ -8,6 +8,7 @@
     tools:ignore="HardcodedText, SpUsage, ContentDescription">
 
     <RelativeLayout
+        android:background="@android:color/white"
         android:id="@+id/ds_layout_poster"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -19,11 +20,17 @@
             android:src="@drawable/logo_accent" />
 
         <ImageView
+            android:id="@+id/ds_backdrop_bg"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:src="@drawable/bg" />
+
+        <ImageView
             android:id="@+id/ds_poster"
             android:layout_width="120dp"
             android:layout_height="180dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="120dp"
             android:background="#FFFFFF"
             android:padding="2dp"
             android:layout_marginBottom="8dp"
@@ -34,14 +41,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/ds_backdrop"
-            android:layout_marginTop="12dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_toEndOf="@id/ds_poster"
             android:text="Show tittle"
-            android:textStyle="bold"
             android:textColor="@color/colorBlueDark"
-            android:textSize="20dp"/>
+            android:textSize="18dp"/>
 
         <RelativeLayout
             android:id="@+id/slayout_1"
@@ -56,14 +61,14 @@
             <RelativeLayout
                 android:id="@+id/slay1"
                 android:layout_alignParentStart="true"
-                android:layout_width="50dp"
+                android:layout_width="40dp"
                 android:layout_centerVertical="true"
-                android:layout_height="wrap_content">
+                android:layout_height="40dp">
 
                 <com.timqi.sectorprogressview.ColorfulRingProgressView
                     android:id="@+id/ds_score"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     app:bgColor="@color/colorAccent2"
                     app:fgColorEnd="@color/colorPrimaryDark"
                     app:fgColorStart="@color/colorPrimary"
@@ -81,7 +86,7 @@
                     android:gravity="center"
                     android:text=""
                     android:textColor="@color/colorBlueDark"
-                    android:textSize="14dp"/>
+                    android:textSize="12dp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -116,17 +121,7 @@
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/youtube"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"/>
-
-                <TextView
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/ds_trailer"
-                    android:text="Trailer"
-                    android:textAlignment="center"
-                    android:textSize="10dp"/>
+                    android:layout_height="25dp"/>
             </RelativeLayout>
         </RelativeLayout>
 
@@ -135,31 +130,32 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ds_poster"
             android:layout_below="@id/slayout_1"
-            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_toEndOf="@id/ds_poster">
+            android:layout_marginBottom="8dp">
 
             <ImageView
                 android:id="@+id/ds_love"
-                android:layout_marginEnd="12dp"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_marginEnd="8dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_favorite_no" />
 
             <ImageView
                 android:id="@+id/ds_add"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="8dp"
                 android:layout_toEndOf="@id/ds_love"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_add"/>
         </RelativeLayout>
     </RelativeLayout>
 
     <androidx.viewpager.widget.ViewPager
+        android:background="@android:color/white"
         android:id="@+id/ds_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

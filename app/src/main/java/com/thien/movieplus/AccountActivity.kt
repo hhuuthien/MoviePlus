@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.list_create_layout.view.*
 import kotlinx.android.synthetic.main.movie_item.view.*
 
-
 class AccountActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
@@ -291,7 +290,7 @@ class AccountActivity : AppCompatActivity() {
 
                 for (p in p0.children) {
                     val string = p.value.toString()
-                    val listName = string.substringAfter("name=").substringBefore(", id=")
+                    val listName = string.substringAfterLast("name=").substringBefore(", id=")
                     val listId = string.substringAfterLast("id=").substringBefore("}")
                     val userList = UserList(listId, listName)
                     listList.add(userList)
