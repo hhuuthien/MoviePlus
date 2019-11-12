@@ -28,6 +28,9 @@ import kotlinx.android.synthetic.main.movie_item_row.view.*
 import okhttp3.*
 import java.io.IOException
 import java.io.Serializable
+import android.widget.AdapterView
+
+
 
 class MovieFragment : Fragment() {
 
@@ -78,6 +81,8 @@ class MovieFragment : Fragment() {
         listGenre.add(Genre(10751,"Gia đình"))
         listGenre.add(Genre(10402,"Âm nhạc"))
         listGenre.add(Genre(10752,"Chiến tranh"))
+
+        listGenre.shuffle()
 
         val adapterGenre = GroupAdapter<ViewHolder>()
         for (m in listGenre) {
@@ -182,6 +187,14 @@ class MovieFragment : Fragment() {
             slideList.add(Slide(i,listBackDrop[i],0))
         }
         slider.addSlides(slideList)
+
+        slider.setItemClickListener { _, _, i, _ ->
+            val intent = Intent(context, PictureActivity::class.java)
+            val path = slideList[i].imageUrl.substringAfter("w500/")
+            intent.putExtra("imageString", path)
+            startActivity(intent)
+            activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
 
         adapterNowShowing.clear()
         for (m in listMovieNowShowing) {

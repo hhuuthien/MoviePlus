@@ -21,7 +21,7 @@ class PictureActivity : AppCompatActivity() {
             .placeholder(R.drawable.logo_accent)
             .into(picture_frame)
 
-        picture_frame.setOnLongClickListener {
+        more.setOnClickListener {
             val myLayout = layoutInflater.inflate(R.layout.download_layout, null)
             val dialog = AlertDialog.Builder(this)
                 .setView(myLayout)
@@ -30,12 +30,10 @@ class PictureActivity : AppCompatActivity() {
                 dialog.dismiss()
                 val intent = Intent(this, PermissionActivity::class.java)
                     .putExtra("type", "toDownloadImage")
-                    .putExtra("imageString", path)
+                    .putExtra("imageString", intent.getStringExtra("imageString"))
                 startActivity(intent)
-                finish()
             }
             dialog.show()
-            false
         }
     }
 }

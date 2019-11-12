@@ -120,6 +120,14 @@ class ShowFragment : Fragment() {
         }
         slider.addSlides(slideList)
 
+        slider.setItemClickListener { _, _, i, _ ->
+            val intent = Intent(context, PictureActivity::class.java)
+            val path = slideList[i].imageUrl.substringAfter("w500/")
+            intent.putExtra("imageString", path)
+            startActivity(intent)
+            activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
+
         adapterShowAiring.clear()
         for (m in listShowAiring) {
             if (m.poster_path != null) adapterShowAiring.add(ShowItem(m))
