@@ -12,7 +12,8 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -35,6 +36,7 @@ class PermissionActivity : AppCompatActivity() {
             if (downloadID == id) {
                 Toast.makeText(this@PermissionActivity, "Đã lưu hình ảnh", Toast.LENGTH_LONG)
                     .show()
+                progress_circular.visibility = GONE
                 finish()
             }
         }
@@ -43,6 +45,8 @@ class PermissionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission)
+
+        progress_circular.visibility = VISIBLE
 
         if (intent.getStringExtra("type") == "toChangeImage") {
             requirePermission1()
@@ -54,6 +58,7 @@ class PermissionActivity : AppCompatActivity() {
     }
 
     private fun requirePermission1() {
+        progress_circular.visibility = GONE
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -62,6 +67,7 @@ class PermissionActivity : AppCompatActivity() {
     }
 
     private fun requirePermission2() {
+        progress_circular.visibility = GONE
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
@@ -77,12 +83,14 @@ class PermissionActivity : AppCompatActivity() {
         when (requestCode) {
             1111 -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    progress_circular.visibility = VISIBLE
                     CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setAspectRatio(1, 1)
                         .start(this)
                 } else {
                     //denied
+                    progress_circular.visibility = GONE
                     Snackbar.make(
                         permissionLayout,
                         "Để chỉnh sửa ảnh đại diện, hãy cấp quyền cho ứng dụng truy cập vào bộ nhớ của thiết bị.",
@@ -98,6 +106,7 @@ class PermissionActivity : AppCompatActivity() {
                     download(intent.getStringExtra("imageString")!!)
                 } else {
                     //denied
+                    progress_circular.visibility = GONE
                     Snackbar.make(
                         permissionLayout,
                         "Để lưu hình ảnh, hãy cấp quyền cho ứng dụng truy cập vào bộ nhớ của thiết bị.",
@@ -113,6 +122,7 @@ class PermissionActivity : AppCompatActivity() {
 
     @SuppressLint("SdCardPath")
     private fun download(path: String) {
+        progress_circular.visibility = VISIBLE
         val f = File("/sdcard/Movie Plus")
         if (!f.exists()) f.mkdirs()
 
@@ -123,7 +133,7 @@ class PermissionActivity : AppCompatActivity() {
         request.setTitle("Hình ảnh phim")
             .setDescription("Đang tải")
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-            .setDestinationInExternalPublicDir("/Movie Plus","${timestamp}.jpg")
+            .setDestinationInExternalPublicDir("/Movie Plus", "${timestamp}.jpg")
 
         val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         downloadID = downloadManager.enqueue(request)
@@ -166,6 +176,8 @@ class PermissionActivity : AppCompatActivity() {
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Có lỗi xảy ra, vui lòng thử lại", Toast.LENGTH_LONG).show()
+                finish()
+            } else {
                 finish()
             }
         }

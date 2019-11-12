@@ -1,10 +1,12 @@
 package com.thien.movieplus
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_detail_movie.*
 import kotlinx.android.synthetic.main.activity_picture.*
+import kotlinx.android.synthetic.main.download_layout.view.*
 
 class PictureActivity : AppCompatActivity() {
 
@@ -18,5 +20,22 @@ class PictureActivity : AppCompatActivity() {
             .load("https://image.tmdb.org/t/p/original$path")
             .placeholder(R.drawable.logo_accent)
             .into(picture_frame)
+
+        picture_frame.setOnLongClickListener {
+            val myLayout = layoutInflater.inflate(R.layout.download_layout, null)
+            val dialog = AlertDialog.Builder(this)
+                .setView(myLayout)
+                .create()
+            myLayout.dummytext.setOnClickListener {
+                dialog.dismiss()
+                val intent = Intent(this, PermissionActivity::class.java)
+                    .putExtra("type", "toDownloadImage")
+                    .putExtra("imageString", path)
+                startActivity(intent)
+                finish()
+            }
+            dialog.show()
+            false
+        }
     }
 }

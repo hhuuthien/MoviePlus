@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils.loadAnimation
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,7 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.download_layout.view.*
 import kotlinx.android.synthetic.main.fragment_dc_image.*
 import kotlinx.android.synthetic.main.fragment_dc_info.*
 import kotlinx.android.synthetic.main.fragment_dc_movie.*
@@ -59,6 +61,23 @@ class FragmentDCImage : Fragment() {
             intent.putExtra("imageString", myItem.image.file_path)
             startActivity(intent)
             activity?.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+        }
+
+        adapterImage.setOnItemLongClickListener { item, _ ->
+            val myLayout = layoutInflater.inflate(R.layout.download_layout, null)
+            val dialog = AlertDialog.Builder(context!!)
+                .setView(myLayout)
+                .create()
+            myLayout.dummytext.setOnClickListener {
+                dialog.dismiss()
+                val myItem = item as ImageItem
+                val intent = Intent(context, PermissionActivity::class.java)
+                    .putExtra("type", "toDownloadImage")
+                    .putExtra("imageString", myItem.image.file_path)
+                startActivity(intent)
+            }
+            dialog.show()
+            false
         }
     }
 

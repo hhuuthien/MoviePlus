@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.GsonBuilder
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.download_layout.view.*
 import kotlinx.android.synthetic.main.fragment_ds_image.*
 import okhttp3.*
 import java.io.IOException
@@ -50,6 +52,23 @@ class FragmentDSImage : Fragment() {
             intent.putExtra("imageString", myItem.image.file_path)
             startActivity(intent)
             activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
+
+        adapterImage.setOnItemLongClickListener { item, _ ->
+            val myLayout = layoutInflater.inflate(R.layout.download_layout, null)
+            val dialog = AlertDialog.Builder(context!!)
+                .setView(myLayout)
+                .create()
+            myLayout.dummytext.setOnClickListener {
+                dialog.dismiss()
+                val myItem = item as ImageItem
+                val intent = Intent(context, PermissionActivity::class.java)
+                    .putExtra("type", "toDownloadImage")
+                    .putExtra("imageString", myItem.image.file_path)
+                startActivity(intent)
+            }
+            dialog.show()
+            false
         }
     }
 
