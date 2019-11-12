@@ -132,7 +132,8 @@ class AccountActivity : AppCompatActivity() {
         }
 
         acc_info_image.setOnClickListener {
-            startActivity(Intent(this, PermissionActivity::class.java))
+            startActivity(Intent(this, PermissionActivity::class.java)
+                .putExtra("type","toChangeImage"))
         }
     }
 

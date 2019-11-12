@@ -1,11 +1,18 @@
 package com.thien.movieplus
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -16,22 +23,49 @@ import com.google.firebase.storage.FirebaseStorage
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_permission.*
-
+import java.io.File
 
 class PermissionActivity : AppCompatActivity() {
+
+    var downloadID = 0.toLong()
+
+    private val onDownloadComplete = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+            if (downloadID == id) {
+                Toast.makeText(this@PermissionActivity, "Đã lưu hình ảnh", Toast.LENGTH_LONG)
+                    .show()
+                finish()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission)
 
-        requirePermission()
+        if (intent.getStringExtra("type") == "toChangeImage") {
+            requirePermission1()
+        } else if (intent.getStringExtra("type") == "toDownloadImage") {
+            requirePermission2()
+        }
+
+        registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 
-    private fun requirePermission() {
+    private fun requirePermission1() {
         ActivityCompat.requestPermissions(
             this,
             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
             1111
+        )
+    }
+
+    private fun requirePermission2() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            2222
         )
     }
 
@@ -54,12 +88,45 @@ class PermissionActivity : AppCompatActivity() {
                         "Để chỉnh sửa ảnh đại diện, hãy cấp quyền cho ứng dụng truy cập vào bộ nhớ của thiết bị.",
                         Snackbar.LENGTH_INDEFINITE
                     ).setAction("Đồng ý") {
-                        requirePermission()
+                        requirePermission1()
+                    }.setActionTextColor(Color.WHITE).show()
+                }
+                return
+            }
+            2222 -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    download(intent.getStringExtra("imageString")!!)
+                } else {
+                    //denied
+                    Snackbar.make(
+                        permissionLayout,
+                        "Để lưu hình ảnh, hãy cấp quyền cho ứng dụng truy cập vào bộ nhớ của thiết bị.",
+                        Snackbar.LENGTH_INDEFINITE
+                    ).setAction("Đồng ý") {
+                        requirePermission2()
                     }.setActionTextColor(Color.WHITE).show()
                 }
                 return
             }
         }
+    }
+
+    @SuppressLint("SdCardPath")
+    private fun download(path: String) {
+        val f = File("/sdcard/Movie Plus")
+        if (!f.exists()) f.mkdirs()
+
+        val timestamp = System.currentTimeMillis().toString()
+        val link = "https://image.tmdb.org/t/p/original$path"
+        val uri = Uri.parse(link)
+        val request = DownloadManager.Request(uri)
+        request.setTitle("Hình ảnh phim")
+            .setDescription("Đang tải")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+            .setDestinationInExternalPublicDir("/Movie Plus","${timestamp}.jpg")
+
+        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        downloadID = downloadManager.enqueue(request)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -113,4 +180,10 @@ class PermissionActivity : AppCompatActivity() {
             finish()
         }
     }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(onDownloadComplete)
+    }
+
 }

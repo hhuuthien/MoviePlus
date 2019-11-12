@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -15,6 +16,7 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.download_layout.view.*
 import kotlinx.android.synthetic.main.fragment_dm_image.*
 import kotlinx.android.synthetic.main.image_item.view.*
 import okhttp3.*
@@ -37,14 +39,14 @@ class FragmentDMImage : Fragment() {
     }
 
     private fun init(view: View) {
-        val movieId = arguments?.getInt("m_id",-1)
+        val movieId = arguments?.getInt("m_id", -1)
         if (movieId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
             fetch(movieId.toString())
         }
 
-        val layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
+        val layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         view.findViewById<RecyclerView>(R.id.dm_list_image).layoutManager = layoutManager
 
         adapterImage.setOnItemClickListener { item, _ ->
@@ -52,12 +54,30 @@ class FragmentDMImage : Fragment() {
             val myItem = item as ImageItem
             intent.putExtra("imageString", myItem.image.file_path)
             startActivity(intent)
-            activity?.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+            activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
+
+        adapterImage.setOnItemLongClickListener { item, _ ->
+            val myLayout = layoutInflater.inflate(R.layout.download_layout, null)
+            val dialog = AlertDialog.Builder(context!!)
+                .setView(myLayout)
+                .create()
+            myLayout.dummytext.setOnClickListener {
+                dialog.dismiss()
+                val myItem = item as ImageItem
+                val intent = Intent(context, PermissionActivity::class.java)
+                    .putExtra("type", "toDownloadImage")
+                    .putExtra("imageString", myItem.image.file_path)
+                startActivity(intent)
+            }
+            dialog.show()
+            false
         }
     }
 
     private fun fetch(movieId: String) {
-        val url = "https://api.themoviedb.org/3/movie/$movieId/images?api_key=d4a7514dbdd976453d2679e036009283&language=en"
+        val url =
+            "https://api.themoviedb.org/3/movie/$movieId/images?api_key=d4a7514dbdd976453d2679e036009283&language=en"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -82,7 +102,7 @@ class FragmentDMImage : Fragment() {
                     adapterImage.clear()
 
                     when {
-                        a<b -> {
+                        a < b -> {
                             for (m in 0 until a) {
                                 adapterImage.add(ImageItem(listPoster[m]))
                                 adapterImage.add(ImageItem(listBackdrop[m]))
@@ -91,7 +111,7 @@ class FragmentDMImage : Fragment() {
                                 adapterImage.add(ImageItem(listBackdrop[m]))
                             }
                         }
-                        a>b -> {
+                        a > b -> {
                             for (m in 0 until b) {
                                 adapterImage.add(ImageItem(listPoster[m]))
                                 adapterImage.add(ImageItem(listBackdrop[m]))
@@ -115,9 +135,9 @@ class FragmentDMImage : Fragment() {
     }
 }
 
-class ResultMovieImage (
+class ResultMovieImage(
     val backdrops: List<Image>?,
-    val posters:List<Image>?
+    val posters: List<Image>?
 )
 
 class ImageItem(val image: Image) : Item<ViewHolder>() {
@@ -136,11 +156,11 @@ class ImageItem(val image: Image) : Item<ViewHolder>() {
                     .into(viewHolder.itemView.i_image)
             }
         } catch (e: Exception) {
-            Log.d("error_here",e.toString())
+            Log.d("error_here", e.toString())
         }
     }
 }
 
-class Image (
-    val file_path:String?
+class Image(
+    val file_path: String?
 )
