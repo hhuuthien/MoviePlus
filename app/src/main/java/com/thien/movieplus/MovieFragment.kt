@@ -10,6 +10,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,9 +29,6 @@ import kotlinx.android.synthetic.main.movie_item_row.view.*
 import okhttp3.*
 import java.io.IOException
 import java.io.Serializable
-import android.widget.AdapterView
-
-
 
 class MovieFragment : Fragment() {
 
@@ -66,21 +64,21 @@ class MovieFragment : Fragment() {
         val layoutManager4 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fm_list_toprated).layoutManager = layoutManager4
 
-        val layoutManager5 = StaggeredGridLayoutManager(2,LinearLayoutManager.HORIZONTAL)
+        val layoutManager5 = StaggeredGridLayoutManager(2, LinearLayoutManager.HORIZONTAL)
         view.findViewById<RecyclerView>(R.id.fm_list_genre).layoutManager = layoutManager5
 
         val listGenre = ArrayList<Genre>()
-        listGenre.add(Genre(28,"Hành động"))
-        listGenre.add(Genre(16,"Hoạt hình"))
-        listGenre.add(Genre(878,"Khoa học viễn tưởng"))
-        listGenre.add(Genre(35,"Hài kịch"))
-        listGenre.add(Genre(10749,"Lãng mạn"))
-        listGenre.add(Genre(27,"Kinh dị"))
-        listGenre.add(Genre(80,"Tội phạm"))
-        listGenre.add(Genre(18,"Chính kịch"))
-        listGenre.add(Genre(10751,"Gia đình"))
-        listGenre.add(Genre(10402,"Âm nhạc"))
-        listGenre.add(Genre(10752,"Chiến tranh"))
+        listGenre.add(Genre(28, "Hành động"))
+        listGenre.add(Genre(16, "Hoạt hình"))
+        listGenre.add(Genre(878, "Khoa học viễn tưởng"))
+        listGenre.add(Genre(35, "Hài kịch"))
+        listGenre.add(Genre(10749, "Lãng mạn"))
+        listGenre.add(Genre(27, "Kinh dị"))
+        listGenre.add(Genre(80, "Tội phạm"))
+        listGenre.add(Genre(18, "Chính kịch"))
+        listGenre.add(Genre(10751, "Gia đình"))
+        listGenre.add(Genre(10402, "Âm nhạc"))
+        listGenre.add(Genre(10752, "Chiến tranh"))
 
         listGenre.shuffle()
 
@@ -92,30 +90,30 @@ class MovieFragment : Fragment() {
 
         adapterGenre.setOnItemClickListener { item, _ ->
             val myItem = item as GenreItem
-            val intent = Intent(context,ListByGenreActivity::class.java)
-            intent.putExtra("genre_id",myItem.genre.id)
-            intent.putExtra("genre_name",myItem.genre.name)
+            val intent = Intent(context, ListByGenreActivity::class.java)
+            intent.putExtra("genre_id", myItem.genre.id)
+            intent.putExtra("genre_name", myItem.genre.name)
             startActivity(intent)
         }
 
         view.findViewById<RelativeLayout>(R.id.flm_1).setOnClickListener {
-            val intent = Intent(context,ListActivity::class.java)
-            intent.putExtra("type",1)//marvel
+            val intent = Intent(context, ListActivity::class.java)
+            intent.putExtra("type", 1)//marvel
             startActivity(intent)
         }
         view.findViewById<RelativeLayout>(R.id.flm_2).setOnClickListener {
-            val intent = Intent(context,ListActivity::class.java)
-            intent.putExtra("type",2)//vietnam
+            val intent = Intent(context, ListActivity::class.java)
+            intent.putExtra("type", 2)//vietnam
             startActivity(intent)
         }
         view.findViewById<RelativeLayout>(R.id.flm_3).setOnClickListener {
-            val intent = Intent(context,ListActivity::class.java)
-            intent.putExtra("type",3)//pixar
+            val intent = Intent(context, ListActivity::class.java)
+            intent.putExtra("type", 3)//pixar
             startActivity(intent)
         }
         view.findViewById<RelativeLayout>(R.id.flm_4).setOnClickListener {
-            val intent = Intent(context,ListActivity::class.java)
-            intent.putExtra("type",4)//oscar
+            val intent = Intent(context, ListActivity::class.java)
+            intent.putExtra("type", 4)//oscar
             startActivity(intent)
         }
 
@@ -176,24 +174,43 @@ class MovieFragment : Fragment() {
         listMovieUpComing =
             activity?.intent?.getSerializableExtra("listMovieUpComing") as ArrayList<Movie>
 
-        val listBackDrop = ArrayList<String>()
-        for (m in listMovieNowShowing) {
-            listBackDrop.add("https://image.tmdb.org/t/p/w500/${m.backdrop_path.toString()}")
-        }
-
         val slider = view.findViewById<Slider>(R.id.image_slider)
         val slideList = ArrayList<Slide>()
-        for (i in 0 until listBackDrop.size) {
-            slideList.add(Slide(i,listBackDrop[i],0))
+        for (m in listMovieNowShowing) {
+            slideList.add(
+                Slide(
+                    m.id,
+                    "https://image.tmdb.org/t/p/w500/${m.backdrop_path.toString()}",
+                    0
+                )
+            )
         }
         slider.addSlides(slideList)
 
         slider.setItemClickListener { _, _, i, _ ->
-            val intent = Intent(context, PictureActivity::class.java)
-            val path = slideList[i].imageUrl.substringAfter("w500/")
-            intent.putExtra("imageString", path)
-            startActivity(intent)
-            activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            try {
+                var movie = Movie("","",0,"","",0.0,"")
+                val mID = slideList[i].id
+                for (m in listMovieNowShowing) {
+                    if (m.id == mID) {
+                        movie = m
+                        break
+                    }
+                }
+                if (movie.title != "") {
+                    startActivity(
+                        Intent(context, DetailMovieActivity::class.java)
+                            .putExtra("MOVIE_ID", movie.id)
+                            .putExtra("MOVIE_POSTER", movie.poster_path)
+                            .putExtra("MOVIE_BACKDROP", movie.backdrop_path)
+                            .putExtra("MOVIE_TITLE", movie.title)
+                            .putExtra("MOVIE_VOTE", movie.vote_average)
+                            .putExtra("MOVIE_DATE", movie.release_date)
+                    )
+                }
+            } catch (e:Exception) {
+                Log.d("error_here",e.toString())
+            }
         }
 
         adapterNowShowing.clear()

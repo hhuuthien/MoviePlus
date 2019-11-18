@@ -4,19 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBlueDark"
     tools:ignore="ContentDescription, HardcodedText, SpUsage, Autofill">
 
     <EditText
         android:id="@+id/s_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="8dp"
         android:background="@android:color/transparent"
-        android:hint="Tìm kiếm phim, TV show, diễn viên,..."
+        android:drawableStart="@drawable/ic_search_white_24"
+        android:drawablePadding="8dp"
+        android:hint="Phim, TV show, diễn viên,..."
         android:inputType="text"
-        android:padding="10dp"
+        android:padding="15dp"
         android:singleLine="true"
-        android:textColor="@color/colorBlueDark"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorAccent2"
         android:textCursorDrawable="@null"
         android:textSize="14dp" />
 
@@ -25,7 +29,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/s_key"
-        android:layout_margin="13dp"
+        android:layout_margin="8dp"
+        android:background="@color/colorBlueDark"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <TextView
+        android:layout_margin="8dp"
+        android:id="@+id/s_noti"
+        android:text="Không tìm thấy kết quả"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:textAlignment="center"
+        android:layout_below="@id/s_key"
+        android:textSize="12dp" />
 </RelativeLayout>

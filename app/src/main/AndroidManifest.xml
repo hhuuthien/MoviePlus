@@ -26,9 +26,7 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity
-            android:name=".PictureActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PictureActivity" />
         <activity android:name=".ListActivity" />
         <activity
             android:name=".DetailMovieActivity"

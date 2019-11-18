@@ -8,11 +8,15 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.HIDE_IMPLICIT_ONLY
 import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
@@ -31,7 +35,7 @@ class SearchFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         val imm = activity?.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm!!.toggleSoftInput(HIDE_IMPLICIT_ONLY,0)
+        imm!!.toggleSoftInput(HIDE_IMPLICIT_ONLY, 0)
     }
 
     override fun onCreateView(
@@ -47,6 +51,10 @@ class SearchFragment : Fragment() {
     private fun init(view: View) {
         listSearch.clear()
         adapterSearch.clear()
+
+        view.findViewById<TextView>(R.id.s_noti).visibility = GONE
+        view.findViewById<RecyclerView>(R.id.s_list).visibility = GONE
+
         view.findViewById<EditText>(R.id.s_key).text = null
 
         view.findViewById<EditText>(R.id.s_key).requestFocus()
@@ -61,8 +69,7 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.toString().trim().isNotEmpty()) {
                     fetchSearch(p0.toString().trim())
-                }
-                else {
+                } else {
                     listSearch.clear()
                     adapterSearch.clear()
                 }
@@ -73,37 +80,38 @@ class SearchFragment : Fragment() {
             val searchItem = item as SearchItem
             when (searchItem.searchResult.media_type) {
                 "movie" -> {
-                    val intent = Intent(context,DetailMovieActivity::class.java)
-                    intent.putExtra("MOVIE_ID",searchItem.searchResult.id)
-                    intent.putExtra("MOVIE_TITLE",searchItem.searchResult.title)
-                    intent.putExtra("MOVIE_POSTER",searchItem.searchResult.poster_path)
+                    val intent = Intent(context, DetailMovieActivity::class.java)
+                    intent.putExtra("MOVIE_ID", searchItem.searchResult.id)
+                    intent.putExtra("MOVIE_TITLE", searchItem.searchResult.title)
+                    intent.putExtra("MOVIE_POSTER", searchItem.searchResult.poster_path)
                     intent.putExtra("MOVIE_BACKDROP", searchItem.searchResult.backdrop_path)
-                    intent.putExtra("MOVIE_VOTE",searchItem.searchResult.vote_average)
-                    intent.putExtra("MOVIE_DATE",searchItem.searchResult.release_date)
+                    intent.putExtra("MOVIE_VOTE", searchItem.searchResult.vote_average)
+                    intent.putExtra("MOVIE_DATE", searchItem.searchResult.release_date)
                     startActivity(intent)
                 }
                 "tv" -> {
-                    val intent = Intent(context,DetailShowActivity::class.java)
-                    intent.putExtra("SHOW_ID",searchItem.searchResult.id)
-                    intent.putExtra("SHOW_TITLE",searchItem.searchResult.name)
-                    intent.putExtra("SHOW_POSTER",searchItem.searchResult.poster_path)
+                    val intent = Intent(context, DetailShowActivity::class.java)
+                    intent.putExtra("SHOW_ID", searchItem.searchResult.id)
+                    intent.putExtra("SHOW_TITLE", searchItem.searchResult.name)
+                    intent.putExtra("SHOW_POSTER", searchItem.searchResult.poster_path)
                     intent.putExtra("SHOW_BACKDROP", searchItem.searchResult.backdrop_path)
                     intent.putExtra("SHOW_VOTE", searchItem.searchResult.vote_average)
                     startActivity(intent)
                 }
                 "person" -> {
-                    val intent = Intent(context,DetailCastActivity::class.java)
-                    intent.putExtra("CAST_ID",searchItem.searchResult.id)
-                    intent.putExtra("CAST_NAME",searchItem.searchResult.name)
-                    intent.putExtra("CAST_POSTER",searchItem.searchResult.profile_path)
+                    val intent = Intent(context, DetailCastActivity::class.java)
+                    intent.putExtra("CAST_ID", searchItem.searchResult.id)
+                    intent.putExtra("CAST_NAME", searchItem.searchResult.name)
+                    intent.putExtra("CAST_POSTER", searchItem.searchResult.profile_path)
                     startActivity(intent)
                 }
             }
         }
     }
 
-    private fun fetchSearch(keyWord:String) {
-        val url = "https://api.themoviedb.org/3/search/multi?api_key=d4a7514dbdd976453d2679e036009283&language=en-US&query=$keyWord"
+    private fun fetchSearch(keyWord: String) {
+        val url =
+            "https://api.themoviedb.org/3/search/multi?api_key=d4a7514dbdd976453d2679e036009283&language=en-US&query=$keyWord"
         val request = Request.Builder()
             .url(url)
             .build()
@@ -112,6 +120,7 @@ class SearchFragment : Fragment() {
             override fun onFailure(call: Call, e: IOException) {
                 Log.d("onFetchingResult", e.toString())
             }
+
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 val gSon = GsonBuilder().create()
@@ -123,6 +132,14 @@ class SearchFragment : Fragment() {
 
                     listSearch = result.results as ArrayList<SearchResult>
 
+                    if (listSearch.size != 0) {
+                        s_noti.visibility = GONE
+                        s_list.visibility = VISIBLE
+                    } else {
+                        s_noti.visibility = VISIBLE
+                        s_list.visibility = GONE
+                    }
+
                     for (l in listSearch) {
                         adapterSearch.add(SearchItem(l))
                     }
@@ -133,21 +150,21 @@ class SearchFragment : Fragment() {
     }
 }
 
-class SearchResult (
-    val media_type :String,
-    val id:Int,
-    val poster_path:String?,
-    val profile_path:String?,
-    val name:String?,
-    val known_for_department:String?,
-    val title:String?,
-    val backdrop_path:String?,
-    val vote_average:Double?,
-    val release_date:String?,
-    val overview:String?
+class SearchResult(
+    val media_type: String,
+    val id: Int,
+    val poster_path: String?,
+    val profile_path: String?,
+    val name: String?,
+    val known_for_department: String?,
+    val title: String?,
+    val backdrop_path: String?,
+    val vote_average: Double?,
+    val release_date: String?,
+    val overview: String?
 )
 
-class ListSearchResult (val results:List<SearchResult>)
+class ListSearchResult(val results: List<SearchResult>)
 
 class SearchItem(val searchResult: SearchResult) : Item<ViewHolder>() {
     override fun getLayout(): Int {
@@ -198,7 +215,7 @@ class SearchItem(val searchResult: SearchResult) : Item<ViewHolder>() {
                 }
             }
         } catch (e: Exception) {
-            Log.d("error_here",e.toString())
+            Log.d("error_here", e.toString())
         }
     }
 }

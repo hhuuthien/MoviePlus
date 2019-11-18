@@ -12,7 +12,6 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
@@ -106,26 +105,44 @@ class ShowFragment : Fragment() {
         }
 
         listShowAiring = activity?.intent?.getSerializableExtra("listShowAiring") as ArrayList<Show>
-        listShowNowShowing = activity?.intent?.getSerializableExtra("listShowNowShowing") as ArrayList<Show>
-
-        val listBackDrop = ArrayList<String>()
-        for (m in listShowAiring) {
-            listBackDrop.add("https://image.tmdb.org/t/p/w500/${m.backdrop_path.toString()}")
-        }
+        listShowNowShowing =
+            activity?.intent?.getSerializableExtra("listShowNowShowing") as ArrayList<Show>
 
         val slider = view.findViewById<Slider>(R.id.show_image_slider)
         val slideList = ArrayList<Slide>()
-        for (i in 0 until listBackDrop.size) {
-            slideList.add(Slide(i,listBackDrop[i],0))
+        for (m in listShowAiring) {
+            slideList.add(
+                Slide(
+                    m.id,
+                    "https://image.tmdb.org/t/p/w500/${m.backdrop_path.toString()}",
+                    0
+                )
+            )
         }
         slider.addSlides(slideList)
 
         slider.setItemClickListener { _, _, i, _ ->
-            val intent = Intent(context, PictureActivity::class.java)
-            val path = slideList[i].imageUrl.substringAfter("w500/")
-            intent.putExtra("imageString", path)
-            startActivity(intent)
-            activity?.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            try {
+                var show = Show("", 0, "", 0.0, "", "")
+                val sID = slideList[i].id
+                for (s in listShowAiring) {
+                    if (s.id == sID) {
+                        show = s
+                        break
+                    }
+                }
+                if (show.name != "") {
+                    val intent = Intent(context, DetailShowActivity::class.java)
+                    intent.putExtra("SHOW_ID", show.id)
+                    intent.putExtra("SHOW_POSTER", show.poster_path)
+                    intent.putExtra("SHOW_TITLE", show.name)
+                    intent.putExtra("SHOW_BACKDROP", show.backdrop_path)
+                    intent.putExtra("SHOW_VOTE", show.vote_average)
+                    startActivity(intent)
+                }
+            } catch (e: Exception) {
+                Log.d("error_here", e.toString())
+            }
         }
 
         adapterShowAiring.clear()
@@ -176,6 +193,7 @@ class ShowFragment : Fragment() {
             }
         })
     }
+
     private fun fetchTopRated(view: View) {
         view.findViewById<ProgressBar>(R.id.fs_loading_toprated).visibility = VISIBLE
         val request1 = Request.Builder()
@@ -215,7 +233,7 @@ class Show(
     val id: Int,
     val name: String,
     val vote_average: Double?,
-    val backdrop_path:String?,
+    val backdrop_path: String?,
     val overview: String?
 ) : Serializable
 

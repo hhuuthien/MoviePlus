@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="12dp"
+    android:background="@color/colorBlueDark"
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
@@ -11,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="Danh sách của bạn"
-        android:textColor="@color/colorBlueDark"
+        android:textColor="@color/colorWhite"
         android:textSize="16dp"
         tools:ignore="SpUsage" />
 
@@ -29,6 +30,7 @@
         android:layout_below="@+id/layoutlist_list"
         android:layout_marginTop="8dp"
         android:textSize="14dp"
+        android:textColor="@color/colorWhite"
         android:layout_centerHorizontal="true"
         android:textAllCaps="false"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"

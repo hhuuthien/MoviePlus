@@ -16,7 +16,6 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.cast_item.view.*
-import kotlinx.android.synthetic.main.cast_only_item.view.*
 import kotlinx.android.synthetic.main.fragment_dm_cast.*
 import okhttp3.*
 import java.io.IOException
@@ -37,7 +36,7 @@ class FragmentDMCast : Fragment() {
     }
 
     private fun init(view: View) {
-        val movieId = arguments?.getInt("m_id",-1)
+        val movieId = arguments?.getInt("m_id", -1)
         if (movieId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
@@ -58,7 +57,8 @@ class FragmentDMCast : Fragment() {
     }
 
     private fun fetchCast(movieId: String) {
-        val url = "https://api.themoviedb.org/3/movie/$movieId/credits?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+        val url =
+            "https://api.themoviedb.org/3/movie/$movieId/credits?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -90,7 +90,7 @@ class Cast(
     val name: String,
     val profile_path: String?,
     val id: Int,
-    val character:String
+    val character: String
 )
 
 class CastOnly(
@@ -99,7 +99,7 @@ class CastOnly(
     val id: Int
 )
 
-class CastItem (val cast: Cast) : Item<ViewHolder>() {
+class CastItem(val cast: Cast) : Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.cast_item
     }
@@ -119,35 +119,9 @@ class CastItem (val cast: Cast) : Item<ViewHolder>() {
                     .into(viewHolder.itemView.c_poster)
             }
         } catch (e: Exception) {
-            Log.d("error_here",e.toString())
-        }
-    }
-}
-
-class CastOnlyItem (val castOnly: CastOnly) : Item<ViewHolder>() {
-    override fun getLayout(): Int {
-        return R.layout.cast_only_item
-    }
-
-    override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.co_name.text = castOnly.name
-
-        try {
-            if (castOnly.profile_path == null) {
-                viewHolder.itemView.co_poster.setImageResource(R.drawable.logo_blue)
-            } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300" + castOnly.profile_path)
-                    .placeholder(R.drawable.logo_accent)
-                    .fit()
-                    .into(viewHolder.itemView.co_poster)
-            }
-        } catch (e: Exception) {
-            Log.d("error_here",e.toString())
+            Log.d("error_here", e.toString())
         }
     }
 }
 
 class ResultCast(val cast: List<Cast>)
-
-class ResultCastOnly(val results: List<CastOnly>)

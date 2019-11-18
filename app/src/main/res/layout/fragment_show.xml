@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBlueDark"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ShowFragment"
     tools:ignore="HardcodedText, SpUsage, ContentDescription">
@@ -15,7 +16,7 @@
             android:layout_margin="5dp"
             android:id="@+id/show_image_slider"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="200dp"
             app:animateIndicators="true"
             app:defaultIndicators="circle"
             app:indicatorSize="5dp"
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Tập mới hôm nay"
-                android:textColor="@color/colorBlueDark"
+                android:textColor="@color/colorWhite"
                 android:textSize="16dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -62,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Đang chiếu"
-                android:textColor="@color/colorBlueDark"
+                android:textColor="@color/colorWhite"
                 android:textSize="16dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -89,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Phổ biến"
-                android:textColor="@color/colorBlueDark"
+                android:textColor="@color/colorWhite"
                 android:textSize="16dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -123,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Được đánh giá cao"
-                android:textColor="@color/colorBlueDark"
+                android:textColor="@color/colorWhite"
                 android:textSize="16dp"/>
 
             <androidx.recyclerview.widget.RecyclerView

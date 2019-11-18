@@ -3,6 +3,7 @@ package com.thien.movieplus
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,12 +14,6 @@ import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_list_by_genre.*
 import okhttp3.*
 import java.io.IOException
-import android.widget.AdapterView
-import android.widget.Toast
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
 
 
 class ListByGenreActivity : AppCompatActivity() {

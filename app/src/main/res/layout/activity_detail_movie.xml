@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBlueDark"
     tools:context=".DetailMovieActivity"
     tools:ignore="HardcodedText, SpUsage, ContentDescription">
 
     <RelativeLayout
-        android:background="@android:color/white"
         android:id="@+id/dm_layout_poster"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -16,13 +16,13 @@
         <ImageView
             android:id="@+id/dm_backdrop"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="200dp"
             android:src="@drawable/logo_accent" />
 
         <ImageView
             android:id="@+id/dm_backdrop_bg"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="200dp"
             android:src="@drawable/bg" />
 
         <ImageView
@@ -32,8 +32,8 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="120dp"
             android:layout_marginBottom="8dp"
-            android:background="#FFFFFF"
-            android:padding="2dp"
+            android:background="@color/colorAccent2"
+            android:padding="1dp"
             android:src="@drawable/logo_accent" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_marginEnd="12dp"
             android:layout_toEndOf="@id/dm_poster"
             android:text="Movie tittle"
-            android:textColor="@color/colorBlueDark"
+            android:textColor="@color/colorWhite"
             android:textSize="18dp" />
 
         <RelativeLayout
@@ -69,9 +69,9 @@
                     android:id="@+id/dm_score"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    app:bgColor="@color/colorAccent2"
-                    app:fgColorEnd="@color/colorPrimaryDark"
-                    app:fgColorStart="@color/colorPrimary"
+                    app:bgColor="@color/colorBlueDark"
+                    app:fgColorEnd="@color/colorWhite"
+                    app:fgColorStart="@color/colorWhite"
                     app:percent="0"
                     app:startAngle="0"
                     app:strokeWidth="3dp" />
@@ -86,7 +86,7 @@
                     android:layout_alignBottom="@id/dm_score"
                     android:gravity="center"
                     android:text=""
-                    android:textColor="@color/colorBlueDark"
+                    android:textColor="@color/colorWhite"
                     android:textSize="12dp" />
             </RelativeLayout>
 
@@ -106,6 +106,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text=""
+                    android:textColor="@color/colorAccent2"
                     android:textSize="11dp" />
 
                 <TextView
@@ -117,6 +118,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text=""
+                    android:textColor="@color/colorAccent2"
                     android:textSize="11dp" />
             </RelativeLayout>
 
@@ -139,35 +141,33 @@
 
         <RelativeLayout
             android:id="@+id/layout_2"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/layout_1"
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
             android:layout_toEndOf="@id/dm_poster">
 
             <ImageView
                 android:id="@+id/dm_love"
-                android:layout_marginEnd="8dp"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_favorite_no" />
 
             <ImageView
                 android:id="@+id/dm_add"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/dm_love"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_add"/>
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/dm_love"
+                android:src="@drawable/ic_add" />
         </RelativeLayout>
     </RelativeLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:background="@android:color/white"
         android:id="@+id/dm_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

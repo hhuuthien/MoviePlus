@@ -11,13 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
-import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.cast_item.view.*
-import kotlinx.android.synthetic.main.cast_only_item.view.*
-import kotlinx.android.synthetic.main.fragment_dm_cast.*
 import kotlinx.android.synthetic.main.fragment_ds_cast.*
 import okhttp3.*
 import java.io.IOException
@@ -38,7 +33,7 @@ class FragmentDSCast : Fragment() {
     }
 
     private fun init(view: View) {
-        val showId = arguments?.getInt("s_id",-1)
+        val showId = arguments?.getInt("s_id", -1)
         if (showId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
@@ -59,7 +54,8 @@ class FragmentDSCast : Fragment() {
     }
 
     private fun fetchCast(showId: String) {
-        val url = "https://api.themoviedb.org/3/tv/$showId/credits?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+        val url =
+            "https://api.themoviedb.org/3/tv/$showId/credits?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {

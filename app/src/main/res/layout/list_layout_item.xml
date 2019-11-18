@@ -16,7 +16,7 @@
         android:id="@+id/nameOfList"
         android:textSize="14dp"
         android:layout_toEndOf="@id/iconOfList"
-        android:textColor="@color/colorBlueDark"
+        android:textColor="@color/colorWhite"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="16dp"
