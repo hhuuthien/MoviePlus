@@ -20,7 +20,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class StartActivity : AppCompatActivity() {
-
     private var sharedPref: SharedPreferences? = null
 
     private var listMovieNowShowing = ArrayList<Movie>()
@@ -33,6 +32,7 @@ class StartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start)
 
         start_bar.visibility = View.INVISIBLE
+        start_text.visibility = View.INVISIBLE
     }
 
     override fun onResume() {
@@ -87,6 +87,7 @@ class StartActivity : AppCompatActivity() {
 
     private fun fetch1() {
         start_bar.visibility = View.VISIBLE
+        start_text.visibility = View.VISIBLE
 
         val requestNowShowing = Request.Builder()
             .url("https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&language=en-US&region=US")
@@ -102,6 +103,7 @@ class StartActivity : AppCompatActivity() {
                     .setActionTextColor(Color.WHITE)
                     .show()
                 start_bar.visibility = View.INVISIBLE
+                start_text.visibility = View.INVISIBLE
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -197,6 +199,7 @@ class StartActivity : AppCompatActivity() {
                 startActivity(intent)
 
                 start_bar.visibility = View.INVISIBLE
+                start_text.visibility = View.INVISIBLE
                 finish()
             }
         })

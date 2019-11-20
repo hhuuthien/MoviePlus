@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_list_by_genre.*
 import okhttp3.*
 import java.io.IOException
 
-
 class ListByGenreActivity : AppCompatActivity() {
 
     private var list = ArrayList<Movie>()
@@ -32,7 +31,7 @@ class ListByGenreActivity : AppCompatActivity() {
         for (y in 2019 downTo 2010) {
             listYear.add(y)
         }
-        val adapterSpinner = ArrayAdapter(this, android.R.layout.simple_spinner_item, listYear)
+        val adapterSpinner = ArrayAdapter(this, R.layout.spinner_item, listYear)
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {

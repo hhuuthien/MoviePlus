@@ -15,11 +15,23 @@
         android:src="@drawable/logo_accent" />
 
     <ProgressBar
-        android:theme="@style/MyProgressBar"
         android:id="@+id/start_bar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_below="@id/start_logo"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
+        android:layout_marginBottom="80dp"
+        android:theme="@style/MyProgressBar" />
+
+    <TextView
+        android:id="@+id/start_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
+        android:text="Đang tải dữ liệu"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent2"
+        android:textSize="12dp"
+        tools:ignore="HardcodedText,SpUsage" />
 </RelativeLayout>

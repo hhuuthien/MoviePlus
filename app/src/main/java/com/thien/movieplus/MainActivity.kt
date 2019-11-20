@@ -2,8 +2,13 @@ package com.thien.movieplus
 
 import android.app.ActivityManager
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -12,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -66,6 +70,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             m_nav_view.setCheckedItem(R.id.nav_movie)
             m_toolbar.title = "Phim"
         }
+
+        register()
     }
 
     override fun onBackPressed() {
@@ -97,7 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 dialog.show()
             }
             R.id.menu_info -> {
-                val myLayout = layoutInflater.inflate(R.layout.info_layout,null)
+                val myLayout = layoutInflater.inflate(R.layout.info_layout, null)
                 val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
                     .setView(myLayout)
                     .create()
@@ -105,5 +111,42 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun register() {
+        //register Receiver
+        val receiver = Receiver()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        registerReceiver(receiver, intentFilter)
+    }
+}
+
+class Receiver : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+        if (!isNetworkConnected(context)) {
+            //do what you want
+            context?.startActivity(Intent(context, OoopsActivity::class.java))
+        }
+    }
+
+    private fun isNetworkConnected(context: Context?): Boolean {
+        val cm =
+            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT < 23) {
+            val ni = cm.activeNetworkInfo
+            if (ni != null) {
+                return ni.isConnected && (ni.type == ConnectivityManager.TYPE_WIFI || ni.type == ConnectivityManager.TYPE_MOBILE)
+            }
+        } else {
+            val n = cm.activeNetwork
+            if (n != null) {
+                val nc = cm.getNetworkCapabilities(n)
+                return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
+                    NetworkCapabilities.TRANSPORT_WIFI
+                )
+            }
+        }
+        return false
     }
 }
