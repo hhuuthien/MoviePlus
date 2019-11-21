@@ -5,8 +5,8 @@
     android:id="@+id/m_layout_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@color/colorBlueDark"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity"
     tools:ignore="HardcodedText, SpUsage, ContentDescription"
     tools:openDrawer="start">

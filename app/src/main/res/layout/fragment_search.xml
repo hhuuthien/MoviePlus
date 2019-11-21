@@ -35,13 +35,13 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <TextView
-        android:layout_margin="8dp"
         android:id="@+id/s_noti"
-        android:text="Không tìm thấy kết quả"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorWhite"
-        android:textAlignment="center"
         android:layout_below="@id/s_key"
+        android:layout_margin="8dp"
+        android:text="Không tìm thấy kết quả"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
         android:textSize="12dp" />
 </RelativeLayout>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlueDark"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ShowFragment"
     tools:ignore="HardcodedText, SpUsage, ContentDescription">
 
@@ -13,10 +13,10 @@
         android:layout_height="wrap_content">
 
         <ir.apend.slider.ui.Slider
-            android:layout_margin="5dp"
             android:id="@+id/show_image_slider"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_margin="5dp"
             app:animateIndicators="true"
             app:defaultIndicators="circle"
             app:indicatorSize="5dp"
@@ -25,9 +25,9 @@
 
         <RelativeLayout
             android:id="@+id/fs_layout_airing"
-            android:layout_below="@id/show_image_slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/show_image_slider"
             android:layout_margin="5dp">
 
             <TextView
@@ -37,7 +37,7 @@
                 android:layout_margin="8dp"
                 android:text="Tập mới hôm nay"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"/>
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_airing"
@@ -64,7 +64,7 @@
                 android:layout_margin="8dp"
                 android:text="Đang chiếu"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"/>
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_nowshowing"
@@ -91,7 +91,7 @@
                 android:layout_margin="8dp"
                 android:text="Phổ biến"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"/>
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_popular"
@@ -105,10 +105,10 @@
 
             <ProgressBar
                 android:id="@+id/fs_loading_popular"
-                android:layout_below="@id/fs_text_popular"
-                android:layout_alignStart="@id/fs_text_popular"
                 android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_height="40dp"
+                android:layout_below="@id/fs_text_popular"
+                android:layout_alignStart="@id/fs_text_popular" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -125,7 +125,7 @@
                 android:layout_margin="8dp"
                 android:text="Được đánh giá cao"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"/>
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_toprated"
@@ -139,10 +139,10 @@
 
             <ProgressBar
                 android:id="@+id/fs_loading_toprated"
-                android:layout_below="@id/fs_text_toprated"
-                android:layout_alignStart="@id/fs_text_toprated"
                 android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_height="40dp"
+                android:layout_below="@id/fs_text_toprated"
+                android:layout_alignStart="@id/fs_text_toprated" />
         </RelativeLayout>
     </RelativeLayout>
 </ScrollView>

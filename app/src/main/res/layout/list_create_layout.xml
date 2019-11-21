@@ -2,19 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="24dp"
-    android:paddingBottom="12dp"
     android:paddingStart="12dp"
-    android:paddingEnd="12dp">
+    android:paddingTop="24dp"
+    android:paddingEnd="12dp"
+    android:paddingBottom="12dp">
 
     <EditText
         android:id="@+id/listcreate_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nhập tên list"
-        android:textAlignment="center"
-        android:inputType="textPersonName|textCapSentences"
         android:background="@android:color/transparent"
+        android:hint="Nhập tên list"
+        android:inputType="textPersonName|textCapSentences"
+        android:textAlignment="center"
         android:textSize="16dp" />
 
     <Button

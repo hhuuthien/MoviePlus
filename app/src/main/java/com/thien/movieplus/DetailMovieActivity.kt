@@ -1,8 +1,12 @@
 package com.thien.movieplus
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -316,7 +320,7 @@ class DetailMovieActivity : AppCompatActivity(),
                                 val id =
                                     p.value.toString()
                                         .substringAfterLast("id=")
-                                        .substring(0,13)
+                                        .substring(0, 13)
                                 val userList = UserList(id, name)
                                 list.add(userList)
                                 adapter.add(ListItem(userList))
@@ -341,7 +345,8 @@ class DetailMovieActivity : AppCompatActivity(),
                     val data = FirebaseDatabase.getInstance()
                     val myItem = item as ListItem
                     val listId = myItem.list.id
-                    val refe = data.getReference(auth.currentUser!!.uid).child("list/$listId/movies/$movieId")
+                    val refe = data.getReference(auth.currentUser!!.uid)
+                        .child("list/$listId/movies/$movieId")
                     refe.setValue(
                         MovieLove(
                             movieId,
@@ -355,7 +360,11 @@ class DetailMovieActivity : AppCompatActivity(),
                         dialog.dismiss()
                         val movieName = intent.getStringExtra("MOVIE_TITLE")
                         val listName = item.list.name
-                        Toast.makeText(this, "Đã thêm phim \"$movieName\" vào list \"$listName\"", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            "Đã thêm phim \"$movieName\" vào list \"$listName\"",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             } catch (e: Exception) {
@@ -476,6 +485,33 @@ class DetailMovieActivity : AppCompatActivity(),
                 }
             }
         })
+    }
+
+    private fun isNetworkConnected(): Boolean {
+        val cm =
+            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT < 23) {
+            val ni = cm.activeNetworkInfo
+            if (ni != null) {
+                return ni.isConnected && (ni.type == ConnectivityManager.TYPE_WIFI || ni.type == ConnectivityManager.TYPE_MOBILE)
+            }
+        } else {
+            val n = cm.activeNetwork
+            if (n != null) {
+                val nc = cm.getNetworkCapabilities(n)
+                return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
+                    NetworkCapabilities.TRANSPORT_WIFI
+                )
+            }
+        }
+        return false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!isNetworkConnected()) {
+            startActivity(Intent(this, OoopsActivity::class.java))
+        }
     }
 }
 

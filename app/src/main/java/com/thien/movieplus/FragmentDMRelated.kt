@@ -33,7 +33,7 @@ class FragmentDMRelated : Fragment() {
     }
 
     private fun init(view: View) {
-        val movieId = arguments?.getInt("m_id",-1)
+        val movieId = arguments?.getInt("m_id", -1)
         if (movieId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
@@ -45,18 +45,21 @@ class FragmentDMRelated : Fragment() {
 
         adapter.setOnItemClickListener { item, _ ->
             val myItem = item as MovieItemRow
-            startActivity(Intent(context,DetailMovieActivity::class.java)
-                .putExtra("MOVIE_ID",myItem.movie.id)
-                .putExtra("MOVIE_POSTER",myItem.movie.poster_path)
-                .putExtra("MOVIE_BACKDROP",myItem.movie.backdrop_path)
-                .putExtra("MOVIE_TITLE",myItem.movie.title)
-                .putExtra("MOVIE_VOTE",myItem.movie.vote_average)
-                .putExtra("MOVIE_DATE",myItem.movie.release_date))
+            startActivity(
+                Intent(context, DetailMovieActivity::class.java)
+                    .putExtra("MOVIE_ID", myItem.movie.id)
+                    .putExtra("MOVIE_POSTER", myItem.movie.poster_path)
+                    .putExtra("MOVIE_BACKDROP", myItem.movie.backdrop_path)
+                    .putExtra("MOVIE_TITLE", myItem.movie.title)
+                    .putExtra("MOVIE_VOTE", myItem.movie.vote_average)
+                    .putExtra("MOVIE_DATE", myItem.movie.release_date)
+            )
         }
     }
 
     private fun fetch(movieId: String) {
-        val url = "https://api.themoviedb.org/3/movie/$movieId/similar?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+        val url =
+            "https://api.themoviedb.org/3/movie/$movieId/similar?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {

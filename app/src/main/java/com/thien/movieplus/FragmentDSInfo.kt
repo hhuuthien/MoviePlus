@@ -37,7 +37,8 @@ class FragmentDSInfo : Fragment() {
     private fun fetch(showId: String, view: View) {
         view.findViewById<ProgressBar>(R.id.ds_loading_1).visibility = View.VISIBLE
 
-        val url = "https://api.themoviedb.org/3/tv/$showId?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+        val url =
+            "https://api.themoviedb.org/3/tv/$showId?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -72,8 +73,8 @@ class FragmentDSInfo : Fragment() {
                         ds_date2.text = "Ngày phát sóng tập cuối: $day2-$month2-$year2"
 
                         ds_numEp.text = "Số tập: ${detailShow.number_of_episodes}"
-                    } catch (e:Exception) {
-                        Log.d("error_here",e.toString())
+                    } catch (e: Exception) {
+                        Log.d("error_here", e.toString())
                     }
 
                     view.findViewById<ProgressBar>(R.id.ds_loading_1).visibility = View.GONE

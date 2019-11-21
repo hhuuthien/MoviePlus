@@ -1,7 +1,6 @@
 package com.thien.movieplus
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -32,11 +31,11 @@ class FragmentDCInfo : Fragment() {
         if (castId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetch(castId.toString(),view)
+            fetch(castId.toString(), view)
         }
     }
 
-    private fun fetch(castId: String,view: View) {
+    private fun fetch(castId: String, view: View) {
         view.findViewById<ProgressBar>(R.id.dc_loading_1).visibility = VISIBLE
         val url =
             "https://api.themoviedb.org/3/person/$castId?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"

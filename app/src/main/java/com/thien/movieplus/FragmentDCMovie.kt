@@ -6,9 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils.loadAnimation
-import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,9 +15,7 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.fragment_dc_info.*
 import kotlinx.android.synthetic.main.fragment_dc_movie.*
-import kotlinx.android.synthetic.main.fragment_dm_info.*
 import kotlinx.android.synthetic.main.product_of_cast_item.view.*
 import okhttp3.*
 import java.io.IOException
@@ -65,7 +60,8 @@ class FragmentDCMovie : Fragment() {
     }
 
     private fun fetch(castId: String) {
-        val url = "https://api.themoviedb.org/3/person/$castId/combined_credits?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+        val url =
+            "https://api.themoviedb.org/3/person/$castId/combined_credits?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -85,11 +81,15 @@ class FragmentDCMovie : Fragment() {
                     adapterProductOfCast.clear()
                     try {
                         for (m in listProductOfCast) {
-                            if (m.media_type == "movie") adapterProductOfCast.add(ProductOfCastItem(m))
+                            if (m.media_type == "movie") adapterProductOfCast.add(
+                                ProductOfCastItem(
+                                    m
+                                )
+                            )
                         }
                         dc_list_movie.adapter = adapterProductOfCast
-                    } catch (e:Exception) {
-                        Log.d("error_here",e.toString())
+                    } catch (e: Exception) {
+                        Log.d("error_here", e.toString())
                     }
                 }
             }
@@ -98,19 +98,19 @@ class FragmentDCMovie : Fragment() {
 }
 
 class ResultProductOfCast(
-    val cast : ArrayList<ProductOfCast>
+    val cast: ArrayList<ProductOfCast>
 )
 
 class ProductOfCast(
     val id: Int,
-    val media_type:String,
-    val title:String?,
-    val name:String?,
-    val poster_path:String?,
-    val backdrop_path:String?,
-    val release_date:String?,
-    val vote_average:Double?,
-    val character:String?
+    val media_type: String,
+    val title: String?,
+    val name: String?,
+    val poster_path: String?,
+    val backdrop_path: String?,
+    val release_date: String?,
+    val vote_average: Double?,
+    val character: String?
 )
 
 class ProductOfCastItem(val productOfCast: ProductOfCast) : Item<ViewHolder>() {
@@ -145,7 +145,7 @@ class ProductOfCastItem(val productOfCast: ProductOfCast) : Item<ViewHolder>() {
                     .into(viewHolder.itemView.poc_poster)
             }
         } catch (e: Exception) {
-            Log.d("error_here",e.toString())
+            Log.d("error_here", e.toString())
         }
     }
 }

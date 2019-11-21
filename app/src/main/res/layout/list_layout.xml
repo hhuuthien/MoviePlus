@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
     android:background="@color/colorBlueDark"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/layoutlist_text"
@@ -18,21 +18,21 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/layoutlist_list"
-        android:layout_below="@id/layoutlist_text"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_margin="8dp"/>
+        android:layout_below="@id/layoutlist_text"
+        android:layout_margin="8dp" />
 
     <Button
         android:id="@+id/layoutlist_create"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutlist_list"
-        android:layout_marginTop="8dp"
-        android:textSize="14dp"
-        android:textColor="@color/colorWhite"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:text="Tạo danh sách mới"
         android:textAllCaps="false"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:text="Tạo danh sách mới" />
+        android:textColor="@color/colorWhite"
+        android:textSize="14dp" />
 </RelativeLayout>

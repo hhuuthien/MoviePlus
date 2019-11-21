@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_genre"
     android:layout_margin="4dp"
+    android:background="@drawable/bg_genre"
     android:elevation="4dp"
     tools:ignore="SpUsage,ContentDescription">
 
     <TextView
-        android:padding="2dp"
         android:id="@+id/genre_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:padding="2dp"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
         android:textSize="12dp" />

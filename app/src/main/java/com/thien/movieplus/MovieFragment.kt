@@ -10,7 +10,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -189,7 +188,7 @@ class MovieFragment : Fragment() {
 
         slider.setItemClickListener { _, _, i, _ ->
             try {
-                var movie = Movie("","",0,"","",0.0,"")
+                var movie = Movie("", "", 0, "", "", 0.0, "")
                 val mID = slideList[i].id
                 for (m in listMovieNowShowing) {
                     if (m.id == mID) {
@@ -208,8 +207,8 @@ class MovieFragment : Fragment() {
                             .putExtra("MOVIE_DATE", movie.release_date)
                     )
                 }
-            } catch (e:Exception) {
-                Log.d("error_here",e.toString())
+            } catch (e: Exception) {
+                Log.d("error_here", e.toString())
             }
         }
 

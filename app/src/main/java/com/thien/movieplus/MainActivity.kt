@@ -2,10 +2,8 @@ package com.thien.movieplus
 
 import android.app.ActivityManager
 import android.app.AlertDialog
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -70,8 +68,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             m_nav_view.setCheckedItem(R.id.nav_movie)
             m_toolbar.title = "Phim"
         }
-
-        register()
     }
 
     override fun onBackPressed() {
@@ -113,26 +109,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return super.onOptionsItemSelected(item)
     }
 
-    private fun register() {
-        //register Receiver
-        val receiver = Receiver()
-        val intentFilter = IntentFilter()
-        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
-        registerReceiver(receiver, intentFilter)
-    }
-}
-
-class Receiver : BroadcastReceiver() {
-    override fun onReceive(context: Context?, intent: Intent?) {
-        if (!isNetworkConnected(context)) {
-            //do what you want
-            context?.startActivity(Intent(context, OoopsActivity::class.java))
-        }
-    }
-
-    private fun isNetworkConnected(context: Context?): Boolean {
+    private fun isNetworkConnected(): Boolean {
         val cm =
-            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT < 23) {
             val ni = cm.activeNetworkInfo
             if (ni != null) {
@@ -148,5 +127,12 @@ class Receiver : BroadcastReceiver() {
             }
         }
         return false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!isNetworkConnected()) {
+            startActivity(Intent(this, OoopsActivity::class.java))
+        }
     }
 }

@@ -1,6 +1,10 @@
 package com.thien.movieplus
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
@@ -9,7 +13,6 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail_cast.*
-import kotlinx.android.synthetic.main.activity_detail_show.*
 
 class DetailCastActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -25,7 +28,7 @@ class DetailCastActivity : AppCompatActivity(),
     }
 
     var castID: Int = -1
-    private var posterPath : String = ""
+    private var posterPath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,8 +108,35 @@ class DetailCastActivity : AppCompatActivity(),
                 val intent = Intent(this, PictureActivity::class.java)
                 intent.putExtra("imageString", posterPath)
                 startActivity(intent)
-                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             }
+        }
+    }
+
+    private fun isNetworkConnected(): Boolean {
+        val cm =
+            applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT < 23) {
+            val ni = cm.activeNetworkInfo
+            if (ni != null) {
+                return ni.isConnected && (ni.type == ConnectivityManager.TYPE_WIFI || ni.type == ConnectivityManager.TYPE_MOBILE)
+            }
+        } else {
+            val n = cm.activeNetwork
+            if (n != null) {
+                val nc = cm.getNetworkCapabilities(n)
+                return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
+                    NetworkCapabilities.TRANSPORT_WIFI
+                )
+            }
+        }
+        return false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!isNetworkConnected()) {
+            startActivity(Intent(this, OoopsActivity::class.java))
         }
     }
 }

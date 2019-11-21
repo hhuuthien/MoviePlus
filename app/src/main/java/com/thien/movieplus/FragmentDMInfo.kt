@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -31,7 +32,7 @@ class FragmentDMInfo : Fragment() {
         if (movieId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetch(movieId.toString(),view)
+            fetch(movieId.toString(), view)
         }
     }
 
@@ -83,6 +84,6 @@ class DetailMovie(
 )
 
 class Genre(
-    val id:Int,
+    val id: Int,
     val name: String?
 )

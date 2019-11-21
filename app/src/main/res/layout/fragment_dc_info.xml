@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText, SpUsage, ContentDescription"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText, SpUsage, ContentDescription">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:textColor="@color/colorWhite"
-            android:textSize="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="8dp"
             android:id="@+id/dc_bio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
             android:gravity="center_vertical"
-            android:text=""/>
+            android:text=""
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
 
         <TextView
-            android:textColor="@color/colorWhite"
-            android:textSize="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="8dp"
             android:id="@+id/dc_birthday"
-            android:layout_below="@id/dc_bio"
-            android:text=""/>
-
-        <TextView
-            android:textColor="@color/colorWhite"
-            android:textSize="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/dc_bio"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="20dp"
+            android:text=""
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
+
+        <TextView
             android:id="@+id/dc_birthplace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/dc_birthday"
-            android:text=""/>
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="8dp"
+            android:text=""
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
 
         <ProgressBar
             android:id="@+id/dc_loading_1"
-            android:layout_margin="12dp"
-            android:theme="@style/MyProgressBar"
-            android:layout_centerHorizontal="true"
             android:layout_width="40dp"
-            android:layout_height="40dp"/>
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="12dp"
+            android:theme="@style/MyProgressBar" />
     </RelativeLayout>
 </ScrollView>
