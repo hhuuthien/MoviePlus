@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="4dp"
+    android:background="@color/colorBlueDark"
+    android:elevation="4dp"
+    android:outlineProvider="paddedBounds"
+    tools:ignore="SpUsage, contentDescription, HardcodedText">
+
+    <ImageView
+        android:id="@+id/m_poster"
+        android:layout_width="120dp"
+        android:layout_height="180dp" />
+
+    <TextView
+        android:id="@+id/m_date_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/m_poster"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_genre"
+        android:elevation="5dp"
+        android:padding="5dp"
+        android:text="2 ngày nữa"
+        android:textColor="@color/colorWhite"
+        android:textSize="10dp" />
+</RelativeLayout>

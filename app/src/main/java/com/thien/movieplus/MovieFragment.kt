@@ -1,5 +1,6 @@
 package com.thien.movieplus
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -24,10 +25,15 @@ import ir.apend.slider.ui.Slider
 import kotlinx.android.synthetic.main.fragment_movie.*
 import kotlinx.android.synthetic.main.genre_item.view.*
 import kotlinx.android.synthetic.main.movie_item.view.*
+import kotlinx.android.synthetic.main.movie_item.view.m_poster
 import kotlinx.android.synthetic.main.movie_item_row.view.*
+import kotlinx.android.synthetic.main.movie_item_with_date.view.*
 import okhttp3.*
 import java.io.IOException
 import java.io.Serializable
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MovieFragment : Fragment() {
 
@@ -130,7 +136,7 @@ class MovieFragment : Fragment() {
         }
 
         adapterUpComing.setOnItemClickListener { item, _ ->
-            val myItem = item as MovieItem
+            val myItem = item as MovieItemUpComing
             startActivity(
                 Intent(context, DetailMovieActivity::class.java)
                     .putExtra("MOVIE_ID", myItem.movie.id)
@@ -172,6 +178,8 @@ class MovieFragment : Fragment() {
             activity?.intent?.getSerializableExtra("listMovieNowShowing") as ArrayList<Movie>
         listMovieUpComing =
             activity?.intent?.getSerializableExtra("listMovieUpComing") as ArrayList<Movie>
+
+        listMovieUpComing.sortWith(compareBy { it.release_date })
 
         val slider = view.findViewById<Slider>(R.id.image_slider)
         val slideList = ArrayList<Slide>()
@@ -220,7 +228,7 @@ class MovieFragment : Fragment() {
 
         adapterUpComing.clear()
         for (m in listMovieUpComing) {
-            if (m.poster_path != null) adapterUpComing.add(MovieItem(m))
+            if (m.poster_path != null) adapterUpComing.add(MovieItemUpComing(m))
         }
         view.findViewById<RecyclerView>(R.id.fm_list_upcoming).adapter = adapterUpComing
 
@@ -334,6 +342,47 @@ class MovieItem(val movie: Movie) : Item<ViewHolder>() {
             }
 
             viewHolder.itemView.m_title.text = movie.title
+        } catch (e: Exception) {
+            Log.d("error_here", e.toString())
+        }
+    }
+}
+
+class MovieItemUpComing(val movie: Movie) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.movie_item_with_date
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun daysBetween(releaseDate: String): Int {
+        val now = System.currentTimeMillis()
+
+        val day = releaseDate.substring(8, 10).toInt()
+        val month = releaseDate.substring(5, 7).toInt()
+        val year = releaseDate.substring(0, 4).toInt()
+
+        val stringDate = "$year/$month/$day"
+        val date = SimpleDateFormat("yyyy/MM/dd").parse(stringDate) as Date
+        val time = date.time
+
+        val diff = (time - now) / (1000 * 60 * 60 * 24)
+        return diff.toInt()
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        try {
+            if (movie.poster_path == null) {
+                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_blue)
+            } else {
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/w300" + movie.poster_path)
+                    .placeholder(R.drawable.logo_accent)
+                    .fit()
+                    .into(viewHolder.itemView.m_poster)
+            }
+
+            viewHolder.itemView.m_date_left.text =
+                "${daysBetween(movie.release_date!!) + 1} ngày nữa"
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }
