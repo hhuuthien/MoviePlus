@@ -37,6 +37,7 @@ class DetailShowActivity : AppCompatActivity(),
             R.id.bottom_show_nav_info -> ds_view_pager.currentItem = 0
             R.id.bottom_show_nav_cast -> ds_view_pager.currentItem = 1
             R.id.bottom_show_nav_image -> ds_view_pager.currentItem = 2
+            R.id.bottom_show_nav_season -> ds_view_pager.currentItem = 3
         }
         return true
     }
@@ -110,11 +111,14 @@ class DetailShowActivity : AppCompatActivity(),
         fdscast.arguments = bundle
         val fdsimage = FragmentDSImage()
         fdsimage.arguments = bundle
+        val fdsseason = FragmentDSSeason()
+        fdsseason.arguments = bundle
 
         val adapter = PagerAdapter(supportFragmentManager)
         adapter.addFrag(fdsinfo)
         adapter.addFrag(fdscast)
         adapter.addFrag(fdsimage)
+        adapter.addFrag(fdsseason)
         ds_view_pager.adapter = adapter
 
         ds_view_pager.currentItem = 0
@@ -133,6 +137,7 @@ class DetailShowActivity : AppCompatActivity(),
                     0 -> ds_navigation.selectedItemId = R.id.bottom_show_nav_info
                     1 -> ds_navigation.selectedItemId = R.id.bottom_show_nav_cast
                     2 -> ds_navigation.selectedItemId = R.id.bottom_show_nav_image
+                    3 -> ds_navigation.selectedItemId = R.id.bottom_show_nav_season
                 }
             }
         })
@@ -457,12 +462,22 @@ class DeShow(
     val genres: ArrayList<Genre>,
     val id: Int,
     val last_air_date: String,
+    val last_episode_to_air: Ep?,
+    val next_episode_to_air: Ep?,
     val name: String,
     val number_of_episodes: Int,
     val original_language: String,
     val overview: String?,
     val poster_path: String,
     val vote_average: Double?,
-    val vote_count: Int
+    val vote_count: Int,
+    val seasons: ArrayList<Season>
+)
+
+class Ep(
+    val name: String?,
+    val air_date: String?,
+    val episode_number: Int?,
+    val season_number: Int?
 )
 

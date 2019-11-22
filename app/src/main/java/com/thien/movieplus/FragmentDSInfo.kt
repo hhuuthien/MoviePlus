@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -65,19 +66,36 @@ class FragmentDSInfo : Fragment() {
                         val day = detailShow.first_air_date.substring(8, 10)
                         val month = detailShow.first_air_date.substring(5, 7)
                         val year = detailShow.first_air_date.substring(0, 4)
-                        ds_date.text = "Ngày phát sóng tập đầu: $day-$month-$year"
-
-                        val day2 = detailShow.last_air_date.substring(8, 10)
-                        val month2 = detailShow.last_air_date.substring(5, 7)
-                        val year2 = detailShow.last_air_date.substring(0, 4)
-                        ds_date2.text = "Ngày phát sóng tập cuối: $day2-$month2-$year2"
+                        ds_date.text = "Ngày bắt đầu: $day-$month-$year"
 
                         ds_numEp.text = "Số tập: ${detailShow.number_of_episodes}"
+
+                        if (detailShow.last_episode_to_air != null) {
+                            val dayLast = detailShow.last_episode_to_air.air_date?.substring(8, 10)
+                            val monthLast = detailShow.last_episode_to_air.air_date?.substring(5, 7)
+                            val yearLast = detailShow.last_episode_to_air.air_date?.substring(0, 4)
+
+                            ds_last_date.text = "\t • Ngày chiếu: $dayLast-$monthLast-$yearLast"
+                            ds_last_text.text =
+                                "Tập gần đây nhất: Tập ${detailShow.last_episode_to_air.episode_number} - Mùa ${detailShow.last_episode_to_air.season_number}"
+                            ds_last_name.text = "\t • ${detailShow.last_episode_to_air.name}"
+                        }
+
+                        if (detailShow.next_episode_to_air != null) {
+                            val dayNext = detailShow.next_episode_to_air.air_date?.substring(8, 10)
+                            val monthNext = detailShow.next_episode_to_air.air_date?.substring(5, 7)
+                            val yearNext = detailShow.next_episode_to_air.air_date?.substring(0, 4)
+
+                            ds_next_date.text = "\t • Ngày chiếu: $dayNext-$monthNext-$yearNext"
+                            ds_next_text.text =
+                                "Tập tiếp theo: Tập ${detailShow.next_episode_to_air.episode_number} - Mùa ${detailShow.next_episode_to_air.season_number}"
+                            ds_next_name.text = "\t • ${detailShow.next_episode_to_air.name}"
+                        }
                     } catch (e: Exception) {
                         Log.d("error_here", e.toString())
                     }
 
-                    view.findViewById<ProgressBar>(R.id.ds_loading_1).visibility = View.GONE
+                    view.findViewById<ProgressBar>(R.id.ds_loading_1).visibility = GONE
                 }
             }
         })

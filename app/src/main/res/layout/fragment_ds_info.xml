@@ -44,18 +44,6 @@
             android:textColor="@color/colorWhite"
             android:textSize="12dp" />
 
-        <TextView
-            android:id="@+id/ds_date2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ds_date"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
-
         <ProgressBar
             android:id="@+id/ds_loading_1"
             android:layout_width="40dp"
@@ -63,5 +51,71 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="12dp"
             android:theme="@style/MyProgressBar" />
+
+        <TextView
+            android:id="@+id/ds_last_text"
+            android:layout_below="@id/ds_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/ds_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ds_last_text"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/ds_last_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ds_last_name"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/ds_next_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:layout_below="@id/ds_last_date"
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/ds_next_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ds_next_text"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/ds_next_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ds_next_name"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="10dp" />
     </RelativeLayout>
 </ScrollView>
