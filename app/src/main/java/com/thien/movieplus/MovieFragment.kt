@@ -149,7 +149,7 @@ class MovieFragment : Fragment() {
         }
 
         adapterPopular.setOnItemClickListener { item, _ ->
-            val myItem = item as MovieItem
+            val myItem = item as MovieItemSmall
             startActivity(
                 Intent(context, DetailMovieActivity::class.java)
                     .putExtra("MOVIE_ID", myItem.movie.id)
@@ -162,7 +162,7 @@ class MovieFragment : Fragment() {
         }
 
         adapterTopRated.setOnItemClickListener { item, _ ->
-            val myItem = item as MovieItem
+            val myItem = item as MovieItemSmall
             startActivity(
                 Intent(context, DetailMovieActivity::class.java)
                     .putExtra("MOVIE_ID", myItem.movie.id)
@@ -260,7 +260,7 @@ class MovieFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterPopular.clear()
                     for (m in listMoviePopular) {
-                        adapterPopular.add(MovieItem(m))
+                        adapterPopular.add(MovieItemSmall(m))
                     }
                     fm_list_popular.adapter = adapterPopular
                     view.findViewById<ProgressBar>(R.id.fm_loading_popular).visibility = GONE
@@ -293,7 +293,7 @@ class MovieFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterTopRated.clear()
                     for (m in listMovieTopRated) {
-                        adapterTopRated.add(MovieItem(m))
+                        adapterTopRated.add(MovieItemSmall(m))
                     }
                     fm_list_toprated.adapter = adapterTopRated
                     view.findViewById<ProgressBar>(R.id.fm_loading_toprated).visibility = GONE
@@ -342,6 +342,28 @@ class MovieItem(val movie: Movie) : Item<ViewHolder>() {
             }
 
             viewHolder.itemView.m_title.text = movie.title
+        } catch (e: Exception) {
+            Log.d("error_here", e.toString())
+        }
+    }
+}
+
+class MovieItemSmall(val movie: Movie) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.movie_item_small
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        try {
+            if (movie.poster_path == null) {
+                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_blue)
+            } else {
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/w300" + movie.poster_path)
+                    .placeholder(R.drawable.logo_accent)
+                    .fit()
+                    .into(viewHolder.itemView.m_poster)
+            }
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }

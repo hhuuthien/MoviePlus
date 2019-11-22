@@ -8,8 +8,6 @@ import android.util.Log
 import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.Window
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -61,11 +59,6 @@ class DetailMovieActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_detail_movie)
 
         movieId = intent.getIntExtra("MOVIE_ID", -1)

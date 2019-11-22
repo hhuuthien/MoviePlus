@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -52,10 +51,6 @@ class DetailShowActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
         setContentView(R.layout.activity_detail_show)
 
         showId = intent.getIntExtra("SHOW_ID", -1)

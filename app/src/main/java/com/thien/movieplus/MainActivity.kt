@@ -87,8 +87,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.menu_refresh -> {
                 val dialog = AlertDialog.Builder(this)
-                    .setMessage("Ứng dụng sẽ đóng lại sau quá trình làm mới")
-                    .setPositiveButton("Làm mới") { _, _ ->
+                    .setMessage("Ứng dụng sẽ đóng lại sau khi cập nhật dữ liệu mới.")
+                    .setPositiveButton("Cập nhật") { _, _ ->
                         (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
                     }
                     .setNegativeButton("Huỷ bỏ") { _, _ ->
@@ -104,6 +104,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .setView(myLayout)
                     .create()
                 dialog.show()
+            }
+            R.id.menu_search -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.m_fragment_container, searchFragment).commit()
+                m_toolbar.title = "Tìm kiếm"
             }
         }
         return super.onOptionsItemSelected(item)

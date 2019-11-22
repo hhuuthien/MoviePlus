@@ -84,7 +84,7 @@ class ShowFragment : Fragment() {
 
         adapterShowPopular.setOnItemClickListener { item, _ ->
             val intent = Intent(context, DetailShowActivity::class.java)
-            val showItem = item as ShowItem
+            val showItem = item as ShowItemSmall
             intent.putExtra("SHOW_ID", showItem.show.id)
             intent.putExtra("SHOW_POSTER", showItem.show.poster_path)
             intent.putExtra("SHOW_TITLE", showItem.show.name)
@@ -95,7 +95,7 @@ class ShowFragment : Fragment() {
 
         adapterShowTopRated.setOnItemClickListener { item, _ ->
             val intent = Intent(context, DetailShowActivity::class.java)
-            val showItem = item as ShowItem
+            val showItem = item as ShowItemSmall
             intent.putExtra("SHOW_ID", showItem.show.id)
             intent.putExtra("SHOW_POSTER", showItem.show.poster_path)
             intent.putExtra("SHOW_TITLE", showItem.show.name)
@@ -185,7 +185,7 @@ class ShowFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterShowPopular.clear()
                     for (s in listShowPopular) {
-                        adapterShowPopular.add(ShowItem(s))
+                        adapterShowPopular.add(ShowItemSmall(s))
                     }
                     fs_list_popular.adapter = adapterShowPopular
                     view.findViewById<ProgressBar>(R.id.fs_loading_popular).visibility = GONE
@@ -218,7 +218,7 @@ class ShowFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterShowTopRated.clear()
                     for (s in listShowTopRated) {
-                        adapterShowTopRated.add(ShowItem(s))
+                        adapterShowTopRated.add(ShowItemSmall(s))
                     }
                     fs_list_toprated.adapter = adapterShowTopRated
                     view.findViewById<ProgressBar>(R.id.fs_loading_toprated).visibility = GONE
@@ -259,6 +259,28 @@ class ShowItem(val show: Show) : Item<ViewHolder>() {
             }
 
             viewHolder.itemView.m_title.text = show.name
+        } catch (e: Exception) {
+            Log.d("error_here", e.toString())
+        }
+    }
+}
+
+class ShowItemSmall(val show: Show) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.movie_item_small
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        try {
+            if (show.poster_path == null) {
+                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_blue)
+            } else {
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/w300" + show.poster_path)
+                    .placeholder(R.drawable.logo_accent)
+                    .fit()
+                    .into(viewHolder.itemView.m_poster)
+            }
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }
