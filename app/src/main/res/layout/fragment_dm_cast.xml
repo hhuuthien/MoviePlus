@@ -9,4 +9,12 @@
         android:layout_height="match_parent"
         android:layout_margin="13dp"
         android:scrollbars="vertical" />
+
+    <ProgressBar
+        android:id="@+id/dm_loading_2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="12dp"
+        android:theme="@style/MyProgressBar" />
 </RelativeLayout>

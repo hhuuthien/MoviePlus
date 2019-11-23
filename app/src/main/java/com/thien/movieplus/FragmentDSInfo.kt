@@ -36,7 +36,7 @@ class FragmentDSInfo : Fragment() {
     }
 
     private fun fetch(showId: String, view: View) {
-        view.findViewById<ProgressBar>(R.id.ds_loading_1).visibility = View.VISIBLE
+        view.findViewById<ProgressBar>(R.id.ds_loading_5).visibility = View.VISIBLE
 
         val url =
             "https://api.themoviedb.org/3/tv/$showId?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
@@ -45,9 +45,6 @@ class FragmentDSInfo : Fragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.d("onFetchingResult", e.toString())
-                activity?.runOnUiThread {
-                    view.findViewById<ProgressBar>(R.id.ds_loading_1).visibility = View.GONE
-                }
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -95,7 +92,7 @@ class FragmentDSInfo : Fragment() {
                         Log.d("error_here", e.toString())
                     }
 
-                    view.findViewById<ProgressBar>(R.id.ds_loading_1).visibility = GONE
+                    view.findViewById<ProgressBar>(R.id.ds_loading_5).visibility = GONE
                 }
             }
         })

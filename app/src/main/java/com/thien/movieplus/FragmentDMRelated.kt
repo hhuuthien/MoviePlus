@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +38,7 @@ class FragmentDMRelated : Fragment() {
         if (movieId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetch(movieId.toString())
+            fetch(movieId.toString(), view)
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -57,7 +58,8 @@ class FragmentDMRelated : Fragment() {
         }
     }
 
-    private fun fetch(movieId: String) {
+    private fun fetch(movieId: String, view: View) {
+        view.findViewById<ProgressBar>(R.id.dm_loading_4).visibility = View.VISIBLE
         val url =
             "https://api.themoviedb.org/3/movie/$movieId/similar?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
         val request = Request.Builder().url(url).build()
@@ -81,6 +83,7 @@ class FragmentDMRelated : Fragment() {
                         adapter.add(MovieItemRow(m))
                     }
                     dm_list_related.adapter = adapter
+                    view.findViewById<ProgressBar>(R.id.dm_loading_4).visibility = View.GONE
                 }
             }
         })

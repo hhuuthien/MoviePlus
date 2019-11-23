@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -39,7 +40,7 @@ class FragmentDCImage : Fragment() {
         if (castId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetch(castId.toString())
+            fetch(castId.toString(), view)
         }
 
         val layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
@@ -71,7 +72,8 @@ class FragmentDCImage : Fragment() {
         }
     }
 
-    private fun fetch(castId: String) {
+    private fun fetch(castId: String, view: View) {
+        view.findViewById<ProgressBar>(R.id.dc_loading_4).visibility = View.VISIBLE
         val url =
             "https://api.themoviedb.org/3/person/$castId/images?api_key=d4a7514dbdd976453d2679e036009283"
         val request = Request.Builder().url(url).build()
@@ -95,6 +97,7 @@ class FragmentDCImage : Fragment() {
                             adapterImage.add(ImageItem(m))
                         }
                         dc_list_image.adapter = adapterImage
+                        view.findViewById<ProgressBar>(R.id.dc_loading_4).visibility = View.GONE
                     } catch (e: Exception) {
                         Log.d("error_here", e.toString())
                     }

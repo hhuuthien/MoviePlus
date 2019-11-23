@@ -18,7 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".OoopsActivity"></activity>
+        <activity
+            android:name=".DetailSeasonActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".OoopsActivity" />
         <activity android:name=".ListByGenreActivity" />
         <activity android:name=".PermissionActivity" />
         <activity android:name=".SignupActivity" />

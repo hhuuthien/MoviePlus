@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,7 +41,7 @@ class FragmentDMCast : Fragment() {
         if (movieId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetchCast(movieId.toString())
+            fetchCast(movieId.toString(),view)
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -56,7 +57,8 @@ class FragmentDMCast : Fragment() {
         }
     }
 
-    private fun fetchCast(movieId: String) {
+    private fun fetchCast(movieId: String, view: View) {
+        view.findViewById<ProgressBar>(R.id.dm_loading_2).visibility = View.VISIBLE
         val url =
             "https://api.themoviedb.org/3/movie/$movieId/credits?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
         val request = Request.Builder().url(url).build()
@@ -80,6 +82,7 @@ class FragmentDMCast : Fragment() {
                         adapterCast.add(CastItem(m))
                     }
                     dm_list_cast.adapter = adapterCast
+                    view.findViewById<ProgressBar>(R.id.dm_loading_2).visibility = View.GONE
                 }
             }
         })
