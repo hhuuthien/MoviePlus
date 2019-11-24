@@ -471,7 +471,9 @@ class DeShow(
     val poster_path: String,
     val vote_average: Double?,
     val vote_count: Int,
-    val seasons: ArrayList<Season>
+    val homepage: String?,
+    val seasons: ArrayList<Season>,
+    val production_companies: ArrayList<Company>?
 )
 
 class Ep(

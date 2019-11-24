@@ -9,40 +9,210 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/ds_overview"
+        <RelativeLayout
+            android:id="@+id/ds_info_layout_child"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/ds_numEp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ds_overview"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
+            <TextView
+                android:id="@+id/ds_overview_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="Giới thiệu"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/ds_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ds_numEp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:text=""
-            android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
+            <TextView
+                android:id="@+id/ds_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_overview_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:ellipsize="end"
+                android:maxLines="5"
+                android:text=""
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/ds_web_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_overview"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="Website"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_web"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_web_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/ds_numEp_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_web"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="Số tập"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_numEp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_numEp_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/ds_date_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_numEp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="Ngày bắt đầu"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_date_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/ds_last_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_date"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="Tập gần đây nhất"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_last_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_last_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/ds_last_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_last_1"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/ds_next_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_last_2"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="Tập tiếp theo"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_next_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_next_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/ds_next_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_next_1"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/ds_company_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_next_2"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="Công ty sản xuất"
+                android:textAllCaps="true"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_company_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+        </RelativeLayout>
 
         <ProgressBar
             android:id="@+id/ds_loading_5"
@@ -51,71 +221,5 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="12dp"
             android:theme="@style/MyProgressBar" />
-
-        <TextView
-            android:id="@+id/ds_last_text"
-            android:layout_below="@id/ds_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
-
-        <TextView
-            android:id="@+id/ds_last_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ds_last_text"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="10dp" />
-
-        <TextView
-            android:id="@+id/ds_last_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ds_last_name"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="10dp" />
-
-        <TextView
-            android:id="@+id/ds_next_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
-            android:layout_below="@id/ds_last_date"
-            android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
-
-        <TextView
-            android:id="@+id/ds_next_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ds_next_text"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="10dp" />
-
-        <TextView
-            android:id="@+id/ds_next_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ds_next_name"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/colorWhite"
-            android:textSize="10dp" />
     </RelativeLayout>
 </ScrollView>
