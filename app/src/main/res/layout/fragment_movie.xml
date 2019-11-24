@@ -15,11 +15,11 @@
             android:id="@+id/image_slider"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_margin="5dp"
+            android:layout_marginBottom="5dp"
             app:animateIndicators="true"
             app:defaultIndicators="circle"
-            app:indicatorSize="5dp"
-            app:intervalSecond="5"
+            app:indicatorSize="3dp"
+            app:intervalSecond="7"
             app:loopSlides="true" />
 
         <RelativeLayout
@@ -92,6 +92,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/fm_layout_upcoming"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="13dp"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <RelativeLayout
@@ -116,18 +119,17 @@
                     android:layout_alignTop="@id/flm_1_image"
                     android:layout_alignEnd="@id/flm_1_image"
                     android:layout_alignBottom="@id/flm_1_image"
-                    android:src="@drawable/bg_backdrop" />
+                    android:src="@drawable/bg" />
 
                 <TextView
                     android:id="@+id/flm_1_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="5dp"
                     android:text="Marvel"
-                    android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
+                    android:textSize="12dp"
                     tools:ignore="SpUsage" />
             </RelativeLayout>
 
@@ -153,17 +155,17 @@
                     android:layout_alignTop="@id/flm_2_image"
                     android:layout_alignEnd="@id/flm_2_image"
                     android:layout_alignBottom="@id/flm_2_image"
-                    android:src="@drawable/bg_backdrop" />
+                    android:src="@drawable/bg" />
 
                 <TextView
                     android:id="@+id/flm_2_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="Phim Việt Nam"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="5dp"
+                    android:text="Việt Nam"
                     android:textColor="@android:color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
+                    android:textSize="12dp"
                     tools:ignore="SpUsage" />
             </RelativeLayout>
         </LinearLayout>
@@ -173,6 +175,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/fm_layout_list_12"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="13dp"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <RelativeLayout
@@ -193,17 +198,17 @@
                     android:id="@+id/flm_3_image_bg"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:src="@drawable/bg_backdrop" />
+                    android:src="@drawable/bg" />
 
                 <TextView
                     android:id="@+id/flm_3_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="5dp"
                     android:text="Pixar"
                     android:textColor="@android:color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
+                    android:textSize="12dp"
                     tools:ignore="SpUsage" />
             </RelativeLayout>
 
@@ -225,18 +230,18 @@
                     android:id="@+id/flm_4_image_bg"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
-                    android:src="@drawable/bg_backdrop" />
+                    android:src="@drawable/bg" />
 
                 <TextView
                     android:id="@+id/flm_4_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="Hoạt hình Oscar"
+                    android:layout_alignParentBottom="true"
+                    android:layout_margin="5dp"
+                    android:text="Oscars best animated film"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textSize="16dp"
-                    android:textStyle="bold"
+                    android:textSize="12dp"
                     tools:ignore="SpUsage" />
             </RelativeLayout>
         </LinearLayout>

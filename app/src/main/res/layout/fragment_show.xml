@@ -16,11 +16,11 @@
             android:id="@+id/show_image_slider"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_margin="5dp"
+            android:layout_marginBottom="5dp"
             app:animateIndicators="true"
             app:defaultIndicators="circle"
-            app:indicatorSize="5dp"
-            app:intervalSecond="5"
+            app:indicatorSize="3dp"
+            app:intervalSecond="7"
             app:loopSlides="true" />
 
         <RelativeLayout

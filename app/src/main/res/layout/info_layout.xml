@@ -59,7 +59,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:text="Phiên bản hiện tại: 1.6 (18/11/2019)"
+            android:text="Version 1.6 (24-11-2019)"
             android:textSize="12dp" />
 
         <androidx.cardview.widget.CardView
@@ -84,7 +84,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:text="Mọi chi tiết xin liên hệ: Huỳnh Hữu Thiện"
+                    android:text="Huỳnh Hữu Thiện"
                     android:textColor="@color/colorBlueDark"
                     android:textSize="12dp" />
 
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/info_app_text4"
                     android:layout_margin="8dp"
-                    android:text="Email: hhuuthien@gmail.com"
+                    android:text="hhuuthien@gmail.com"
                     android:textColor="@color/colorBlueDark"
                     android:textSize="12dp" />
             </RelativeLayout>
@@ -110,15 +110,15 @@
 
             <ImageView
                 android:id="@+id/info_image2"
-                android:layout_width="136dp"
-                android:layout_height="54dp"
+                android:layout_width="120dp"
+                android:layout_height="48dp"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/power_by_tmdb" />
 
             <ImageView
                 android:id="@+id/info_image3"
-                android:layout_width="136dp"
-                android:layout_height="54dp"
+                android:layout_width="120dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="8dp"
                 android:layout_toEndOf="@id/info_image2"
                 android:padding="2dp"

@@ -25,7 +25,6 @@ import ir.apend.slider.ui.Slider
 import kotlinx.android.synthetic.main.fragment_movie.*
 import kotlinx.android.synthetic.main.genre_item.view.*
 import kotlinx.android.synthetic.main.movie_item.view.*
-import kotlinx.android.synthetic.main.movie_item.view.m_poster
 import kotlinx.android.synthetic.main.movie_item_row.view.*
 import kotlinx.android.synthetic.main.movie_item_with_date.view.*
 import okhttp3.*
@@ -187,7 +186,7 @@ class MovieFragment : Fragment() {
             slideList.add(
                 Slide(
                     m.id,
-                    "https://image.tmdb.org/t/p/w500/${m.backdrop_path.toString()}",
+                    "https://image.tmdb.org/t/p/original/${m.backdrop_path.toString()}",
                     0
                 )
             )
@@ -394,17 +393,19 @@ class MovieItemUpComing(val movie: Movie) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         try {
             if (movie.poster_path == null) {
-                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_blue)
+                viewHolder.itemView.m2_poster.setImageResource(R.drawable.logo_blue)
             } else {
                 Picasso.get()
                     .load("https://image.tmdb.org/t/p/w300" + movie.poster_path)
                     .placeholder(R.drawable.logo_accent)
                     .fit()
-                    .into(viewHolder.itemView.m_poster)
+                    .into(viewHolder.itemView.m2_poster)
             }
 
-            viewHolder.itemView.m_date_left.text =
+            viewHolder.itemView.m2_date_left.text =
                 "${daysBetween(movie.release_date!!) + 1} ngày nữa"
+
+            viewHolder.itemView.m2_title.text = movie.title
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }

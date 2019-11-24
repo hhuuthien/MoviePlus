@@ -114,7 +114,7 @@ class ShowFragment : Fragment() {
             slideList.add(
                 Slide(
                     m.id,
-                    "https://image.tmdb.org/t/p/w500/${m.backdrop_path.toString()}",
+                    "https://image.tmdb.org/t/p/original/${m.backdrop_path.toString()}",
                     0
                 )
             )

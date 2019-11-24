@@ -11,23 +11,34 @@
     tools:ignore="SpUsage, contentDescription, HardcodedText">
 
     <ImageView
-        android:id="@+id/m_poster"
+        android:id="@+id/m2_poster"
         android:layout_width="120dp"
         android:layout_height="180dp" />
 
-    <ImageView
-        android:id="@+id/m_poster_bg"
-        android:layout_width="120dp"
-        android:layout_height="180dp"
-        android:src="@drawable/bg" />
-
     <TextView
-        android:id="@+id/m_date_left"
+        android:id="@+id/m2_date_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/m_poster"
-        android:layout_margin="8dp"
+        android:layout_margin="3dp"
+        android:background="@drawable/bg_backdrop"
         android:text="2 ngày nữa"
+        android:padding="3dp"
         android:textColor="@color/colorAccent2"
+        android:textSize="10dp" />
+
+    <TextView
+        android:id="@+id/m2_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/m2_poster"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
+        android:lines="2"
+        android:maxLines="2"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text=""
+        android:textColor="@color/colorWhite"
         android:textSize="10dp" />
 </RelativeLayout>
