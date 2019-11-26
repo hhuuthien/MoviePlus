@@ -75,7 +75,7 @@ class FragmentDSInfo : Fragment() {
         view.findViewById<RelativeLayout>(R.id.ds_info_layout_child).visibility = GONE
 
         val url =
-            "https://api.themoviedb.org/3/tv/$showId?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+            "https://api.themoviedb.org/3/tv/$showId?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {

@@ -111,7 +111,7 @@ class SearchFragment : Fragment() {
 
     private fun fetchSearch(keyWord: String) {
         val url =
-            "https://api.themoviedb.org/3/search/multi?api_key=d4a7514dbdd976453d2679e036009283&language=en-US&query=$keyWord"
+            "https://api.themoviedb.org/3/search/multi?api_key=d4a7514dbdd976453d2679e036009283&language=vi&query=$keyWord"
         val request = Request.Builder()
             .url(url)
             .build()

@@ -400,7 +400,7 @@ class DetailMovieActivity : AppCompatActivity(),
         dialog.show()
 
         val url =
-            "https://api.themoviedb.org/3/movie/$movieId/videos?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+            "https://api.themoviedb.org/3/movie/$movieId/videos?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -450,7 +450,7 @@ class DetailMovieActivity : AppCompatActivity(),
 
     private fun fetch(movieId: String) {
         val url1 =
-            "https://api.themoviedb.org/3/movie/$movieId?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+            "https://api.themoviedb.org/3/movie/$movieId?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
         val request1 = Request.Builder().url(url1).build()
         val client1 = OkHttpClient()
         client1.newCall(request1).enqueue(object : Callback {

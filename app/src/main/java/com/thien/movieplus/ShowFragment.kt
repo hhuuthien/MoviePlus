@@ -164,7 +164,7 @@ class ShowFragment : Fragment() {
     private fun fetchPopular(view: View) {
         view.findViewById<ProgressBar>(R.id.fs_loading_popular).visibility = VISIBLE
         val request1 = Request.Builder()
-            .url("https://api.themoviedb.org/3/tv/popular?api_key=d4a7514dbdd976453d2679e036009283&language=en-US&region=US")
+            .url("https://api.themoviedb.org/3/tv/popular?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
             .build()
         val client = OkHttpClient()
         client.newCall(request1).enqueue(object : Callback {
@@ -197,7 +197,7 @@ class ShowFragment : Fragment() {
     private fun fetchTopRated(view: View) {
         view.findViewById<ProgressBar>(R.id.fs_loading_toprated).visibility = VISIBLE
         val request1 = Request.Builder()
-            .url("https://api.themoviedb.org/3/tv/top_rated?api_key=d4a7514dbdd976453d2679e036009283&language=en-US&region=US")
+            .url("https://api.themoviedb.org/3/tv/top_rated?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
             .build()
         val client = OkHttpClient()
         client.newCall(request1).enqueue(object : Callback {

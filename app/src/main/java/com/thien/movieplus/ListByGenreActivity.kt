@@ -63,7 +63,7 @@ class ListByGenreActivity : AppCompatActivity() {
         val genreId = intent.getIntExtra("genre_id", -1)
         if (genreId != -1) {
             val url =
-                "https://api.themoviedb.org/3/discover/movie?api_key=d4a7514dbdd976453d2679e036009283&language=en-US&sort_by=popularity.desc&year=${year}&with_genres=${genreId}"
+                "https://api.themoviedb.org/3/discover/movie?api_key=d4a7514dbdd976453d2679e036009283&language=vi&sort_by=popularity.desc&year=${year}&with_genres=${genreId}"
             val request = Request.Builder().url(url).build()
             val client = OkHttpClient()
             client.newCall(request).enqueue(object : Callback {

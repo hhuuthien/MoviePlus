@@ -64,7 +64,7 @@ class DetailSeasonActivity : AppCompatActivity() {
     private fun fetch(showID: String, seasonNumber: String) {
         dss_loading_1.visibility = VISIBLE
         val url =
-            "https://api.themoviedb.org/3/tv/$showID/season/$seasonNumber?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+            "https://api.themoviedb.org/3/tv/$showID/season/$seasonNumber?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {

@@ -231,7 +231,7 @@ class ListActivity : AppCompatActivity() {
         list_progress.visibility = VISIBLE
 
         val url =
-            "https://api.themoviedb.org/3/list/$type?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+            "https://api.themoviedb.org/3/list/$type?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {

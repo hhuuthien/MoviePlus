@@ -59,7 +59,7 @@ class FragmentDCShow : Fragment() {
     private fun fetch(castId: String, view: View) {
         view.findViewById<ProgressBar>(R.id.dc_loading_3).visibility = View.VISIBLE
         val url =
-            "https://api.themoviedb.org/3/person/$castId/combined_credits?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+            "https://api.themoviedb.org/3/person/$castId/combined_credits?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {

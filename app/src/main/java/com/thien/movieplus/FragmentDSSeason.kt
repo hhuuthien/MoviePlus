@@ -71,7 +71,7 @@ class FragmentDSSeason : Fragment() {
         view.findViewById<ProgressBar>(R.id.ds_loading_8).visibility = VISIBLE
 
         val url =
-            "https://api.themoviedb.org/3/tv/${showId}?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+            "https://api.themoviedb.org/3/tv/${showId}?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
