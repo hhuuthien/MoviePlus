@@ -48,7 +48,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:text="Dữ liệu được cung cấp bởi The Movie DB\nwww.themoviedb.org"
+            android:text="Dữ liệu được cung cấp bởi The Movie DB."
             android:textSize="12dp" />
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:text="Version 1.6 (24-11-2019)"
+            android:text="Phiên bản 1.7:\n- Cập nhật giao diện tối (dark mode).\n- Hỗ trợ nội dung tiếng Việt."
             android:textSize="12dp" />
 
         <androidx.cardview.widget.CardView
