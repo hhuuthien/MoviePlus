@@ -22,11 +22,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:text="Giới thiệu"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/dm_overview"
@@ -50,11 +50,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:text="Tagline"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/dm_tag"
@@ -75,11 +75,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:text="Website"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/dm_website"
@@ -101,11 +101,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:text="Công ty sản xuất"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/dm_company"
@@ -127,11 +127,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:text="Kinh phí sản xuất"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/dm_budget"
@@ -153,11 +153,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:text="Doanh thu"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/dm_revenue"

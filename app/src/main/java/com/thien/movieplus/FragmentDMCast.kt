@@ -41,7 +41,7 @@ class FragmentDMCast : Fragment() {
         if (movieId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetchCast(movieId.toString(),view)
+            fetchCast(movieId.toString(), view)
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -94,12 +94,6 @@ class Cast(
     val profile_path: String?,
     val id: Int,
     val character: String
-)
-
-class CastOnly(
-    val name: String,
-    val profile_path: String?,
-    val id: Int
 )
 
 class CastItem(val cast: Cast) : Item<ViewHolder>() {

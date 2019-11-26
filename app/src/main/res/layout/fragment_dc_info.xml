@@ -21,11 +21,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:text="Ngày sinh"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/dc_date"
@@ -45,15 +45,15 @@
                 android:id="@+id/dc_date2_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
                 android:layout_below="@id/dc_date"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:text="Ngày mất"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/dc_date2"
@@ -77,11 +77,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:text="Quê quán"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/dc_place"
@@ -105,11 +105,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:text="Giới thiệu"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
+                android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/dc_overview"

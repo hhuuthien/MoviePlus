@@ -134,12 +134,15 @@ class FragmentDSInfo : Fragment() {
                         val company = detailShow.production_companies
                         if (company == null || company.size == 0) {
                             ds_company.text = "Đang cập nhật"
+                        } else if (company.size == 1) {
+                            ds_company.text = company[0].name
                         } else {
-                            for (com in company) {
-                                ds_company.append(com.name + "\n")
+                            val size = company.size
+                            for (i in 0 until size - 1) {
+                                ds_company.append(company[i].name + "\n")
                             }
+                            ds_company.append(company[size - 1].name)
                         }
-
                     } catch (e: Exception) {
                         Log.d("error_here", e.toString())
                     }

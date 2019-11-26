@@ -23,6 +23,16 @@
             android:padding="1dp"
             android:src="@drawable/logo_accent" />
 
+        <ImageView
+            android:id="@+id/dc_poster_black"
+            android:layout_width="120dp"
+            android:layout_height="180dp"
+            android:layout_alignTop="@id/dc_poster"
+            android:layout_alignBottom="@id/dc_poster"
+            android:layout_alignStart="@id/dc_poster"
+            android:layout_alignEnd="@id/dc_poster"
+            android:src="@drawable/bg_black" />
+
         <TextView
             android:id="@+id/dc_name"
             android:layout_width="match_parent"

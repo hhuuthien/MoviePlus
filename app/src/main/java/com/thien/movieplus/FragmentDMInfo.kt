@@ -123,10 +123,14 @@ class FragmentDMInfo : Fragment() {
                     val company = detailMovie.production_companies
                     if (company == null || company.size == 0) {
                         dm_company.text = "Đang cập nhật"
+                    } else if (company.size == 1) {
+                        dm_company.text = company[0].name
                     } else {
-                        for (com in company) {
-                            dm_company.append(com.name + "\n")
+                        val size = company.size
+                        for (i in 0 until size - 1) {
+                            dm_company.append(company[i].name + "\n")
                         }
+                        dm_company.append(company[size - 1].name)
                     }
 
                     when (budget) {
@@ -137,7 +141,7 @@ class FragmentDMInfo : Fragment() {
                             dm_budget.text = "Không có số liệu"
                         }
                         else -> {
-                            dm_budget.text = "$budget USD"
+                            dm_budget.text = formatBudget(budget) + " (USD)"
                         }
                     }
 
@@ -149,7 +153,7 @@ class FragmentDMInfo : Fragment() {
                             dm_revenue.text = "Không có số liệu"
                         }
                         else -> {
-                            dm_revenue.text = "$revenue USD"
+                            dm_revenue.text = formatBudget(revenue) + " (USD)"
                         }
                     }
 
@@ -159,6 +163,28 @@ class FragmentDMInfo : Fragment() {
                 }
             }
         })
+    }
+
+    private fun formatBudget(num: Long): String {
+        val s = num.toString()
+        val n = s.length
+        var s1 = ""
+        for (i in n - 1 downTo 0) {
+            s1 += s[i]
+        }
+        val nn = s1.length
+        if (nn == n) {
+            var s2 = ""
+            for (i in nn - 1 downTo 0) {
+                s2 += s1[i]
+                if (i % 3 == 0) {
+                    s2 += " "
+                }
+            }
+            return s2
+        } else {
+            return "NULL"
+        }
     }
 }
 

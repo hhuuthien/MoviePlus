@@ -3,12 +3,17 @@ package com.thien.movieplus
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail_cast.*
+import okhttp3.*
+import java.io.IOException
 
 class DetailCastActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -26,9 +31,15 @@ class DetailCastActivity : AppCompatActivity(),
     var castID: Int = -1
     private var posterPath: String = ""
 
+    companion object {
+        var isDead = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_cast)
+
+        dc_poster_black.visibility = GONE
 
         castID = intent.getIntExtra("CAST_ID", -1)
         if (castID == -1) {
@@ -51,6 +62,8 @@ class DetailCastActivity : AppCompatActivity(),
             if (castName != null && castName.isNotEmpty()) {
                 dc_name.text = castName
             }
+
+            fetchCast(castID.toString())
         }
 
         dc_navigation.setOnNavigationItemSelectedListener(this)
@@ -107,5 +120,33 @@ class DetailCastActivity : AppCompatActivity(),
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             }
         }
+    }
+
+    private fun fetchCast(castId: String) {
+        //de xac dinh con song hay da chet
+        val url =
+            "https://api.themoviedb.org/3/person/$castId?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
+        val request = Request.Builder().url(url).build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val detailCast = gSon.fromJson(body, DetailCast::class.java)
+
+                isDead = detailCast.deathday != null
+
+                runOnUiThread {
+                    if (isDead) {
+                        dc_poster_black.visibility = VISIBLE
+                    } else {
+                        dc_poster_black.visibility = GONE
+                    }
+                }
+            }
+        })
     }
 }
