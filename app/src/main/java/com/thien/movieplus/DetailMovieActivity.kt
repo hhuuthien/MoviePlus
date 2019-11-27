@@ -32,7 +32,6 @@ import kotlinx.android.synthetic.main.progress.view.*
 import okhttp3.*
 import java.io.IOException
 
-
 class DetailMovieActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -219,13 +218,14 @@ class DetailMovieActivity : AppCompatActivity(),
                     val myRef = database.getReference(currentUser!!.uid).child("love_movie")
                         .child(movieId.toString())
                     myRef.setValue(
-                        MovieLove(
-                            movieId,
-                            intent.getStringExtra("MOVIE_TITLE"),
+                        Movie(
                             intent.getStringExtra("MOVIE_POSTER"),
                             intent.getStringExtra("MOVIE_BACKDROP"),
+                            movieId,
+                            intent.getStringExtra("MOVIE_TITLE"),
+                            intent.getStringExtra("MOVIE_DATE"),
                             intent.getDoubleExtra("MOVIE_VOTE", -1.0),
-                            intent.getStringExtra("MOVIE_DATE")
+                            ""
                         )
                     ).addOnSuccessListener {
                         Toast.makeText(
@@ -337,13 +337,14 @@ class DetailMovieActivity : AppCompatActivity(),
                     val refe = data.getReference(auth.currentUser!!.uid)
                         .child("list/$listId/movies/$movieId")
                     refe.setValue(
-                        MovieLove(
-                            movieId,
-                            intent.getStringExtra("MOVIE_TITLE"),
+                        Movie(
                             intent.getStringExtra("MOVIE_POSTER"),
                             intent.getStringExtra("MOVIE_BACKDROP"),
+                            movieId,
+                            intent.getStringExtra("MOVIE_TITLE"),
+                            intent.getStringExtra("MOVIE_DATE"),
                             intent.getDoubleExtra("MOVIE_VOTE", -1.0),
-                            intent.getStringExtra("MOVIE_DATE")
+                            ""
                         )
                     ).addOnCompleteListener {
                         dialog.dismiss()

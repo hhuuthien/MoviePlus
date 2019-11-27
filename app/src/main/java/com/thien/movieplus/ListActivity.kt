@@ -151,17 +151,20 @@ class ListActivity : AppCompatActivity() {
 
                 override fun onDataChange(p0: DataSnapshot) {
                     for (p in p0.children) {
-                        val string = p.value.toString()
+                        val movieString = p.value.toString()
                         val movieTitle =
-                            string.substringAfter("title=").substringBefore(", poster=")
-                        val movieId = string.substringAfter("id=").substringBefore(", title=")
+                            movieString.substringAfter("title=").substringBefore(", poster_path=")
+                        val movieId = movieString.substringAfter("id=").substringBefore(", title=")
                         val moviePoster =
-                            string.substringAfter("poster=").substringBefore(", vote=")
+                            movieString.substringAfter("poster_path=").substringBeforeLast("}")
                         val movieBackdrop =
-                            string.substringAfter("backdrop=").substringBefore(", id=")
+                            movieString.substringAfter("backdrop_path=")
+                                .substringBefore(", overview=")
                         val movieDate =
-                            string.substringAfter("date=").substringBefore(", backdrop=")
-                        val movieVote = string.substringAfter("vote=").substringBeforeLast("}")
+                            movieString.substringAfter("release_date=")
+                                .substringBefore(", vote_average=")
+                        val movieVote =
+                            movieString.substringAfter("vote_average=").substringBefore(", id=")
                         val movie = Movie(
                             moviePoster,
                             movieBackdrop,

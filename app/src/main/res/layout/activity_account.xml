@@ -1,178 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/acc_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorBlueDark">
+    android:layout_height="wrap_content"
+    android:background="@color/colorBlueDark"
+    tools:context=".AccountActivity"
+    tools:ignore="SpUsage, UselessParent, HardcodedText">
 
-    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/acc_layout"
+    <RelativeLayout
+        android:id="@+id/acc_info_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".AccountActivity">
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorBlueDark">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/acc_info_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="12dp"
+            android:src="@drawable/logo_accent" />
 
         <RelativeLayout
-            android:id="@+id/acc_info_layout"
-            android:layout_width="match_parent"
+            android:id="@+id/acc_info_nameAndEmail"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@color/colorBlueDark"
-            android:elevation="4dp"
-            android:outlineProvider="paddedBounds">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/acc_info_image"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_margin="12dp"
-                android:src="@drawable/logo_accent" />
-
-            <RelativeLayout
-                android:id="@+id/acc_info_nameAndEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="8dp"
-                android:layout_toEndOf="@id/acc_info_image">
-
-                <TextView
-                    android:id="@+id/acc_info_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Tên người dùng"
-                    android:textColor="@android:color/white"
-                    android:textSize="16dp" />
-
-                <TextView
-                    android:id="@+id/acc_info_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/acc_info_name"
-                    android:layout_marginTop="8dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Email"
-                    android:textColor="@android:color/white"
-                    android:textSize="12dp" />
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/acc_love_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/acc_info_layout"
-            android:layout_margin="5dp">
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_toEndOf="@id/acc_info_image">
 
             <TextView
-                android:id="@+id/acc_love_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Phim yêu thích của bạn"
-                android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                tools:ignore="SpUsage" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/acc_love_list"
+                android:id="@+id/acc_info_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/acc_love_text"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:scrollbars="horizontal" />
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Xin chào!"
+                android:textColor="@android:color/white"
+                android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/acc_love_noti"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/acc_love_text"
-                android:layout_margin="8dp"
-                android:text="Chưa có phim yêu thích"
-                android:textColor="@color/colorAccent2"
-                android:textSize="12dp"
-                tools:ignore="SpUsage" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/acc_loveshow_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/acc_love_layout"
-            android:layout_margin="5dp">
-
-            <TextView
-                android:id="@+id/acc_loveshow_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="TV show yêu thích của bạn"
-                android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                tools:ignore="SpUsage" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/acc_loveshow_list"
+                android:id="@+id/acc_info_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/acc_loveshow_text"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:scrollbars="horizontal" />
-
-            <TextView
-                android:id="@+id/acc_loveshow_noti"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/acc_loveshow_text"
-                android:layout_margin="8dp"
-                android:text="Chưa có TV show yêu thích"
-                android:textColor="@color/colorAccent2"
-                android:textSize="12dp"
-                tools:ignore="SpUsage" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/acc_list_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/acc_loveshow_layout"
-            android:layout_margin="5dp">
-
-            <TextView
-                android:id="@+id/acc_list_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="Danh sách của bạn"
-                android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                tools:ignore="SpUsage" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/acc_list_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/acc_list_text"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:scrollbars="horizontal" />
-
-            <TextView
-                android:id="@+id/acc_list_noti"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/acc_list_text"
-                android:layout_margin="8dp"
-                android:text="Bạn chưa tạo danh sách nào"
-                android:textColor="@color/colorAccent2"
-                android:textSize="12dp"
-                tools:ignore="SpUsage" />
+                android:layout_below="@id/acc_info_name"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Email"
+                android:textColor="@android:color/white"
+                android:textSize="10dp" />
         </RelativeLayout>
     </RelativeLayout>
-</ScrollView>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/acc_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/acc_navigation"
+        android:layout_below="@id/acc_info_layout" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/acc_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        app:elevation="4dp"
+        app:itemIconTint="@color/colorAccent2"
+        app:itemTextColor="@color/colorAccent2"
+        app:menu="@menu/navigation_for_acc" />
+</RelativeLayout>

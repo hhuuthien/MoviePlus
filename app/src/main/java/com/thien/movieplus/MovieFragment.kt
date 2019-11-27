@@ -135,7 +135,7 @@ class MovieFragment : Fragment() {
         }
 
         adapterUpComing.setOnItemClickListener { item, _ ->
-            val myItem = item as MovieItemUpComing
+            val myItem = item as MovieItem
             startActivity(
                 Intent(context, DetailMovieActivity::class.java)
                     .putExtra("MOVIE_ID", myItem.movie.id)
@@ -178,7 +178,7 @@ class MovieFragment : Fragment() {
         listMovieUpComing =
             activity?.intent?.getSerializableExtra("listMovieUpComing") as ArrayList<Movie>
 
-        listMovieUpComing.sortWith(compareBy { it.release_date })
+        //listMovieUpComing.sortWith(compareBy { it.release_date })
 
         val slider = view.findViewById<Slider>(R.id.image_slider)
         val slideList = ArrayList<Slide>()
@@ -227,7 +227,7 @@ class MovieFragment : Fragment() {
 
         adapterUpComing.clear()
         for (m in listMovieUpComing) {
-            if (m.poster_path != null) adapterUpComing.add(MovieItemUpComing(m))
+            if (m.poster_path != null) adapterUpComing.add(MovieItem(m))
         }
         view.findViewById<RecyclerView>(R.id.fm_list_upcoming).adapter = adapterUpComing
 
@@ -312,15 +312,6 @@ class Movie(
     val overview: String?
 ) : Serializable
 
-class MovieLove(
-    var id: Int,
-    var title: String,
-    var poster: String?,
-    var backdrop: String?,
-    var vote: Double,
-    var date: String?
-) : Serializable
-
 class Result(val results: ArrayList<Movie>)
 
 class MovieItem(val movie: Movie) : Item<ViewHolder>() {
@@ -369,48 +360,48 @@ class MovieItemSmall(val movie: Movie) : Item<ViewHolder>() {
     }
 }
 
-class MovieItemUpComing(val movie: Movie) : Item<ViewHolder>() {
-    override fun getLayout(): Int {
-        return R.layout.movie_item_with_date
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private fun daysBetween(releaseDate: String): Int {
-        val now = System.currentTimeMillis()
-
-        val day = releaseDate.substring(8, 10).toInt()
-        val month = releaseDate.substring(5, 7).toInt()
-        val year = releaseDate.substring(0, 4).toInt()
-
-        val stringDate = "$year/$month/$day"
-        val date = SimpleDateFormat("yyyy/MM/dd").parse(stringDate) as Date
-        val time = date.time
-
-        val diff = (time - now) / (1000 * 60 * 60 * 24)
-        return diff.toInt()
-    }
-
-    override fun bind(viewHolder: ViewHolder, position: Int) {
-        try {
-            if (movie.poster_path == null) {
-                viewHolder.itemView.m2_poster.setImageResource(R.drawable.logo_blue)
-            } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300" + movie.poster_path)
-                    .placeholder(R.drawable.logo_accent)
-                    .fit()
-                    .into(viewHolder.itemView.m2_poster)
-            }
-
-            viewHolder.itemView.m2_date_left.text =
-                "${daysBetween(movie.release_date!!) + 1} ngày nữa"
-
-            viewHolder.itemView.m2_title.text = movie.title
-        } catch (e: Exception) {
-            Log.d("error_here", e.toString())
-        }
-    }
-}
+//class MovieItemUpComing(val movie: Movie) : Item<ViewHolder>() {
+//    override fun getLayout(): Int {
+//        return R.layout.movie_item_with_date
+//    }
+//
+//    @SuppressLint("SimpleDateFormat")
+//    private fun daysBetween(releaseDate: String): Int {
+//        val now = System.currentTimeMillis()
+//
+//        val day = releaseDate.substring(8, 10).toInt()
+//        val month = releaseDate.substring(5, 7).toInt()
+//        val year = releaseDate.substring(0, 4).toInt()
+//
+//        val stringDate = "$year/$month/$day"
+//        val date = SimpleDateFormat("yyyy/MM/dd").parse(stringDate) as Date
+//        val time = date.time
+//
+//        val diff = (time - now) / (1000 * 60 * 60 * 24)
+//        return diff.toInt()
+//    }
+//
+//    override fun bind(viewHolder: ViewHolder, position: Int) {
+//        try {
+//            if (movie.poster_path == null) {
+//                viewHolder.itemView.m2_poster.setImageResource(R.drawable.logo_blue)
+//            } else {
+//                Picasso.get()
+//                    .load("https://image.tmdb.org/t/p/w300" + movie.poster_path)
+//                    .placeholder(R.drawable.logo_accent)
+//                    .fit()
+//                    .into(viewHolder.itemView.m2_poster)
+//            }
+//
+//            viewHolder.itemView.m2_date_left.text =
+//                "${daysBetween(movie.release_date!!) + 1} ngày nữa"
+//
+//            viewHolder.itemView.m2_title.text = movie.title
+//        } catch (e: Exception) {
+//            Log.d("error_here", e.toString())
+//        }
+//    }
+//}
 
 class MovieItemRow(val movie: Movie) : Item<ViewHolder>() {
     override fun getLayout(): Int {
