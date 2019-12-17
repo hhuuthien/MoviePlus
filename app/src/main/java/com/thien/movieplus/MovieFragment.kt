@@ -1,6 +1,5 @@
 package com.thien.movieplus
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -26,13 +25,9 @@ import kotlinx.android.synthetic.main.fragment_movie.*
 import kotlinx.android.synthetic.main.genre_item.view.*
 import kotlinx.android.synthetic.main.movie_item.view.*
 import kotlinx.android.synthetic.main.movie_item_row.view.*
-import kotlinx.android.synthetic.main.movie_item_with_date.view.*
 import okhttp3.*
 import java.io.IOException
 import java.io.Serializable
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class MovieFragment : Fragment() {
 
