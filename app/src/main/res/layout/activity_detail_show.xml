@@ -69,7 +69,7 @@
                     android:id="@+id/ds_score"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    app:bgColor="@color/colorBlueDark"
+                    app:bgColor="@color/colorAccent3"
                     app:fgColorEnd="@color/colorWhite"
                     app:fgColorStart="@color/colorWhite"
                     app:percent="0"

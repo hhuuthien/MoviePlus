@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".InfoActivity" />
         <activity
             android:name=".DetailSeasonActivity"
             android:theme="@style/AppTheme.NoActionBar" />

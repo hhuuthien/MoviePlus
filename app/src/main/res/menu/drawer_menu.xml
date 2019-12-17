@@ -3,23 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="HardcodedText">
 
-    <item
-        android:id="@+id/nav_login"
-        android:icon="@drawable/ic_account"
-        android:title="Trang cá nhân" />
+    <group
+        android:id="@+id/nav_group_1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/ic_account"
+            android:title="Trang cá nhân" />
+    </group>
 
-    <item
-        android:id="@+id/nav_search"
-        android:icon="@drawable/ic_search"
-        android:title="Tìm kiếm" />
+    <group
+        android:id="@+id/nav_group_2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_movie"
+            android:icon="@drawable/ic_movie"
+            android:title="Phim" />
 
-    <item
-        android:id="@+id/nav_movie"
-        android:icon="@drawable/ic_movie"
-        android:title="Phim" />
+        <item
+            android:id="@+id/nav_show"
+            android:icon="@drawable/ic_show"
+            android:title="TV show" />
+    </group>
 
-    <item
-        android:id="@+id/nav_show"
-        android:icon="@drawable/ic_show"
-        android:title="TV show" />
+    <group
+        android:id="@+id/nav_group_3"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/ic_info2"
+            android:title="Thông tin ứng dụng" />
+    </group>
 </menu>

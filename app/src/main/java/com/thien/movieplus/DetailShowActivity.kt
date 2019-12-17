@@ -91,7 +91,7 @@ class DetailShowActivity : AppCompatActivity(),
             val showVote = intent.getDoubleExtra("SHOW_VOTE", -1.0)
             if (showVote == -1.0 || showVote == 0.0) {
                 ds_score.percent = 0F
-                ds_score_text.text = ""
+                ds_score_text.text = "n/a"
             } else {
                 ds_score.percent = (showVote * 10).toFloat()
                 ds_score_text.text = showVote.toString()

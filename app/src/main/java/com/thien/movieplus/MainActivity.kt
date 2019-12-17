@@ -1,19 +1,29 @@
 package com.thien.movieplus
 
-import android.app.ActivityManager
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +31,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val movieFragment = MovieFragment()
     private val showFragment = ShowFragment()
     private val searchFragment = SearchFragment()
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -34,13 +46,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .replace(R.id.m_fragment_container, showFragment).commit()
                 m_toolbar.title = "TV show"
             }
-            R.id.nav_search -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.m_fragment_container, searchFragment).commit()
-                m_toolbar.title = "Tìm kiếm"
-            }
             R.id.nav_login -> {
                 startActivity(Intent(this, AccountActivity::class.java))
+            }
+            R.id.nav_info -> {
+                startActivity(Intent(this, InfoActivity::class.java))
             }
         }
         m_layout_drawer.closeDrawer(GravityCompat.START)
@@ -85,26 +95,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.menu_refresh -> {
-                val dialog = AlertDialog.Builder(this)
-                    .setMessage("Ứng dụng sẽ đóng lại sau khi cập nhật dữ liệu mới.")
-                    .setPositiveButton("Cập nhật") { _, _ ->
-                        (getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager).clearApplicationUserData()
-                    }
-                    .setNegativeButton("Huỷ bỏ") { _, _ ->
-
-                    }
-                    .setCancelable(true)
-                    .create()
-                dialog.show()
-            }
-            R.id.menu_info -> {
-                val myLayout = layoutInflater.inflate(R.layout.info_layout, null)
-                val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
-                    .setView(myLayout)
-                    .create()
-                dialog.show()
-            }
             R.id.menu_search -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.m_fragment_container, searchFragment).commit()
@@ -139,5 +129,84 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (!isNetworkConnected()) {
             startActivity(Intent(this, OoopsActivity::class.java))
         }
+
+        auth = FirebaseAuth.getInstance()
+
+        val navigationView = findViewById<NavigationView>(R.id.m_nav_view)
+        val headerView: View = navigationView.getHeaderView(0)
+        val appName = headerView.findViewById(R.id.nh_appname) as TextView
+        val name = headerView.findViewById(R.id.nh_name) as TextView
+        val email = headerView.findViewById(R.id.nh_email) as TextView
+        val image = headerView.findViewById(R.id.nh_image) as ImageView
+
+        if (auth.currentUser != null) {
+            name.visibility = VISIBLE
+            email.visibility = VISIBLE
+            appName.visibility = GONE
+            try {
+                fetchImage()
+                fetchInfo()
+            } catch (e: Exception) {
+                Log.d("error", e.toString())
+            }
+        } else {
+            name.visibility = GONE
+            email.visibility = GONE
+            appName.visibility = VISIBLE
+            image.setImageResource(R.drawable.logo_accent)
+        }
+    }
+
+    private fun fetchInfo() {
+        val ref =
+            FirebaseDatabase.getInstance()
+                .getReference(FirebaseAuth.getInstance().currentUser!!.uid).child("user_name")
+        val listener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val name = p0.value.toString()
+
+                val navigationView = findViewById<NavigationView>(R.id.m_nav_view)
+                val headerView: View = navigationView.getHeaderView(0)
+                val nameText = headerView.findViewById(R.id.nh_name) as TextView
+                val emailText = headerView.findViewById(R.id.nh_email) as TextView
+
+                if (name == "null" || name == "") {
+                    nameText.text = "Xin chào!"
+                    emailText.text = FirebaseAuth.getInstance().currentUser!!.email
+                } else {
+                    nameText.text = name
+                    emailText.text = FirebaseAuth.getInstance().currentUser!!.email
+                }
+            }
+        }
+        ref.addValueEventListener(listener)
+    }
+
+    private fun fetchImage() {
+        val ref =
+            FirebaseDatabase.getInstance()
+                .getReference(FirebaseAuth.getInstance().currentUser!!.uid).child("user_image")
+        val listener = object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val link = p0.value.toString()
+
+                val navigationView = findViewById<NavigationView>(R.id.m_nav_view)
+                val headerView: View = navigationView.getHeaderView(0)
+                val imageView = headerView.findViewById(R.id.nh_image) as ImageView
+
+                Picasso.get()
+                    .load(link)
+                    .placeholder(R.drawable.logo_accent)
+                    .fit()
+                    .into(imageView)
+            }
+        }
+        ref.addValueEventListener(listener)
     }
 }

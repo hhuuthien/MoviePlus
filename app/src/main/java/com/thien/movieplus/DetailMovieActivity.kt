@@ -97,7 +97,7 @@ class DetailMovieActivity : AppCompatActivity(),
             val movieVote = intent.getDoubleExtra("MOVIE_VOTE", -1.0)
             if (movieVote == -1.0 || movieVote == 0.0) {
                 dm_score.percent = 0F
-                dm_score_text.text = ""
+                dm_score_text.text = "n/a"
             } else {
                 dm_score.percent = (movieVote * 10).toFloat()
                 dm_score_text.text = movieVote.toString()
