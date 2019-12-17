@@ -94,8 +94,12 @@ class AccountActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
             dialog.show()
 
             acc_info_layout.visibility = GONE
+            acc_view_pager.visibility = GONE
+            acc_navigation.visibility = GONE
         } else {
             acc_info_layout.visibility = VISIBLE
+            acc_view_pager.visibility = VISIBLE
+            acc_navigation.visibility = VISIBLE
 
             try {
                 fetchImage()
