@@ -53,49 +53,53 @@ class FragmentAccountMovie : Fragment() {
     }
 
     private fun fetch(view: View) {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        val myRef =
-            FirebaseDatabase.getInstance().getReference(currentUser!!.uid).child("love_movie")
+        try {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val myRef =
+                FirebaseDatabase.getInstance().getReference(currentUser!!.uid).child("love_movie")
 
-        val listener = object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
+            val listener = object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
 
-            override fun onDataChange(p0: DataSnapshot) {
-                list.clear()
-                adapter.clear()
+                override fun onDataChange(p0: DataSnapshot) {
+                    list.clear()
+                    adapter.clear()
 
-                for (p in p0.children) {
-                    val movieString = p.value.toString()
-                    val movieTitle =
-                        movieString.substringAfter("title=").substringBefore(", poster_path=")
-                    val movieId = movieString.substringAfter("id=").substringBefore(", title=")
-                    val moviePoster =
-                        movieString.substringAfter("poster_path=").substringBeforeLast("}")
-                    val movieBackdrop =
-                        movieString.substringAfter("backdrop_path=").substringBefore(", overview=")
-                    val movieDate =
-                        movieString.substringAfter("release_date=")
-                            .substringBefore(", vote_average=")
-                    val movieVote =
-                        movieString.substringAfter("vote_average=").substringBefore(", id=")
-                    val movie = Movie(
-                        moviePoster,
-                        movieBackdrop,
-                        movieId.toInt(),
-                        movieTitle,
-                        movieDate,
-                        movieVote.toDouble(),
-                        ""
-                    )
-                    list.add(movie)
-                    adapter.add(MovieItem(movie))
-                    adapter.notifyDataSetChanged()
+                    for (p in p0.children) {
+                        val movieString = p.value.toString()
+                        val movieTitle =
+                            movieString.substringAfter("title=").substringBefore(", poster_path=")
+                        val movieId = movieString.substringAfter("id=").substringBefore(", title=")
+                        val moviePoster =
+                            movieString.substringAfter("poster_path=").substringBeforeLast("}")
+                        val movieBackdrop =
+                            movieString.substringAfter("backdrop_path=").substringBefore(", overview=")
+                        val movieDate =
+                            movieString.substringAfter("release_date=")
+                                .substringBefore(", vote_average=")
+                        val movieVote =
+                            movieString.substringAfter("vote_average=").substringBefore(", id=")
+                        val movie = Movie(
+                            moviePoster,
+                            movieBackdrop,
+                            movieId.toInt(),
+                            movieTitle,
+                            movieDate,
+                            movieVote.toDouble(),
+                            ""
+                        )
+                        list.add(movie)
+                        adapter.add(MovieItem(movie))
+                        adapter.notifyDataSetChanged()
+                    }
                 }
             }
+            myRef.addValueEventListener(listener)
+            view.findViewById<RecyclerView>(R.id.fam_list).adapter = adapter
+            adapter.notifyDataSetChanged()
+        } catch (e:Exception) {
+            //exception
         }
-        myRef.addValueEventListener(listener)
-        view.findViewById<RecyclerView>(R.id.fam_list).adapter = adapter
-        adapter.notifyDataSetChanged()
     }
 }

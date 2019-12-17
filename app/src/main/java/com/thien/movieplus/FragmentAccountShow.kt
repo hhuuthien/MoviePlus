@@ -51,45 +51,49 @@ class FragmentAccountShow : Fragment() {
     }
 
     private fun fetchShow(view: View) {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        val myRef =
-            FirebaseDatabase.getInstance().getReference(currentUser!!.uid).child("love_show")
+        try {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val myRef =
+                FirebaseDatabase.getInstance().getReference(currentUser!!.uid).child("love_show")
 
-        val listener = object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
+            val listener = object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
 
-            override fun onDataChange(p0: DataSnapshot) {
-                listShow.clear()
-                adapterShow.clear()
+                override fun onDataChange(p0: DataSnapshot) {
+                    listShow.clear()
+                    adapterShow.clear()
 
-                for (p in p0.children) {
-                    val string = p.value.toString()
-                    val showTitle =
-                        string.substringAfter("name=").substringBefore(", id=")
-                    val showId = string.substringAfter("id=").substringBefore(", poster_path=")
-                    val showPoster =
-                        string.substringAfter("poster_path=").substringBeforeLast("}")
-                    val showBackdrop =
-                        string.substringAfter("backdrop_path=").substringBefore(", overview=")
-                    val showVote =
-                        string.substringAfter("vote_average=").substringBeforeLast(", name=")
-                    val show = Show(
-                        showPoster,
-                        showId.toInt(),
-                        showTitle,
-                        showVote.toDouble(),
-                        showBackdrop,
-                        ""
-                    )
-                    listShow.add(show)
-                    adapterShow.add(ShowItem(show))
-                    adapterShow.notifyDataSetChanged()
+                    for (p in p0.children) {
+                        val string = p.value.toString()
+                        val showTitle =
+                            string.substringAfter("name=").substringBefore(", id=")
+                        val showId = string.substringAfter("id=").substringBefore(", poster_path=")
+                        val showPoster =
+                            string.substringAfter("poster_path=").substringBeforeLast("}")
+                        val showBackdrop =
+                            string.substringAfter("backdrop_path=").substringBefore(", overview=")
+                        val showVote =
+                            string.substringAfter("vote_average=").substringBeforeLast(", name=")
+                        val show = Show(
+                            showPoster,
+                            showId.toInt(),
+                            showTitle,
+                            showVote.toDouble(),
+                            showBackdrop,
+                            ""
+                        )
+                        listShow.add(show)
+                        adapterShow.add(ShowItem(show))
+                        adapterShow.notifyDataSetChanged()
+                    }
                 }
             }
+            myRef.addValueEventListener(listener)
+            view.findViewById<RecyclerView>(R.id.fas_list).adapter = adapterShow
+            adapterShow.notifyDataSetChanged()
+        } catch (e:Exception) {
+            //exception
         }
-        myRef.addValueEventListener(listener)
-        view.findViewById<RecyclerView>(R.id.fas_list).adapter = adapterShow
-        adapterShow.notifyDataSetChanged()
     }
 }

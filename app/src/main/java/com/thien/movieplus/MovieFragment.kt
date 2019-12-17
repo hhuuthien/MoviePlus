@@ -173,7 +173,7 @@ class MovieFragment : Fragment() {
         listMovieUpComing =
             activity?.intent?.getSerializableExtra("listMovieUpComing") as ArrayList<Movie>
 
-        //listMovieUpComing.sortWith(compareBy { it.release_date })
+        listMovieUpComing.sortWith(compareBy { it.release_date })
 
         val slider = view.findViewById<Slider>(R.id.image_slider)
         val slideList = ArrayList<Slide>()

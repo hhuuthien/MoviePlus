@@ -102,31 +102,35 @@ class FragmentAccountList : Fragment() {
     }
 
     private fun fetchList(view: View) {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        val data = FirebaseDatabase.getInstance()
-        val ref = data.getReference(currentUser!!.uid).child("list")
+        try {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            val data = FirebaseDatabase.getInstance()
+            val ref = data.getReference(currentUser!!.uid).child("list")
 
-        val listener = object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
+            val listener = object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
 
-            override fun onDataChange(p0: DataSnapshot) {
-                listList.clear()
-                adapterList.clear()
+                override fun onDataChange(p0: DataSnapshot) {
+                    listList.clear()
+                    adapterList.clear()
 
-                for (p in p0.children) {
-                    val string = p.value.toString()
-                    val listName = string.substringAfterLast("name=").substringBefore(", id=")
-                    val listId = string.substringAfterLast("id=").substringBefore("}")
-                    val userList = UserList(listId, listName)
-                    listList.add(userList)
-                    adapterList.add(ListItem(userList))
-                    adapterList.notifyDataSetChanged()
+                    for (p in p0.children) {
+                        val string = p.value.toString()
+                        val listName = string.substringAfterLast("name=").substringBefore(", id=")
+                        val listId = string.substringAfterLast("id=").substringBefore("}")
+                        val userList = UserList(listId, listName)
+                        listList.add(userList)
+                        adapterList.add(ListItem(userList))
+                        adapterList.notifyDataSetChanged()
+                    }
                 }
             }
+            ref.addValueEventListener(listener)
+            view.findViewById<RecyclerView>(R.id.fal_list).adapter = adapterList
+            adapterList.notifyDataSetChanged()
+        } catch (e:Exception) {
+            //exception
         }
-        ref.addValueEventListener(listener)
-        view.findViewById<RecyclerView>(R.id.fal_list).adapter = adapterList
-        adapterList.notifyDataSetChanged()
     }
 }

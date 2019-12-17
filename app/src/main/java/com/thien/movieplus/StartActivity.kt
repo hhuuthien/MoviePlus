@@ -90,7 +90,7 @@ class StartActivity : AppCompatActivity() {
         start_text.visibility = View.VISIBLE
 
         val requestNowShowing = Request.Builder()
-            .url("https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
+            .url("https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi")
             .build()
         val client = OkHttpClient()
         client.newCall(requestNowShowing).enqueue(object : Callback {
@@ -123,7 +123,7 @@ class StartActivity : AppCompatActivity() {
 
     private fun fetch2() {
         val requestUpComing = Request.Builder()
-            .url("https://api.themoviedb.org/3/movie/upcoming?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
+            .url("https://api.themoviedb.org/3/movie/upcoming?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi")
             .build()
         val client = OkHttpClient()
         client.newCall(requestUpComing).enqueue(object : Callback {
