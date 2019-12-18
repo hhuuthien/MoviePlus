@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,8 +33,12 @@ class FragmentAccountShow : Fragment() {
     }
 
     private fun init(view: View) {
-        val layoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//        val layoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)
         view.findViewById<RecyclerView>(R.id.fas_list).layoutManager = layoutManager
+
+        view.findViewById<TextView>(R.id.fas_text2).visibility = View.VISIBLE
+        view.findViewById<RecyclerView>(R.id.fas_list).visibility = View.GONE
 
         adapterShow.setOnItemClickListener { item, _ ->
             val intent = Intent(context, DetailShowActivity::class.java)
@@ -87,13 +91,22 @@ class FragmentAccountShow : Fragment() {
                         adapterShow.add(ShowItem(show))
                         adapterShow.notifyDataSetChanged()
                     }
+
+                    if (listShow.size == 0) {
+                        view.findViewById<TextView>(R.id.fas_text2).visibility = View.VISIBLE
+                        view.findViewById<RecyclerView>(R.id.fas_list).visibility = View.GONE
+                    } else {
+                        view.findViewById<TextView>(R.id.fas_text2).visibility = View.GONE
+                        view.findViewById<RecyclerView>(R.id.fas_list).visibility = View.VISIBLE
+                    }
                 }
             }
             myRef.addValueEventListener(listener)
             view.findViewById<RecyclerView>(R.id.fas_list).adapter = adapterShow
             adapterShow.notifyDataSetChanged()
-        } catch (e:Exception) {
-            //exception
+        } catch (e: Exception) {
+            view.findViewById<TextView>(R.id.fas_text2).visibility = View.VISIBLE
+            view.findViewById<RecyclerView>(R.id.fas_list).visibility = View.GONE
         }
     }
 }

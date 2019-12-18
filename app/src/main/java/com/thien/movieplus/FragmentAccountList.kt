@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,9 @@ class FragmentAccountList : Fragment() {
     private fun init(view: View) {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         view.findViewById<RecyclerView>(R.id.fal_list).layoutManager = layoutManager
+
+        view.findViewById<TextView>(R.id.fal_text2).visibility = View.VISIBLE
+        view.findViewById<RecyclerView>(R.id.fal_list).visibility = View.GONE
 
         adapterList.setOnItemClickListener { item, _ ->
             val myItem = item as ListItem
@@ -124,13 +128,22 @@ class FragmentAccountList : Fragment() {
                         adapterList.add(ListItem(userList))
                         adapterList.notifyDataSetChanged()
                     }
+
+                    if (listList.size == 0) {
+                        view.findViewById<TextView>(R.id.fal_text2).visibility = View.VISIBLE
+                        view.findViewById<RecyclerView>(R.id.fal_list).visibility = View.GONE
+                    } else {
+                        view.findViewById<TextView>(R.id.fal_text2).visibility = View.GONE
+                        view.findViewById<RecyclerView>(R.id.fal_list).visibility = View.VISIBLE
+                    }
                 }
             }
             ref.addValueEventListener(listener)
             view.findViewById<RecyclerView>(R.id.fal_list).adapter = adapterList
             adapterList.notifyDataSetChanged()
-        } catch (e:Exception) {
-            //exception
+        } catch (e: Exception) {
+            view.findViewById<TextView>(R.id.fal_text2).visibility = View.VISIBLE
+            view.findViewById<RecyclerView>(R.id.fal_list).visibility = View.GONE
         }
     }
 }

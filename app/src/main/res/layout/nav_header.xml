@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/nh_image"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@id/nh_image"
         android:ellipsize="end"
         android:maxLines="1"

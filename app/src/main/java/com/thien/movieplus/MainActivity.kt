@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val movieFragment = MovieFragment()
     private val showFragment = ShowFragment()
-    private val searchFragment = SearchFragment()
 
     private lateinit var auth: FirebaseAuth
 
@@ -96,9 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_search -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.m_fragment_container, searchFragment).commit()
-                m_toolbar.title = "Tìm kiếm"
+                startActivity(Intent(this, SearchActivity::class.java))
             }
         }
         return super.onOptionsItemSelected(item)

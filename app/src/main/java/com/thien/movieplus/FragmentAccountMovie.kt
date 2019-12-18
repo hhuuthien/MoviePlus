@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,8 +35,12 @@ class FragmentAccountMovie : Fragment() {
     }
 
     private fun init(view: View) {
-        val layoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//        val layoutManager = StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL)
         view.findViewById<RecyclerView>(R.id.fam_list).layoutManager = layoutManager
+
+        view.findViewById<TextView>(R.id.fam_text2).visibility = VISIBLE
+        view.findViewById<RecyclerView>(R.id.fam_list).visibility = GONE
 
         adapter.setOnItemClickListener { item, _ ->
             val myItem = item as MovieItem
@@ -74,7 +80,8 @@ class FragmentAccountMovie : Fragment() {
                         val moviePoster =
                             movieString.substringAfter("poster_path=").substringBeforeLast("}")
                         val movieBackdrop =
-                            movieString.substringAfter("backdrop_path=").substringBefore(", overview=")
+                            movieString.substringAfter("backdrop_path=")
+                                .substringBefore(", overview=")
                         val movieDate =
                             movieString.substringAfter("release_date=")
                                 .substringBefore(", vote_average=")
@@ -93,13 +100,22 @@ class FragmentAccountMovie : Fragment() {
                         adapter.add(MovieItem(movie))
                         adapter.notifyDataSetChanged()
                     }
+
+                    if (list.size == 0) {
+                        view.findViewById<TextView>(R.id.fam_text2).visibility = VISIBLE
+                        view.findViewById<RecyclerView>(R.id.fam_list).visibility = GONE
+                    } else {
+                        view.findViewById<TextView>(R.id.fam_text2).visibility = GONE
+                        view.findViewById<RecyclerView>(R.id.fam_list).visibility = VISIBLE
+                    }
                 }
             }
             myRef.addValueEventListener(listener)
             view.findViewById<RecyclerView>(R.id.fam_list).adapter = adapter
             adapter.notifyDataSetChanged()
-        } catch (e:Exception) {
-            //exception
+        } catch (e: Exception) {
+            view.findViewById<TextView>(R.id.fam_text2).visibility = VISIBLE
+            view.findViewById<RecyclerView>(R.id.fam_list).visibility = GONE
         }
     }
 }
