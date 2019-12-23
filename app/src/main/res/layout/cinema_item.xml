@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,17 +12,24 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="5dp"
-        android:src="@drawable/logo_blue" />
+        android:src="@drawable/logo_blue"
+        app:civ_border_color="@color/colorAccent2"
+        app:civ_border_width="1dp" />
 
     <TextView
         android:id="@+id/cine_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/cine_image"
-        android:layout_margin="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_toEndOf="@id/cine_image"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxLines="1"
         android:textColor="@color/colorBlueDark"
-        android:textSize="12dp" />
+        android:textSize="13dp" />
 
     <TextView
         android:id="@+id/cine_address"
@@ -30,6 +38,27 @@
         android:layout_below="@id/cine_name"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
+        android:layout_marginBottom="3dp"
         android:layout_toEndOf="@id/cine_image"
+        android:drawableStart="@drawable/ic_place2"
+        android:drawablePadding="4dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxLines="1"
+        android:textSize="10dp" />
+
+    <TextView
+        android:id="@+id/cine_address2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cine_address"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_toEndOf="@id/cine_image"
+        android:drawableStart="@drawable/ic_city"
+        android:drawablePadding="4dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxLines="1"
         android:textSize="10dp" />
 </RelativeLayout>

@@ -58,7 +58,8 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
-            android:text="Phiên bản 1.9:\n- Cập nhật giao diện tối (dark mode).\n- Hỗ trợ nội dung tiếng Việt."
+            android:lineSpacingMultiplier="1.2"
+            android:text="Phiên bản 1.9:\n- Thêm thông tin các rạp chiếu phim.\n- Cập nhật giao diện tối.\n- Hỗ trợ nội dung tiếng Việt."
             android:textSize="12dp" />
 
         <androidx.cardview.widget.CardView
