@@ -307,6 +307,16 @@ class Movie(
     val overview: String?
 ) : Serializable
 
+class Cinema(
+    var cumrap: String,
+    var tenrap: String,
+    var diachi: String,
+    var thanhpho: String,
+    var quan: String,
+    var gioithieu: String,
+    var hinh: String
+) : Serializable
+
 class Result(val results: ArrayList<Movie>)
 
 class MovieItem(val movie: Movie) : Item<ViewHolder>() {
