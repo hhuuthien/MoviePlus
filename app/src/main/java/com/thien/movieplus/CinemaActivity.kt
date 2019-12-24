@@ -27,62 +27,117 @@ class CinemaActivity : AppCompatActivity() {
 
         supportActionBar?.title = "Rạp chiếu phim"
         copyDB()
+        val dbHelper = DBHelper(this)
 
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView_cinema.layoutManager = layoutManager
 
-        val dbHelper = DBHelper(this)
-
         val listCum = ArrayList<String>()
+        listCum.add("Tất cả rạp")
         listCum.add("BHD")
         listCum.add("CGV")
         listCum.add("Cinestar")
+        listCum.add("Dcine")
         listCum.add("Galaxy")
         listCum.add("Lotte")
-        listCum.add("Cụm rạp khác")
-        listCum.add("Tất cả cụm rạp")
+        listCum.add("Mega GS")
+        listCum.add("Khác")
 
-        val adapterSpinner = ArrayAdapter(this, R.layout.spinner_item2, listCum)
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
-        recyclerView_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        val listCity = ArrayList<String>()
+        listCity.add("Cả nước")
+        listCity.add("An Giang")
+        listCity.add("Bà Rịa - Vũng Tàu")
+        listCity.add("Bắc Giang")
+        listCity.add("Bắc Ninh")
+        listCity.add("Bình Dương")
+        listCity.add("Bình Thuận")
+        listCity.add("Bình Định")
+        listCity.add("Bến Tre")
+        listCity.add("Cà Mau")
+        listCity.add("Cần Thơ")
+        listCity.add("Đà Nẵng")
+        listCity.add("Đắk Lắk")
+        listCity.add("Đồng Nai")
+        listCity.add("Đồng Tháp")
+        listCity.add("Hà Nam")
+        listCity.add("Hà Nội")
+        listCity.add("Hà Tĩnh")
+        listCity.add("Hải Dương")
+        listCity.add("Hải Phòng")
+        listCity.add("Hậu Giang")
+        listCity.add("Hồ Chí Minh")
+        listCity.add("Khánh Hoà")
+        listCity.add("Kiên Giang")
+        listCity.add("Kon Tum")
+        listCity.add("Lạng Sơn")
+        listCity.add("Lâm Đồng")
+        listCity.add("Nam Định")
+        listCity.add("Nghệ An")
+        listCity.add("Ninh Bình")
+        listCity.add("Ninh Thuận")
+        listCity.add("Phú Thọ")
+        listCity.add("Phú Yên")
+        listCity.add("Quảng Bình")
+        listCity.add("Quảng Nam")
+        listCity.add("Quảng Ngãi")
+        listCity.add("Quảng Ninh")
+        listCity.add("Sóc Trăng")
+        listCity.add("Sơn La")
+        listCity.add("Thanh Hoá")
+        listCity.add("Thái Bình")
+        listCity.add("Thái Nguyên")
+        listCity.add("Thừa Thiên - Huế")
+        listCity.add("Tiền Giang")
+        listCity.add("Trà Vinh")
+        listCity.add("Tây Ninh")
+        listCity.add("Tuyên Quang")
+        listCity.add("Vĩnh Long")
+        listCity.add("Yên Bái")
+
+        val adapter = ArrayAdapter(this, R.layout.spinner_item2, listCum)
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
+        val adapter2 = ArrayAdapter(this, R.layout.spinner_item2, listCity)
+        adapter2.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                var list = ArrayList<Cinema>()
-                when (i) {
-                    0 -> {
-                        list = dbHelper.getCinemaByGroup("bhd")
-                        recyclerView_text.text = "Tìm thấy tất cả ${list.size} rạp BHD."
-                    }
-                    1 -> {
-                        list = dbHelper.getCinemaByGroup("cgv")
-                        recyclerView_text.text = "Tìm thấy tất cả ${list.size} rạp CGV."
-                    }
-                    2 -> {
-                        list = dbHelper.getCinemaByGroup("cin")
-                        recyclerView_text.text = "Tìm thấy tất cả ${list.size} rạp Cinestar."
-                    }
-                    3 -> {
-                        list = dbHelper.getCinemaByGroup("glx")
-                        recyclerView_text.text = "Tìm thấy tất cả ${list.size} rạp Galaxy."
-                    }
-                    4 -> {
-                        list = dbHelper.getCinemaByGroup("lot")
-                        recyclerView_text.text = "Tìm thấy tất cả ${list.size} rạp Lotte."
-                    }
-                    5 -> {
-                        list = dbHelper.getCinemaOther()
-                        recyclerView_text.text = "Tìm thấy tất cả ${list.size} rạp chiếu phim khác."
-                    } //abc, dcine, mega gs
-                    6 -> {
+                var cum = listCum[i]
+                val tencum = cum
+                val city = listCity[spinner2.selectedItemPosition]
+
+                when (cum) {
+                    "BHD" -> cum = "bhd"
+                    "CGV" -> cum = "cgv"
+                    "Cinestar" -> cum = "cin"
+                    "Dcine" -> cum = "dci"
+                    "Galaxy" -> cum = "glx"
+                    "Lotte" -> cum = "lot"
+                    "Mega GS" -> cum = "meg"
+                    "Khác" -> cum = "abc"
+                }
+
+                if (cum == "Tất cả rạp") {
+                    if (city == "Cả nước") {
                         list = dbHelper.allCinema as ArrayList<Cinema>
-                        recyclerView_text.text = "Tìm thấy tất cả ${list.size} rạp chiếu phim."
+                        texttext.text = "Có ${list.size} rạp khắp cả nước"
+                    } else {
+                        list = dbHelper.getCinemaALLbyCity(city)
+                        texttext.text = "Có ${list.size} rạp ở $city"
+                    }
+                } else {
+                    if (city == "Cả nước") {
+                        list = dbHelper.getCinemaALLbyCum(cum)
+                        texttext.text = "Có ${list.size} rạp $tencum khắp cả nước"
+                    } else {
+                        list = dbHelper.getCinemaALL(cum, city)
+                        texttext.text = "Có ${list.size} rạp $tencum ở $city"
                     }
                 }
 
-                list.sortWith(compareBy { it.tenrap })
-
+                list.sortedWith(compareBy { it.tenrap })
                 adapterCinema.clear()
-                for (c in list) {
-                    adapterCinema.add(CinemaItem(c))
+                for (m in list) {
+                    adapterCinema.add(CinemaItem(m))
                 }
                 recyclerView_cinema.adapter = adapterCinema
             }
@@ -90,9 +145,58 @@ class CinemaActivity : AppCompatActivity() {
             override fun onNothingSelected(adapterView: AdapterView<*>) {
             }
         }
+        spinner.adapter = adapter
+        spinner.setSelection(2)
 
-        recyclerView_spinner.adapter = adapterSpinner
-        recyclerView_spinner.setSelection(6)
+
+        spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
+                var cum = listCum[spinner.selectedItemPosition]
+                val tencum = cum
+                val city = listCity[i]
+
+                when (cum) {
+                    "BHD" -> cum = "bhd"
+                    "CGV" -> cum = "cgv"
+                    "Cinestar" -> cum = "cin"
+                    "Dcine" -> cum = "dci"
+                    "Galaxy" -> cum = "glx"
+                    "Lotte" -> cum = "lot"
+                    "Mega GS" -> cum = "meg"
+                    "Khác" -> cum = "abc"
+                }
+
+                if (cum == "Tất cả rạp") {
+                    if (city == "Cả nước") {
+                        list = dbHelper.allCinema as ArrayList<Cinema>
+                        texttext.text = "Có ${list.size} rạp khắp cả nước"
+                    } else {
+                        list = dbHelper.getCinemaALLbyCity(city)
+                        texttext.text = "Có ${list.size} rạp ở $city"
+                    }
+                } else {
+                    if (city == "Cả nước") {
+                        list = dbHelper.getCinemaALLbyCum(cum)
+                        texttext.text = "Có ${list.size} rạp $tencum khắp cả nước"
+                    } else {
+                        list = dbHelper.getCinemaALL(cum, city)
+                        texttext.text = "Có ${list.size} rạp $tencum ở $city"
+                    }
+                }
+
+                list.sortedWith(compareBy { it.tenrap })
+                adapterCinema.clear()
+                for (m in list) {
+                    adapterCinema.add(CinemaItem(m))
+                }
+                recyclerView_cinema.adapter = adapterCinema
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>) {
+            }
+        }
+        spinner2.adapter = adapter2
+        spinner2.setSelection(21)
     }
 
     private fun copyDB() {

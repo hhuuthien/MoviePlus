@@ -38,7 +38,33 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             return listCinema
         }
 
-    fun getCinemaByGroup(cumrap: String): ArrayList<Cinema> {
+    fun getCinemaALL(cumrap: String, thanhpho: String): ArrayList<Cinema> {
+        val list = ArrayList<Cinema>()
+        val selectQuery =
+            "SELECT * FROM $TABLE_NAME WHERE cumrap=\"$cumrap\" AND thanhpho=\"$thanhpho\""
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(selectQuery, null)
+        if (cursor.moveToFirst()) {
+            do {
+                val cinema =
+                    Cinema("", "", "", "", "", "", "")
+                cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
+                cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
+                cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))
+                cinema.thanhpho = cursor.getString(cursor.getColumnIndex("thanhpho"))
+                cinema.quan = cursor.getString(cursor.getColumnIndex("quan"))
+                cinema.gioithieu = cursor.getString(cursor.getColumnIndex("gioithieu"))
+                cinema.hinh = cursor.getString(cursor.getColumnIndex("hinh"))
+
+                list.add(cinema)
+            } while (cursor.moveToNext())
+        }
+        db.close()
+        cursor.close()
+        return list
+    }
+
+    fun getCinemaALLbyCum(cumrap: String): ArrayList<Cinema> {
         val list = ArrayList<Cinema>()
         val selectQuery = "SELECT * FROM $TABLE_NAME WHERE cumrap=\"$cumrap\""
         val db = this.writableDatabase
@@ -63,10 +89,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return list
     }
 
-    fun getCinemaOther(): ArrayList<Cinema> {
+    fun getCinemaALLbyCity(thanhpho: String): ArrayList<Cinema> {
         val list = ArrayList<Cinema>()
         val selectQuery =
-            "SELECT * FROM $TABLE_NAME WHERE cumrap=\"abc\" OR cumrap=\"dci\" OR cumrap=\"meg\""
+            "SELECT * FROM $TABLE_NAME WHERE thanhpho=\"$thanhpho\""
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQuery, null)
         if (cursor.moveToFirst()) {
