@@ -1,2 +1,2 @@
 # MoviePlus
-Tạm thời để trống.
+Tạm thời chưa có gì ở đây.
