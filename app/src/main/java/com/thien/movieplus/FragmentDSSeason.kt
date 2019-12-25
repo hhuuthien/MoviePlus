@@ -121,8 +121,7 @@ class SeasonItem(val season: Season) : Item<ViewHolder>() {
             }
 
             viewHolder.itemView.ss_title.text = season.name
-            viewHolder.itemView.ss_number.text = "Mùa ${season.season_number}"
-            viewHolder.itemView.ss_num_ep.text = "Số tập: ${season.episode_count}"
+            viewHolder.itemView.ss_num_ep.text = "${season.episode_count} tập"
 
             val day = season.air_date?.substring(8, 10)
             val month = season.air_date?.substring(5, 7)

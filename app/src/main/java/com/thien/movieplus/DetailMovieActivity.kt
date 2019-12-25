@@ -6,27 +6,19 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
-import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 import kotlinx.android.synthetic.main.list_create_layout.view.*
-import kotlinx.android.synthetic.main.list_layout.view.*
 import kotlinx.android.synthetic.main.list_layout_item.view.*
 import kotlinx.android.synthetic.main.progress.view.*
 import okhttp3.*
@@ -71,23 +63,16 @@ class DetailMovieActivity : AppCompatActivity(),
             } else {
                 posterPath = moviePoster
                 Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300$moviePoster")
+                    .load("https://image.tmdb.org/t/p/w500$moviePoster")
                     .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(dm_poster)
             }
 
             val movieBackdrop = intent.getStringExtra("MOVIE_BACKDROP")
-            if (movieBackdrop == null || movieBackdrop.isEmpty()) {
-                dm_backdrop.setImageResource(R.drawable.logo_blue)
-            } else {
-                backdropPath = movieBackdrop
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w500$movieBackdrop")
-                    .placeholder(R.drawable.logo_accent)
-                    .fit()
-                    .into(dm_backdrop)
-            }
+//            if (movieBackdrop == null || movieBackdrop.isEmpty()) {
+//                dm_backdrop.setImageResource(R.drawable.logo_blue)
+//            }
 
             val movieTitle = intent.getStringExtra("MOVIE_TITLE")
             if (movieTitle != null && movieTitle.isNotEmpty()) {
@@ -96,21 +81,19 @@ class DetailMovieActivity : AppCompatActivity(),
 
             val movieVote = intent.getDoubleExtra("MOVIE_VOTE", -1.0)
             if (movieVote == -1.0 || movieVote == 0.0) {
-                dm_score.percent = 0F
-                dm_score_text.text = "n/a"
+                dm_star.text = "null"
             } else {
-                dm_score.percent = (movieVote * 10).toFloat()
-                dm_score_text.text = movieVote.toString()
+                dm_star.text = movieVote.toString()
             }
 
             val movieDate = intent.getStringExtra("MOVIE_DATE")
             if (movieDate == null || movieDate.isEmpty()) {
-                dm_info.append("Release Date")
+                dm_date.text = null
             } else {
                 val day = movieDate.substring(8, 10)
                 val month = movieDate.substring(5, 7)
                 val year = movieDate.substring(0, 4)
-                dm_info.append("$day-$month-$year")
+                dm_date.text = "$day-$month-$year"
             }
 
             fetch(movieId.toString())
@@ -162,7 +145,7 @@ class DetailMovieActivity : AppCompatActivity(),
             Toast.makeText(this, "ID: $movieId", Toast.LENGTH_LONG).show()
         }
 
-        dm_trailer.setOnClickListener {
+        fab_trailer.setOnClickListener {
             fetchTrailer(movieId.toString())
         }
 
@@ -175,192 +158,192 @@ class DetailMovieActivity : AppCompatActivity(),
             }
         }
 
-        dm_backdrop.setOnClickListener {
-            if (backdropPath != "") {
-                val intent = Intent(this, PictureActivity::class.java)
-                intent.putExtra("imageString", backdropPath)
-                startActivity(intent)
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-            }
-        }
+//        dm_backdrop.setOnClickListener {
+//            if (backdropPath != "") {
+//                val intent = Intent(this, PictureActivity::class.java)
+//                intent.putExtra("imageString", backdropPath)
+//                startActivity(intent)
+//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+//            }
+//        }
 
         auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
-        if (currentUser == null) {
-            layout_2.visibility = GONE
-        } else {
-            layout_2.visibility = VISIBLE
-            //check if exist
-            database = FirebaseDatabase.getInstance()
-            val myRef = database.getReference(currentUser.uid).child("love_movie")
+//        if (currentUser == null) {
+//            layout_2.visibility = GONE
+//        } else {
+//            layout_2.visibility = VISIBLE
+//            //check if exist
+//            database = FirebaseDatabase.getInstance()
+//            val myRef = database.getReference(currentUser.uid).child("love_movie")
+//
+//            val listener = object : ValueEventListener {
+//                override fun onDataChange(p0: DataSnapshot) {
+//                    val string = p0.toString()
+//                    if (string.contains(movieId.toString())) {
+//                        dm_love.setImageResource(R.drawable.ic_favorite_yes)
+//                        exist = true
+//                    } else {
+//                        dm_love.setImageResource(R.drawable.ic_favorite_no)
+//                        exist = false
+//                    }
+//                }
+//
+//                override fun onCancelled(p0: DatabaseError) {}
+//            }
+//            myRef.addListenerForSingleValueEvent(listener)
+//        }
 
-            val listener = object : ValueEventListener {
-                override fun onDataChange(p0: DataSnapshot) {
-                    val string = p0.toString()
-                    if (string.contains(movieId.toString())) {
-                        dm_love.setImageResource(R.drawable.ic_favorite_yes)
-                        exist = true
-                    } else {
-                        dm_love.setImageResource(R.drawable.ic_favorite_no)
-                        exist = false
-                    }
-                }
-
-                override fun onCancelled(p0: DatabaseError) {}
-            }
-            myRef.addListenerForSingleValueEvent(listener)
-        }
-
-        dm_love.setOnClickListener {
-            try {
-                if (!exist) {
-                    database = FirebaseDatabase.getInstance()
-                    val myRef = database.getReference(currentUser!!.uid).child("love_movie")
-                        .child(movieId.toString())
-                    myRef.setValue(
-                        Movie(
-                            intent.getStringExtra("MOVIE_POSTER"),
-                            intent.getStringExtra("MOVIE_BACKDROP"),
-                            movieId,
-                            intent.getStringExtra("MOVIE_TITLE"),
-                            intent.getStringExtra("MOVIE_DATE"),
-                            intent.getDoubleExtra("MOVIE_VOTE", -1.0),
-                            ""
-                        )
-                    ).addOnSuccessListener {
-                        Toast.makeText(
-                            this,
-                            "Đã thêm vào danh sách yêu thích",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        dm_love.setImageResource(R.drawable.ic_favorite_yes)
-                        exist = true
-                    }.addOnFailureListener {
-                        Toast.makeText(
-                            this,
-                            "Có lỗi xảy ra. Vui lòng thử lại",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        dm_love.setImageResource(R.drawable.ic_favorite_no)
-                        exist = false
-                    }
-                } else {
-                    database = FirebaseDatabase.getInstance()
-                    val myRef = database.getReference(currentUser!!.uid).child("love_movie")
-                        .child(movieId.toString())
-                    myRef.removeValue().addOnSuccessListener {
-                        Toast.makeText(
-                            this,
-                            "Đã xoá khỏi danh sách yêu thích",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        dm_love.setImageResource(R.drawable.ic_favorite_no)
-                        exist = false
-                    }.addOnFailureListener {
-                        Toast.makeText(
-                            this,
-                            "Có lỗi xảy ra. Vui lòng thử lại",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        dm_love.setImageResource(R.drawable.ic_favorite_yes)
-                        exist = true
-                    }
-                }
-            } catch (e: Exception) {
-                Log.d("error", e.toString())
-            }
-        }
-
-        dm_add.setOnClickListener {
-            try {
-                val list = ArrayList<UserList>()
-                val adapter = GroupAdapter<ViewHolder>()
-
-                val myLayout = layoutInflater.inflate(R.layout.list_layout, null)
-
-                val dialog = AlertDialog.Builder(this)
-                    .setView(myLayout)
-                    .create()
-                dialog.show()
-
-                myLayout.layoutlist_create.setOnClickListener {
-                    createList()
-                }
-
-                database = FirebaseDatabase.getInstance()
-                val ref = database.getReference(currentUser!!.uid).child("list")
-                val listener = object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError) {
-                    }
-
-                    override fun onDataChange(p0: DataSnapshot) {
-                        adapter.clear()
-                        list.clear()
-
-                        if (p0.hasChildren()) {
-                            myLayout.layoutlist_text.text = "Thêm vào list"
-                            myLayout.layoutlist_create.text = "Tạo list khác"
-                            myLayout.layoutlist_list.visibility = VISIBLE
-                            for (p in p0.children) {
-                                val name =
-                                    p.value.toString()
-                                        .substringAfterLast("name=")
-                                        .substringBefore(", id=")
-                                val id =
-                                    p.value.toString()
-                                        .substringAfterLast("id=")
-                                        .substring(0, 13)
-                                val userList = UserList(id, name)
-                                list.add(userList)
-                                adapter.add(ListItem(userList))
-                            }
-                        } else {
-                            myLayout.layoutlist_text.text = "Chưa có list nào"
-                            myLayout.layoutlist_create.text = "Tạo list mới"
-                            myLayout.layoutlist_list.visibility = GONE
-                        }
-                    }
-                }
-                ref.addValueEventListener(listener)
-
-                val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-                myLayout.layoutlist_list.layoutManager = layoutManager
-
-                myLayout.layoutlist_list.adapter = adapter
-                adapter.notifyDataSetChanged()
-
-                adapter.setOnItemClickListener { item, _ ->
-                    val auth = FirebaseAuth.getInstance()
-                    val data = FirebaseDatabase.getInstance()
-                    val myItem = item as ListItem
-                    val listId = myItem.list.id
-                    val refe = data.getReference(auth.currentUser!!.uid)
-                        .child("list/$listId/movies/$movieId")
-                    refe.setValue(
-                        Movie(
-                            intent.getStringExtra("MOVIE_POSTER"),
-                            intent.getStringExtra("MOVIE_BACKDROP"),
-                            movieId,
-                            intent.getStringExtra("MOVIE_TITLE"),
-                            intent.getStringExtra("MOVIE_DATE"),
-                            intent.getDoubleExtra("MOVIE_VOTE", -1.0),
-                            ""
-                        )
-                    ).addOnCompleteListener {
-                        dialog.dismiss()
-                        val movieName = intent.getStringExtra("MOVIE_TITLE")
-                        val listName = item.list.name
-                        Toast.makeText(
-                            this,
-                            "Đã thêm phim \"$movieName\" vào list \"$listName\"",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            } catch (e: Exception) {
-                Log.d("error", e.toString())
-            }
-        }
+//        dm_love.setOnClickListener {
+//            try {
+//                if (!exist) {
+//                    database = FirebaseDatabase.getInstance()
+//                    val myRef = database.getReference(currentUser!!.uid).child("love_movie")
+//                        .child(movieId.toString())
+//                    myRef.setValue(
+//                        Movie(
+//                            intent.getStringExtra("MOVIE_POSTER"),
+//                            intent.getStringExtra("MOVIE_BACKDROP"),
+//                            movieId,
+//                            intent.getStringExtra("MOVIE_TITLE"),
+//                            intent.getStringExtra("MOVIE_DATE"),
+//                            intent.getDoubleExtra("MOVIE_VOTE", -1.0),
+//                            ""
+//                        )
+//                    ).addOnSuccessListener {
+//                        Toast.makeText(
+//                            this,
+//                            "Đã thêm vào danh sách yêu thích",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                        dm_love.setImageResource(R.drawable.ic_favorite_yes)
+//                        exist = true
+//                    }.addOnFailureListener {
+//                        Toast.makeText(
+//                            this,
+//                            "Có lỗi xảy ra. Vui lòng thử lại",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                        dm_love.setImageResource(R.drawable.ic_favorite_no)
+//                        exist = false
+//                    }
+//                } else {
+//                    database = FirebaseDatabase.getInstance()
+//                    val myRef = database.getReference(currentUser!!.uid).child("love_movie")
+//                        .child(movieId.toString())
+//                    myRef.removeValue().addOnSuccessListener {
+//                        Toast.makeText(
+//                            this,
+//                            "Đã xoá khỏi danh sách yêu thích",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                        dm_love.setImageResource(R.drawable.ic_favorite_no)
+//                        exist = false
+//                    }.addOnFailureListener {
+//                        Toast.makeText(
+//                            this,
+//                            "Có lỗi xảy ra. Vui lòng thử lại",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                        dm_love.setImageResource(R.drawable.ic_favorite_yes)
+//                        exist = true
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                Log.d("error", e.toString())
+//            }
+//        }
+//
+//        dm_add.setOnClickListener {
+//            try {
+//                val list = ArrayList<UserList>()
+//                val adapter = GroupAdapter<ViewHolder>()
+//
+//                val myLayout = layoutInflater.inflate(R.layout.list_layout, null)
+//
+//                val dialog = AlertDialog.Builder(this)
+//                    .setView(myLayout)
+//                    .create()
+//                dialog.show()
+//
+//                myLayout.layoutlist_create.setOnClickListener {
+//                    createList()
+//                }
+//
+//                database = FirebaseDatabase.getInstance()
+//                val ref = database.getReference(currentUser!!.uid).child("list")
+//                val listener = object : ValueEventListener {
+//                    override fun onCancelled(p0: DatabaseError) {
+//                    }
+//
+//                    override fun onDataChange(p0: DataSnapshot) {
+//                        adapter.clear()
+//                        list.clear()
+//
+//                        if (p0.hasChildren()) {
+//                            myLayout.layoutlist_text.text = "Thêm vào list"
+//                            myLayout.layoutlist_create.text = "Tạo list khác"
+//                            myLayout.layoutlist_list.visibility = VISIBLE
+//                            for (p in p0.children) {
+//                                val name =
+//                                    p.value.toString()
+//                                        .substringAfterLast("name=")
+//                                        .substringBefore(", id=")
+//                                val id =
+//                                    p.value.toString()
+//                                        .substringAfterLast("id=")
+//                                        .substring(0, 13)
+//                                val userList = UserList(id, name)
+//                                list.add(userList)
+//                                adapter.add(ListItem(userList))
+//                            }
+//                        } else {
+//                            myLayout.layoutlist_text.text = "Chưa có list nào"
+//                            myLayout.layoutlist_create.text = "Tạo list mới"
+//                            myLayout.layoutlist_list.visibility = GONE
+//                        }
+//                    }
+//                }
+//                ref.addValueEventListener(listener)
+//
+//                val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+//                myLayout.layoutlist_list.layoutManager = layoutManager
+//
+//                myLayout.layoutlist_list.adapter = adapter
+//                adapter.notifyDataSetChanged()
+//
+//                adapter.setOnItemClickListener { item, _ ->
+//                    val auth = FirebaseAuth.getInstance()
+//                    val data = FirebaseDatabase.getInstance()
+//                    val myItem = item as ListItem
+//                    val listId = myItem.list.id
+//                    val refe = data.getReference(auth.currentUser!!.uid)
+//                        .child("list/$listId/movies/$movieId")
+//                    refe.setValue(
+//                        Movie(
+//                            intent.getStringExtra("MOVIE_POSTER"),
+//                            intent.getStringExtra("MOVIE_BACKDROP"),
+//                            movieId,
+//                            intent.getStringExtra("MOVIE_TITLE"),
+//                            intent.getStringExtra("MOVIE_DATE"),
+//                            intent.getDoubleExtra("MOVIE_VOTE", -1.0),
+//                            ""
+//                        )
+//                    ).addOnCompleteListener {
+//                        dialog.dismiss()
+//                        val movieName = intent.getStringExtra("MOVIE_TITLE")
+//                        val listName = item.list.name
+//                        Toast.makeText(
+//                            this,
+//                            "Đã thêm phim \"$movieName\" vào list \"$listName\"",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                Log.d("error", e.toString())
+//            }
+//        }
     }
 
     private fun createList() {
@@ -466,11 +449,9 @@ class DetailMovieActivity : AppCompatActivity(),
 
                 runOnUiThread {
                     if (detailMovie.runtime != null) {
-                        dm_info.append("  •  " + detailMovie.runtime + " phút")
-                    }
-
-                    for (g in detailMovie.genres) {
-                        dm_genre_info.append(g.name + "  ")
+                        dm_time.text = "${detailMovie.runtime} phút"
+                    } else {
+                        dm_time.text = "null"
                     }
                 }
             }

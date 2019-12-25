@@ -14,23 +14,11 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/dm_backdrop"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/logo_accent" />
-
-        <ImageView
-            android:id="@+id/dm_backdrop_bg"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/bg" />
-
-        <ImageView
             android:id="@+id/dm_poster"
-            android:layout_width="120dp"
-            android:layout_height="180dp"
+            android:layout_width="130dp"
+            android:layout_height="195dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="8dp"
             android:background="@color/colorAccent2"
             android:padding="1dp"
@@ -40,131 +28,61 @@
             android:id="@+id/dm_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/dm_backdrop"
+            android:layout_alignBottom="@id/dm_poster"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_toEndOf="@id/dm_poster"
+            android:gravity="bottom"
+            android:lineSpacingMultiplier="1.2"
             android:text="Movie tittle"
             android:textColor="@color/colorWhite"
-            android:textSize="18dp" />
+            android:textSize="22dp"
+            android:textStyle="bold" />
 
-        <RelativeLayout
-            android:id="@+id/layout_1"
+        <TextView
+            android:id="@+id/dm_star"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/dm_title"
+            android:layout_above="@id/dm_title"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
-            android:layout_toEndOf="@id/dm_poster">
+            android:layout_marginBottom="12dp"
+            android:layout_toEndOf="@id/dm_poster"
+            android:drawableStart="@drawable/ic_star"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
 
-            <RelativeLayout
-                android:id="@+id/lay1"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true">
-
-                <com.timqi.sectorprogressview.ColorfulRingProgressView
-                    android:id="@+id/dm_score"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:bgColor="@color/colorAccent3"
-                    app:fgColorEnd="@color/colorWhite"
-                    app:fgColorStart="@color/colorWhite"
-                    app:percent="0"
-                    app:startAngle="0"
-                    app:strokeWidth="3dp" />
-
-                <TextView
-                    android:id="@+id/dm_score_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignStart="@id/dm_score"
-                    android:layout_alignTop="@id/dm_score"
-                    android:layout_alignEnd="@id/dm_score"
-                    android:layout_alignBottom="@id/dm_score"
-                    android:gravity="center"
-                    android:text=""
-                    android:textColor="@color/colorWhite"
-                    android:textSize="12dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_toStartOf="@id/lay3"
-                android:layout_toEndOf="@id/lay1">
-
-                <TextView
-                    android:id="@+id/dm_genre_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text=""
-                    android:textColor="@color/colorAccent2"
-                    android:textSize="11dp" />
-
-                <TextView
-                    android:id="@+id/dm_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/dm_genre_info"
-                    android:layout_marginTop="3dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text=""
-                    android:textColor="@color/colorAccent2"
-                    android:textSize="11dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/lay3"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp">
-
-                <ImageView
-                    android:id="@+id/dm_trailer"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/youtube" />
-            </RelativeLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/layout_2"
+        <TextView
+            android:id="@+id/dm_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/layout_1"
+            android:layout_above="@id/dm_star"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="8dp"
-            android:layout_toEndOf="@id/dm_poster">
+            android:layout_toEndOf="@id/dm_poster"
+            android:drawableStart="@drawable/ic_time"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
 
-            <ImageView
-                android:id="@+id/dm_love"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_favorite_no" />
-
-            <ImageView
-                android:id="@+id/dm_add"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/dm_love"
-                android:src="@drawable/ic_add" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/dm_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/dm_time"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/dm_poster"
+            android:drawableStart="@drawable/ic_date2"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
     </RelativeLayout>
 
     <androidx.viewpager.widget.ViewPager
@@ -184,4 +102,13 @@
         app:itemIconTint="@color/colorAccent2"
         app:itemTextColor="@color/colorAccent2"
         app:menu="@menu/navigation_for_movie" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_trailer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/dm_navigation"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/youtube" />
 </RelativeLayout>

@@ -1,128 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@color/colorBlueDark">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/info_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="22dp"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/logo_blue" />
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        tools:ignore="HardcodedText,SpUsage">
 
         <TextView
-            android:id="@+id/info_app_name"
-            android:layout_width="wrap_content"
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/info_image"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="8dp"
-            android:text="@string/app_name"
-            android:textColor="@color/colorBlueDark"
-            android:textSize="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            android:text="Giới thiệu"
+            android:textColor="@color/colorWhite"
+            android:textSize="14dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/info_app_text1"
-            android:layout_width="wrap_content"
+            android:id="@+id/text2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/info_app_name"
+            android:layout_below="@id/text1"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="22dp"
             android:layout_marginEnd="12dp"
-            android:text="Movie Plus cung cấp thông tin..."
-            android:textSize="12dp" />
-
-        <TextView
-            android:id="@+id/info_app_text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/info_app_text1"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
-            android:text="Dữ liệu được cung cấp bởi TheMovieDB."
-            android:textSize="12dp" />
-
-        <TextView
-            android:id="@+id/info_app_text3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/info_app_text2"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="15dp"
             android:lineSpacingMultiplier="1.2"
-            android:text="Phiên bản 1.9:\n- Thêm thông tin các rạp chiếu phim.\n- Cập nhật giao diện tối.\n- Hỗ trợ nội dung tiếng Việt."
+            android:text="Đây là phần giới thiệu của ứng dụng\nNhưng tạm thời mình chưa nghĩ ra"
+            android:textColor="@color/colorWhite"
             android:textSize="12dp" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/info_card"
+        <TextView
+            android:id="@+id/text3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/info_app_text3"
+            android:layout_below="@id/text2"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:elevation="4dp">
+            android:layout_marginBottom="8dp"
+            android:text="Phiên bản 1.9"
+            android:textColor="@color/colorWhite"
+            android:textSize="14dp"
+            android:textStyle="bold" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dp">
-
-                <TextView
-                    android:id="@+id/info_app_text4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="Huỳnh Hữu Thiện"
-                    android:textColor="@color/colorBlueDark"
-                    android:textSize="12dp" />
-
-                <TextView
-                    android:id="@+id/info_app_text5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/info_app_text4"
-                    android:layout_margin="8dp"
-                    android:text="hhuuthien@gmail.com"
-                    android:textColor="@color/colorBlueDark"
-                    android:textSize="12dp" />
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-
-        <RelativeLayout
+        <TextView
+            android:id="@+id/text4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/info_card"
-            android:layout_marginTop="22dp"
-            android:layout_marginBottom="22dp"
-            android:gravity="center">
+            android:layout_below="@id/text3"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="15dp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="Thêm thông tin các rạp chiếu phim\nCập nhật giao diện tối\nHỗ trợ nội dung tiếng Việt"
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
 
-            <ImageView
-                android:id="@+id/info_image2"
-                android:layout_width="120dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/power_by_tmdb" />
+        <TextView
+            android:id="@+id/text5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text4"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            android:text="Tác giả"
+            android:textColor="@color/colorWhite"
+            android:textSize="14dp"
+            android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/info_image3"
-                android:layout_width="120dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/info_image2"
-                android:padding="2dp"
-                android:src="@drawable/power_by_firebase" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/text6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text5"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="15dp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="Huỳnh Hữu Thiện\nhhuuthien@gmail.com"
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:id="@+id/img1"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/text6"
+            android:layout_margin="12dp"
+            android:src="@drawable/power_by_tmdb" />
+
+        <ImageView
+            android:id="@+id/img2"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/img1"
+            android:layout_alignTop="@id/img1"
+            android:layout_toEndOf="@id/img1"
+            android:src="@drawable/power_by_firebase" />
     </RelativeLayout>
 </ScrollView>

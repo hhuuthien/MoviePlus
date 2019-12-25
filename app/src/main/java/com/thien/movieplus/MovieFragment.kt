@@ -9,7 +9,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +22,7 @@ import ir.apend.slider.model.Slide
 import ir.apend.slider.ui.Slider
 import kotlinx.android.synthetic.main.fragment_movie.*
 import kotlinx.android.synthetic.main.genre_item.view.*
+import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.android.synthetic.main.movie_item.view.*
 import kotlinx.android.synthetic.main.movie_item_row.view.*
 import okhttp3.*
@@ -34,11 +34,16 @@ class MovieFragment : Fragment() {
     private var listMovieNowShowing = ArrayList<Movie>()
     private var listMovieUpComing = ArrayList<Movie>()
     private var listMoviePopular = ArrayList<Movie>()
-    private var listMovieTopRated = ArrayList<Movie>()
+    private var listMovieList = ArrayList<ListMain>()
     private val adapterNowShowing = GroupAdapter<ViewHolder>()
     private val adapterUpComing = GroupAdapter<ViewHolder>()
     private val adapterPopular = GroupAdapter<ViewHolder>()
-    private val adapterTopRated = GroupAdapter<ViewHolder>()
+    private val adapterList = GroupAdapter<ViewHolder>()
+
+    private var listShowAiring = ArrayList<Show>()
+    private val adapterShowAiring = GroupAdapter<ViewHolder>()
+    private var listShowNowShowing = ArrayList<Show>()
+    private val adapterShowNowShowing = GroupAdapter<ViewHolder>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,10 +66,54 @@ class MovieFragment : Fragment() {
         view.findViewById<RecyclerView>(R.id.fm_list_popular).layoutManager = layoutManager3
 
         val layoutManager4 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        view.findViewById<RecyclerView>(R.id.fm_list_toprated).layoutManager = layoutManager4
+        view.findViewById<RecyclerView>(R.id.fm_list_list).layoutManager = layoutManager4
 
-        val layoutManager5 = StaggeredGridLayoutManager(2, LinearLayoutManager.HORIZONTAL)
-        view.findViewById<RecyclerView>(R.id.fm_list_genre).layoutManager = layoutManager5
+        val layoutManager5 = StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL)
+        view.findViewById<RecyclerView>(R.id.fm_list_category).layoutManager = layoutManager5
+
+        val layoutManager6 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fs_list_airing).layoutManager = layoutManager6
+
+        val layoutManager7 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).layoutManager = layoutManager7
+
+        listMovieList.add(ListMain(1, "Vũ trụ điện ảnh Marvel", R.drawable.marvel))
+        listMovieList.add(ListMain(2, "Phim Việt Nam nổi bật", R.drawable.vietnam))
+        listMovieList.add(ListMain(3, "Phim hoạt hình Pixar", R.drawable.pixar))
+        listMovieList.add(ListMain(4, "Giải Oscars phim hoạt hình", R.drawable.oscar))
+
+        listMovieList.shuffle()
+
+        for (m in listMovieList) {
+            adapterList.add(ListItemMain(m))
+        }
+        view.findViewById<RecyclerView>(R.id.fm_list_list).adapter = adapterList
+
+        adapterList.setOnItemClickListener { item, _ ->
+            val myItem = item as ListItemMain
+            when (myItem.list.id) {
+                1 -> {
+                    val intent = Intent(context, ListActivity::class.java)
+                    intent.putExtra("type", 1)//marvel
+                    startActivity(intent)
+                }
+                2 -> {
+                    val intent = Intent(context, ListActivity::class.java)
+                    intent.putExtra("type", 2)//vietnam
+                    startActivity(intent)
+                }
+                3 -> {
+                    val intent = Intent(context, ListActivity::class.java)
+                    intent.putExtra("type", 3)//pixar
+                    startActivity(intent)
+                }
+                4 -> {
+                    val intent = Intent(context, ListActivity::class.java)
+                    intent.putExtra("type", 4)//oscar
+                    startActivity(intent)
+                }
+            }
+        }
 
         val listGenre = ArrayList<Genre>()
         listGenre.add(Genre(28, "Hành động"))
@@ -73,11 +122,9 @@ class MovieFragment : Fragment() {
         listGenre.add(Genre(35, "Hài kịch"))
         listGenre.add(Genre(10749, "Lãng mạn"))
         listGenre.add(Genre(27, "Kinh dị"))
-        listGenre.add(Genre(80, "Tội phạm"))
         listGenre.add(Genre(18, "Chính kịch"))
         listGenre.add(Genre(10751, "Gia đình"))
         listGenre.add(Genre(10402, "Âm nhạc"))
-        listGenre.add(Genre(10752, "Chiến tranh"))
 
         listGenre.shuffle()
 
@@ -85,34 +132,13 @@ class MovieFragment : Fragment() {
         for (m in listGenre) {
             adapterGenre.add(GenreItem(m))
         }
-        view.findViewById<RecyclerView>(R.id.fm_list_genre).adapter = adapterGenre
+        view.findViewById<RecyclerView>(R.id.fm_list_category).adapter = adapterGenre
 
         adapterGenre.setOnItemClickListener { item, _ ->
             val myItem = item as GenreItem
             val intent = Intent(context, ListByGenreActivity::class.java)
             intent.putExtra("genre_id", myItem.genre.id)
             intent.putExtra("genre_name", myItem.genre.name)
-            startActivity(intent)
-        }
-
-        view.findViewById<RelativeLayout>(R.id.flm_1).setOnClickListener {
-            val intent = Intent(context, ListActivity::class.java)
-            intent.putExtra("type", 1)//marvel
-            startActivity(intent)
-        }
-        view.findViewById<RelativeLayout>(R.id.flm_2).setOnClickListener {
-            val intent = Intent(context, ListActivity::class.java)
-            intent.putExtra("type", 2)//vietnam
-            startActivity(intent)
-        }
-        view.findViewById<RelativeLayout>(R.id.flm_3).setOnClickListener {
-            val intent = Intent(context, ListActivity::class.java)
-            intent.putExtra("type", 3)//pixar
-            startActivity(intent)
-        }
-        view.findViewById<RelativeLayout>(R.id.flm_4).setOnClickListener {
-            val intent = Intent(context, ListActivity::class.java)
-            intent.putExtra("type", 4)//oscar
             startActivity(intent)
         }
 
@@ -143,7 +169,7 @@ class MovieFragment : Fragment() {
         }
 
         adapterPopular.setOnItemClickListener { item, _ ->
-            val myItem = item as MovieItemSmall
+            val myItem = item as MovieItem
             startActivity(
                 Intent(context, DetailMovieActivity::class.java)
                     .putExtra("MOVIE_ID", myItem.movie.id)
@@ -155,17 +181,26 @@ class MovieFragment : Fragment() {
             )
         }
 
-        adapterTopRated.setOnItemClickListener { item, _ ->
-            val myItem = item as MovieItemSmall
-            startActivity(
-                Intent(context, DetailMovieActivity::class.java)
-                    .putExtra("MOVIE_ID", myItem.movie.id)
-                    .putExtra("MOVIE_POSTER", myItem.movie.poster_path)
-                    .putExtra("MOVIE_BACKDROP", myItem.movie.backdrop_path)
-                    .putExtra("MOVIE_TITLE", myItem.movie.title)
-                    .putExtra("MOVIE_VOTE", myItem.movie.vote_average)
-                    .putExtra("MOVIE_DATE", myItem.movie.release_date)
-            )
+        adapterShowAiring.setOnItemClickListener { item, _ ->
+            val intent = Intent(context, DetailShowActivity::class.java)
+            val showItem = item as ShowItem
+            intent.putExtra("SHOW_ID", showItem.show.id)
+            intent.putExtra("SHOW_POSTER", showItem.show.poster_path)
+            intent.putExtra("SHOW_TITLE", showItem.show.name)
+            intent.putExtra("SHOW_BACKDROP", showItem.show.backdrop_path)
+            intent.putExtra("SHOW_VOTE", showItem.show.vote_average)
+            startActivity(intent)
+        }
+
+        adapterShowNowShowing.setOnItemClickListener { item, _ ->
+            val intent = Intent(context, DetailShowActivity::class.java)
+            val showItem = item as ShowItem
+            intent.putExtra("SHOW_ID", showItem.show.id)
+            intent.putExtra("SHOW_POSTER", showItem.show.poster_path)
+            intent.putExtra("SHOW_TITLE", showItem.show.name)
+            intent.putExtra("SHOW_BACKDROP", showItem.show.backdrop_path)
+            intent.putExtra("SHOW_VOTE", showItem.show.vote_average)
+            startActivity(intent)
         }
 
         listMovieNowShowing =
@@ -174,6 +209,10 @@ class MovieFragment : Fragment() {
             activity?.intent?.getSerializableExtra("listMovieUpComing") as ArrayList<Movie>
 
         listMovieUpComing.sortWith(compareBy { it.release_date })
+
+        listShowAiring = activity?.intent?.getSerializableExtra("listShowAiring") as ArrayList<Show>
+        listShowNowShowing =
+            activity?.intent?.getSerializableExtra("listShowNowShowing") as ArrayList<Show>
 
         val slider = view.findViewById<Slider>(R.id.image_slider)
         val slideList = ArrayList<Slide>()
@@ -226,8 +265,19 @@ class MovieFragment : Fragment() {
         }
         view.findViewById<RecyclerView>(R.id.fm_list_upcoming).adapter = adapterUpComing
 
+        adapterShowAiring.clear()
+        for (m in listShowAiring) {
+            if (m.poster_path != null) adapterShowAiring.add(ShowItem(m))
+        }
+        view.findViewById<RecyclerView>(R.id.fs_list_airing).adapter = adapterShowAiring
+
+        adapterShowNowShowing.clear()
+        for (m in listShowNowShowing) {
+            if (m.poster_path != null) adapterShowNowShowing.add(ShowItem(m))
+        }
+        view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).adapter = adapterShowNowShowing
+
         fetchPopular(view)
-        fetchTopRated(view)
     }
 
     private fun fetchPopular(view: View) {
@@ -254,43 +304,10 @@ class MovieFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterPopular.clear()
                     for (m in listMoviePopular) {
-                        adapterPopular.add(MovieItemSmall(m))
+                        adapterPopular.add(MovieItem(m))
                     }
                     fm_list_popular.adapter = adapterPopular
                     view.findViewById<ProgressBar>(R.id.fm_loading_popular).visibility = GONE
-                }
-            }
-        })
-    }
-
-    private fun fetchTopRated(view: View) {
-        view.findViewById<ProgressBar>(R.id.fm_loading_toprated).visibility = VISIBLE
-        val request = Request.Builder()
-            .url("https://api.themoviedb.org/3/movie/top_rated?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
-            .build()
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                activity?.runOnUiThread {
-                    view.findViewById<ProgressBar>(R.id.fm_loading_toprated).visibility = GONE
-                }
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, Result::class.java)
-
-                listMovieTopRated.clear()
-                listMovieTopRated = result.results
-
-                activity?.runOnUiThread {
-                    adapterTopRated.clear()
-                    for (m in listMovieTopRated) {
-                        adapterTopRated.add(MovieItemSmall(m))
-                    }
-                    fm_list_toprated.adapter = adapterTopRated
-                    view.findViewById<ProgressBar>(R.id.fm_loading_toprated).visibility = GONE
                 }
             }
         })
@@ -343,22 +360,15 @@ class MovieItem(val movie: Movie) : Item<ViewHolder>() {
     }
 }
 
-class MovieItemSmall(val movie: Movie) : Item<ViewHolder>() {
+class ListItemMain(val list: ListMain) : Item<ViewHolder>() {
     override fun getLayout(): Int {
-        return R.layout.movie_item_small
+        return R.layout.list_item
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         try {
-            if (movie.poster_path == null) {
-                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_blue)
-            } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300" + movie.poster_path)
-                    .placeholder(R.drawable.logo_accent)
-                    .fit()
-                    .into(viewHolder.itemView.m_poster)
-            }
+            viewHolder.itemView.list_item_image.setImageResource(list.image)
+            viewHolder.itemView.list_item_name.text = list.name
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }
@@ -465,5 +475,80 @@ class GenreItem(val genre: Genre) : Item<ViewHolder>() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.itemView.genre_name.text = genre.name
+    }
+}
+
+class ListMain(
+    var id: Int,
+    var name: String,
+    var image: Int
+)
+
+class Show(
+    val poster_path: String?,
+    val id: Int,
+    val name: String,
+    val vote_average: Double?,
+    val backdrop_path: String?,
+    val overview: String?
+) : Serializable
+
+class Season(
+    val air_date: String?,
+    val episode_count: Int,
+    val id: Int,
+    val name: String,
+    val overview: String?,
+    val poster_path: String?,
+    val season_number: Int?
+) : Serializable
+
+class ResultShow(
+    val results: ArrayList<Show>
+)
+
+class ShowItem(val show: Show) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.movie_item
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        try {
+            if (show.poster_path == null) {
+                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_blue)
+            } else {
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/w300" + show.poster_path)
+                    .placeholder(R.drawable.logo_accent)
+                    .fit()
+                    .into(viewHolder.itemView.m_poster)
+            }
+
+            viewHolder.itemView.m_title.text = show.name
+        } catch (e: Exception) {
+            Log.d("error_here", e.toString())
+        }
+    }
+}
+
+class ShowItemSmall(val show: Show) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.movie_item_small
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        try {
+            if (show.poster_path == null) {
+                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_blue)
+            } else {
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/w300" + show.poster_path)
+                    .placeholder(R.drawable.logo_accent)
+                    .fit()
+                    .into(viewHolder.itemView.m_poster)
+            }
+        } catch (e: Exception) {
+            Log.d("error_here", e.toString())
+        }
     }
 }

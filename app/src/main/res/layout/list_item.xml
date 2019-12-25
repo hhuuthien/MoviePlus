@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="130dp"
+    android:layout_width="200dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="4dp"
     android:layout_marginTop="8dp"
@@ -11,23 +11,21 @@
     tools:ignore="SpUsage, contentDescription">
 
     <ImageView
-        android:id="@+id/m_poster"
-        android:layout_width="130dp"
-        android:layout_height="195dp" />
+        android:id="@+id/list_item_image"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop" />
 
     <TextView
-        android:id="@+id/m_title"
+        android:id="@+id/list_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/m_poster"
+        android:layout_alignBottom="@id/list_item_image"
         android:background="@drawable/bg_title"
         android:ellipsize="end"
-        android:gravity="bottom"
-        android:lineSpacingMultiplier="1.2"
         android:lines="1"
         android:maxLines="1"
         android:padding="6dp"
-        android:text=""
         android:textColor="@color/colorWhite"
         android:textSize="11dp" />
 </RelativeLayout>

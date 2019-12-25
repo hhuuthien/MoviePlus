@@ -1,6 +1,7 @@
 package com.thien.movieplus
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
@@ -34,25 +35,32 @@ class DetailSeasonActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         dss_list_eps.layoutManager = layoutManager
 
+        val posterPath = intent.getStringExtra("seasonImage")
+        dss_poster.setOnClickListener {
+            if (posterPath != "") {
+                val intent = Intent(this, PictureActivity::class.java)
+                intent.putExtra("imageString", posterPath)
+                startActivity(intent)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            }
+        }
+
         showID = intent.getIntExtra("showID", -1)
         seasonNumber = intent.getIntExtra("seasonNumber", -1)
         if (showID == -1 || seasonNumber == -1) {
             Toast.makeText(applicationContext, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
             dss_title.text = intent.getStringExtra("showName")
-            dss_title_ss.text = "Mùa ${intent.getIntExtra(
-                "seasonNumber",
-                -1
-            )}: ${intent.getStringExtra("seasonName")}"
+            dss_title_ss.text = intent.getStringExtra("seasonName")
 
             val date = intent.getStringExtra("seasonDate")
             val day = date?.substring(8, 10)
             val month = date?.substring(5, 7)
             val year = date?.substring(0, 4)
-            dss_date.text = "Ngày bắt đầu: $day-$month-$year"
+            dss_date.text = "$day-$month-$year"
 
             Picasso.get()
-                .load("https://image.tmdb.org/t/p/w300${intent.getStringExtra("seasonImage")}")
+                .load("https://image.tmdb.org/t/p/w300$posterPath")
                 .placeholder(R.drawable.logo_accent)
                 .fit()
                 .into(dss_poster)
@@ -119,13 +127,7 @@ class EpItem(private val ep: DeEp) : Item<ViewHolder>() {
 
     @SuppressLint("SetTextI18n")
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.ep_name.text = "${ep.episode_number}. ${ep.name}"
-
-        if (ep.overview != null && ep.overview != "") {
-            viewHolder.itemView.ep_overview.text = ep.overview
-        } else {
-            viewHolder.itemView.ep_overview.visibility = GONE
-        }
+        viewHolder.itemView.ep_name.text = ep.name
 
         val day = ep.air_date?.substring(8, 10)
         val month = ep.air_date?.substring(5, 7)

@@ -22,11 +22,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Giới thiệu"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dm_overview"
@@ -35,7 +35,7 @@
                 android:layout_below="@id/dm_overview_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:ellipsize="end"
                 android:maxLines="5"
                 android:text=""
@@ -50,11 +50,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Tagline"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dm_tag"
@@ -63,7 +63,7 @@
                 android:layout_below="@id/dm_tag_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
 
@@ -75,11 +75,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Website"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dm_website"
@@ -88,7 +88,7 @@
                 android:layout_below="@id/dm_website_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:text=""
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
@@ -101,11 +101,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Công ty sản xuất"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dm_company"
@@ -114,7 +114,7 @@
                 android:layout_below="@id/dm_company_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:text=""
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
@@ -127,11 +127,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Kinh phí sản xuất"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dm_budget"
@@ -140,7 +140,7 @@
                 android:layout_below="@id/dm_budget_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:text=""
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
@@ -153,11 +153,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Doanh thu"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/dm_revenue"
@@ -166,7 +166,7 @@
                 android:layout_below="@id/dm_revenue_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:text=""
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />

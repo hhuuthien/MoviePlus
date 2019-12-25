@@ -21,11 +21,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Giới thiệu"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ds_overview"
@@ -34,7 +34,7 @@
                 android:layout_below="@id/ds_overview_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:ellipsize="end"
                 android:maxLines="5"
                 android:text=""
@@ -49,11 +49,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Website"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ds_web"
@@ -62,7 +62,7 @@
                 android:layout_below="@id/ds_web_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
 
@@ -74,11 +74,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Số tập"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ds_numEp"
@@ -87,7 +87,7 @@
                 android:layout_below="@id/ds_numEp_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
 
@@ -99,11 +99,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Ngày bắt đầu"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ds_date"
@@ -112,7 +112,7 @@
                 android:layout_below="@id/ds_date_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
 
@@ -124,11 +124,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Tập gần đây nhất"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ds_last_1"
@@ -148,7 +148,7 @@
                 android:layout_below="@id/ds_last_1"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
 
@@ -160,11 +160,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Tập tiếp theo"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ds_next_1"
@@ -184,7 +184,7 @@
                 android:layout_below="@id/ds_next_1"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
 
@@ -196,11 +196,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 android:text="Công ty sản xuất"
-                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
-                android:textSize="10dp" />
+                android:textSize="14dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/ds_company"
@@ -209,7 +209,7 @@
                 android:layout_below="@id/ds_company_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="15dp"
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
         </RelativeLayout>

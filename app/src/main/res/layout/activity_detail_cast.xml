@@ -15,22 +15,23 @@
 
         <ImageView
             android:id="@+id/dc_poster"
-            android:layout_width="120dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="10dp"
+            android:layout_width="130dp"
+            android:layout_height="195dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"
             android:background="@color/colorAccent2"
             android:padding="1dp"
             android:src="@drawable/logo_accent" />
 
         <ImageView
             android:id="@+id/dc_poster_black"
-            android:layout_width="120dp"
-            android:layout_height="180dp"
-            android:layout_alignTop="@id/dc_poster"
-            android:layout_alignBottom="@id/dc_poster"
+            android:layout_width="130dp"
+            android:layout_height="195dp"
             android:layout_alignStart="@id/dc_poster"
+            android:layout_alignTop="@id/dc_poster"
             android:layout_alignEnd="@id/dc_poster"
+            android:layout_alignBottom="@id/dc_poster"
             android:src="@drawable/bg_black" />
 
         <TextView
@@ -38,12 +39,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/dc_poster"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_toEndOf="@id/dc_poster"
+            android:gravity="bottom"
+            android:lineSpacingMultiplier="1.2"
             android:text="Name"
             android:textColor="@color/colorWhite"
-            android:textSize="20dp" />
+            android:textSize="22dp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <androidx.viewpager.widget.ViewPager
@@ -51,8 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/dc_navigation"
-        android:layout_below="@id/dc_layout_poster"
-        android:layout_marginTop="20dp" />
+        android:layout_below="@id/dc_layout_poster" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/dc_navigation"

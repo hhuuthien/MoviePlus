@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -29,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val movieFragment = MovieFragment()
-    private val showFragment = ShowFragment()
 
     private lateinit var auth: FirebaseAuth
 
@@ -38,12 +36,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_movie -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.m_fragment_container, movieFragment).commit()
-                m_toolbar.title = "Phim"
-            }
-            R.id.nav_show -> {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.m_fragment_container, showFragment).commit()
-                m_toolbar.title = "TV show"
             }
             R.id.nav_login -> {
                 startActivity(Intent(this, AccountActivity::class.java))
@@ -107,19 +99,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun isNetworkConnected(): Boolean {
         val cm =
             applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT < 23) {
-            val ni = cm.activeNetworkInfo
-            if (ni != null) {
-                return ni.isConnected && (ni.type == ConnectivityManager.TYPE_WIFI || ni.type == ConnectivityManager.TYPE_MOBILE)
-            }
-        } else {
-            val n = cm.activeNetwork
-            if (n != null) {
-                val nc = cm.getNetworkCapabilities(n)
-                return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
-                    NetworkCapabilities.TRANSPORT_WIFI
-                )
-            }
+        val n = cm.activeNetwork
+        if (n != null) {
+            val nc = cm.getNetworkCapabilities(n)
+            return nc!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(
+                NetworkCapabilities.TRANSPORT_WIFI
+            )
         }
         return false
     }
