@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val movieFragment = MovieFragment()
+    private val mainFragment = MainFragment()
 
     private lateinit var auth: FirebaseAuth
 
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_movie -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.m_fragment_container, movieFragment).commit()
+                    .replace(R.id.m_fragment_container, mainFragment).commit()
             }
             R.id.nav_login -> {
                 startActivity(Intent(this, AccountActivity::class.java))
@@ -68,9 +68,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.m_fragment_container, movieFragment).commit()
+                .replace(R.id.m_fragment_container, mainFragment).commit()
             m_nav_view.setCheckedItem(R.id.nav_movie)
-            m_toolbar.title = "Phim"
         }
     }
 

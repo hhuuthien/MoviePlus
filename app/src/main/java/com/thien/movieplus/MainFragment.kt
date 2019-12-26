@@ -20,7 +20,7 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import ir.apend.slider.model.Slide
 import ir.apend.slider.ui.Slider
-import kotlinx.android.synthetic.main.fragment_movie.*
+import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.genre_item.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.android.synthetic.main.movie_item.view.*
@@ -29,53 +29,49 @@ import okhttp3.*
 import java.io.IOException
 import java.io.Serializable
 
-class MovieFragment : Fragment() {
+class MainFragment : Fragment() {
 
     private var listMovieNowShowing = ArrayList<Movie>()
     private var listMovieUpComing = ArrayList<Movie>()
     private var listMoviePopular = ArrayList<Movie>()
     private var listMovieList = ArrayList<ListMain>()
+    private var listShowAiring = ArrayList<Show>()
+    private var listShowNowShowing = ArrayList<Show>()
+
     private val adapterNowShowing = GroupAdapter<ViewHolder>()
     private val adapterUpComing = GroupAdapter<ViewHolder>()
     private val adapterPopular = GroupAdapter<ViewHolder>()
     private val adapterList = GroupAdapter<ViewHolder>()
-
-    private var listShowAiring = ArrayList<Show>()
     private val adapterShowAiring = GroupAdapter<ViewHolder>()
-    private var listShowNowShowing = ArrayList<Show>()
     private val adapterShowNowShowing = GroupAdapter<ViewHolder>()
+
+    private val slideList = ArrayList<Slide>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_movie, container, false)
+        val view = inflater.inflate(R.layout.fragment_main, container, false)
         init(view)
         return view
     }
 
     private fun init(view: View) {
-        val layoutManager1 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        view.findViewById<RecyclerView>(R.id.fm_list_nowshowing).layoutManager = layoutManager1
-
-        val layoutManager2 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        view.findViewById<RecyclerView>(R.id.fm_list_upcoming).layoutManager = layoutManager2
-
-        val layoutManager3 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        view.findViewById<RecyclerView>(R.id.fm_list_popular).layoutManager = layoutManager3
-
-        val layoutManager4 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        view.findViewById<RecyclerView>(R.id.fm_list_list).layoutManager = layoutManager4
-
-        val layoutManager5 = StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL)
-        view.findViewById<RecyclerView>(R.id.fm_list_category).layoutManager = layoutManager5
-
-        val layoutManager6 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        view.findViewById<RecyclerView>(R.id.fs_list_airing).layoutManager = layoutManager6
-
-        val layoutManager7 = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).layoutManager = layoutManager7
+        view.findViewById<RecyclerView>(R.id.fm_list_nowshowing).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fm_list_upcoming).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fm_list_popular).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fm_list_list).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fm_list_category).layoutManager =
+            StaggeredGridLayoutManager(2, LinearLayoutManager.HORIZONTAL)
+        view.findViewById<RecyclerView>(R.id.fs_list_airing).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         listMovieList.add(ListMain(1, "Vũ trụ điện ảnh Marvel", R.drawable.marvel))
         listMovieList.add(ListMain(2, "Phim Việt Nam nổi bật", R.drawable.vietnam))
@@ -203,31 +199,7 @@ class MovieFragment : Fragment() {
             startActivity(intent)
         }
 
-        listMovieNowShowing =
-            activity?.intent?.getSerializableExtra("listMovieNowShowing") as ArrayList<Movie>
-        listMovieUpComing =
-            activity?.intent?.getSerializableExtra("listMovieUpComing") as ArrayList<Movie>
-
-        listMovieUpComing.sortWith(compareBy { it.release_date })
-
-        listShowAiring = activity?.intent?.getSerializableExtra("listShowAiring") as ArrayList<Show>
-        listShowNowShowing =
-            activity?.intent?.getSerializableExtra("listShowNowShowing") as ArrayList<Show>
-
-        val slider = view.findViewById<Slider>(R.id.image_slider)
-        val slideList = ArrayList<Slide>()
-        for (m in listMovieNowShowing) {
-            slideList.add(
-                Slide(
-                    m.id,
-                    "https://image.tmdb.org/t/p/original/${m.backdrop_path.toString()}",
-                    0
-                )
-            )
-        }
-        slider.addSlides(slideList)
-
-        slider.setItemClickListener { _, _, i, _ ->
+        view.findViewById<Slider>(R.id.image_slider).setItemClickListener { _, _, i, _ ->
             try {
                 var movie = Movie("", "", 0, "", "", 0.0, "")
                 val mID = slideList[i].id
@@ -253,31 +225,82 @@ class MovieFragment : Fragment() {
             }
         }
 
-        adapterNowShowing.clear()
-        for (m in listMovieNowShowing) {
-            if (m.poster_path != null) adapterNowShowing.add(MovieItem(m))
-        }
-        view.findViewById<RecyclerView>(R.id.fm_list_nowshowing).adapter = adapterNowShowing
-
-        adapterUpComing.clear()
-        for (m in listMovieUpComing) {
-            if (m.poster_path != null) adapterUpComing.add(MovieItem(m))
-        }
-        view.findViewById<RecyclerView>(R.id.fm_list_upcoming).adapter = adapterUpComing
-
-        adapterShowAiring.clear()
-        for (m in listShowAiring) {
-            if (m.poster_path != null) adapterShowAiring.add(ShowItem(m))
-        }
-        view.findViewById<RecyclerView>(R.id.fs_list_airing).adapter = adapterShowAiring
-
-        adapterShowNowShowing.clear()
-        for (m in listShowNowShowing) {
-            if (m.poster_path != null) adapterShowNowShowing.add(ShowItem(m))
-        }
-        view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).adapter = adapterShowNowShowing
-
+        fetchNowShowing(view)
+        fetchUpComing(view)
         fetchPopular(view)
+        fetchShowAiring(view)
+        fetchShowNowShowing(view)
+    }
+
+    private fun fetchNowShowing(view: View) {
+        val requestNowShowing = Request.Builder()
+            .url("https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi")
+            .build()
+        val client = OkHttpClient()
+        client.newCall(requestNowShowing).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, Result::class.java)
+
+                listMovieNowShowing.clear()
+                listMovieNowShowing = result.results
+
+                activity?.runOnUiThread {
+                    adapterNowShowing.clear()
+                    for (m in listMovieNowShowing) {
+                        if (m.poster_path != null) adapterNowShowing.add(MovieItem(m))
+                    }
+                    view.findViewById<RecyclerView>(R.id.fm_list_nowshowing).adapter =
+                        adapterNowShowing
+
+                    slideList.clear()
+                    for (m in listMovieNowShowing) {
+                        slideList.add(
+                            Slide(
+                                m.id,
+                                "https://image.tmdb.org/t/p/original/${m.backdrop_path.toString()}",
+                                0
+                            )
+                        )
+                    }
+                    view.findViewById<Slider>(R.id.image_slider).addSlides(slideList)
+                }
+            }
+        })
+    }
+
+    private fun fetchUpComing(view: View) {
+        val requestUpComing = Request.Builder()
+            .url("https://api.themoviedb.org/3/movie/upcoming?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi")
+            .build()
+        val client = OkHttpClient()
+        client.newCall(requestUpComing).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, Result::class.java)
+
+                listMovieUpComing.clear()
+                listMovieUpComing = result.results
+                listMovieUpComing.sortWith(compareBy { it.release_date })
+
+                activity?.runOnUiThread {
+                    adapterUpComing.clear()
+                    for (m in listMovieUpComing) {
+                        if (m.poster_path != null) adapterUpComing.add(MovieItem(m))
+                    }
+                    view.findViewById<RecyclerView>(R.id.fm_list_upcoming).adapter = adapterUpComing
+                }
+
+            }
+        })
     }
 
     private fun fetchPopular(view: View) {
@@ -308,6 +331,63 @@ class MovieFragment : Fragment() {
                     }
                     fm_list_popular.adapter = adapterPopular
                     view.findViewById<ProgressBar>(R.id.fm_loading_popular).visibility = GONE
+                }
+            }
+        })
+    }
+
+    private fun fetchShowAiring(view: View) {
+        val request1 = Request.Builder()
+            .url("https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
+            .build()
+        val client = OkHttpClient()
+        client.newCall(request1).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, ResultShow::class.java)
+
+                listShowAiring.clear()
+                listShowAiring = result.results
+
+                activity?.runOnUiThread {
+                    adapterShowAiring.clear()
+                    for (m in listShowAiring) {
+                        if (m.poster_path != null) adapterShowAiring.add(ShowItem(m))
+                    }
+                    view.findViewById<RecyclerView>(R.id.fs_list_airing).adapter = adapterShowAiring
+                }
+            }
+        })
+    }
+
+    private fun fetchShowNowShowing(view: View) {
+        val request2 = Request.Builder()
+            .url("https://api.themoviedb.org/3/tv/on_the_air?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
+            .build()
+        val client = OkHttpClient()
+        client.newCall(request2).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, ResultShow::class.java)
+
+                listShowNowShowing.clear()
+                listShowNowShowing = result.results
+
+                activity?.runOnUiThread {
+                    adapterShowNowShowing.clear()
+                    for (m in listShowNowShowing) {
+                        if (m.poster_path != null) adapterShowNowShowing.add(ShowItem(m))
+                    }
+                    view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).adapter =
+                        adapterShowNowShowing
                 }
             }
         })

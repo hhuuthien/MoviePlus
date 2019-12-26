@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".CinemaActivity"></activity>
+        <activity android:name=".CinemaActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".InfoActivity" />
         <activity
@@ -45,17 +45,14 @@
             android:name=".DetailCastActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".StartActivity"
-            android:theme="@style/AppTheme.NoActionBar.Primary">
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
