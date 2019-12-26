@@ -64,9 +64,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return list
     }
 
-    fun getCinemaALLbyCum(cumrap: String): ArrayList<Cinema> {
+    fun getCinemabyName(name: String): Cinema {
         val list = ArrayList<Cinema>()
-        val selectQuery = "SELECT * FROM $TABLE_NAME WHERE cumrap=\"$cumrap\""
+        val selectQuery = "SELECT * FROM $TABLE_NAME WHERE tenrap=\"$name\""
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQuery, null)
         if (cursor.moveToFirst()) {
@@ -86,7 +86,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         }
         db.close()
         cursor.close()
-        return list
+
+        return list[0]
     }
 
     fun getCinemaALLbyCity(thanhpho: String): ArrayList<Cinema> {

@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBlueDark">
 
     <LinearLayout
         android:id="@+id/spinner_layout"
@@ -26,25 +27,26 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/texttext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/spinner_layout"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
-        android:textColor="@color/colorBlueDark"
-        android:textSize="12dp"
-        tools:ignore="SpUsage" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_cinema"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/texttext"
+        android:layout_below="@id/spinner_layout"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
         android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/text_noti"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinner_layout"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="12dp"
+        tools:ignore="SpUsage" />
 </RelativeLayout>

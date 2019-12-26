@@ -32,7 +32,7 @@ class ListByGenreActivity : AppCompatActivity() {
             listYear.add(y)
         }
         val adapterSpinner = ArrayAdapter(this, R.layout.spinner_item, listYear)
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_list_item_single_choice)
+        adapterSpinner.setDropDownViewResource(R.layout.spinner_item_choice)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
                 fetchMovieByGenre(spinner.selectedItem.toString())
