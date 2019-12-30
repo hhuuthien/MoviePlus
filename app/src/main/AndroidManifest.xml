@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".FindCinemaActivity" />
         <activity
             android:name=".DetailCinemaActivity"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -10,9 +10,9 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/deci_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_centerHorizontal="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/logo_blue"
         app:civ_border_color="@color/colorAccent2"
@@ -23,24 +23,109 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/deci_image"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="8dp"
-        android:textAlignment="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="bottom"
+        android:lineSpacingMultiplier="1.2"
         android:textColor="@color/colorWhite"
-        android:textSize="16dp"
+        android:textSize="18dp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/deci_address"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/deci_name"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:lineSpacingMultiplier="1.2"
-        android:textAlignment="center"
-        android:textColor="@color/colorAccent2"
-        android:textSize="12dp" />
+        android:layout_marginTop="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/deci_address_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="Địa chỉ"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/deci_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/deci_address_text"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:lineSpacingMultiplier="1.2"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/deci_info_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/deci_address"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="Giới thiệu"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/deci_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/deci_info_text"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:lineSpacingMultiplier="1.2"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/deci_showtime_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/deci_info"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="Lịch chiếu"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/deci_showtime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/deci_showtime_text"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="8dp"
+                android:lineSpacingMultiplier="1.2"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/deci_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/deci_showtime"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:lineSpacingMultiplier="1.2"
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

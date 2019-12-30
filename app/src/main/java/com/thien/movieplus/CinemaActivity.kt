@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -86,7 +88,6 @@ class CinemaActivity : AppCompatActivity() {
                     recyclerView_cinema.visibility = VISIBLE
                     text_noti.visibility = GONE
 
-                    list.sortedWith(compareBy { it.tenrap })
                     adapterCinema.clear()
                     for (m in list) {
                         adapterCinema.add(CinemaItem(m))
@@ -99,7 +100,7 @@ class CinemaActivity : AppCompatActivity() {
             }
         }
         spinner.adapter = adapter
-        spinner.setSelection(3)
+        spinner.setSelection(2)
 
 
         spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -132,7 +133,6 @@ class CinemaActivity : AppCompatActivity() {
                     recyclerView_cinema.visibility = VISIBLE
                     text_noti.visibility = GONE
 
-                    list.sortedWith(compareBy { it.tenrap })
                     adapterCinema.clear()
                     for (m in list) {
                         adapterCinema.add(CinemaItem(m))
@@ -181,6 +181,20 @@ class CinemaActivity : AppCompatActivity() {
         } catch (e: Exception) {
             Log.d("error_copying_db", e.toString())
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.option_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_search -> {
+                startActivity(Intent(this, FindCinemaActivity::class.java))
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
 

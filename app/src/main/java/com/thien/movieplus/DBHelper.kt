@@ -15,20 +15,19 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     val allCinema: List<Cinema>
         get() {
             val listCinema = ArrayList<Cinema>()
-            val selectQuery = "SELECT * FROM $TABLE_NAME"
+            val selectQuery = "SELECT * FROM $TABLE_NAME ORDER BY tenrap ASC"
             val db = this.writableDatabase
             val cursor = db.rawQuery(selectQuery, null)
             if (cursor.moveToFirst()) {
                 do {
                     val cinema =
-                        Cinema("", "", "", "", "", "", "")
+                        Cinema("", "", "", "", "", "")
                     cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
                     cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
                     cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))
                     cinema.thanhpho = cursor.getString(cursor.getColumnIndex("thanhpho"))
                     cinema.quan = cursor.getString(cursor.getColumnIndex("quan"))
                     cinema.gioithieu = cursor.getString(cursor.getColumnIndex("gioithieu"))
-                    cinema.hinh = cursor.getString(cursor.getColumnIndex("hinh"))
 
                     listCinema.add(cinema)
                 } while (cursor.moveToNext())
@@ -41,20 +40,19 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     fun getCinemaALL(cumrap: String, thanhpho: String): ArrayList<Cinema> {
         val list = ArrayList<Cinema>()
         val selectQuery =
-            "SELECT * FROM $TABLE_NAME WHERE cumrap=\"$cumrap\" AND thanhpho=\"$thanhpho\""
+            "SELECT * FROM $TABLE_NAME WHERE cumrap=\"$cumrap\" AND thanhpho=\"$thanhpho\" ORDER BY tenrap ASC"
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQuery, null)
         if (cursor.moveToFirst()) {
             do {
                 val cinema =
-                    Cinema("", "", "", "", "", "", "")
+                    Cinema("", "", "", "", "", "")
                 cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
                 cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
                 cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))
                 cinema.thanhpho = cursor.getString(cursor.getColumnIndex("thanhpho"))
                 cinema.quan = cursor.getString(cursor.getColumnIndex("quan"))
                 cinema.gioithieu = cursor.getString(cursor.getColumnIndex("gioithieu"))
-                cinema.hinh = cursor.getString(cursor.getColumnIndex("hinh"))
 
                 list.add(cinema)
             } while (cursor.moveToNext())
@@ -72,14 +70,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         if (cursor.moveToFirst()) {
             do {
                 val cinema =
-                    Cinema("", "", "", "", "", "", "")
+                    Cinema("", "", "", "", "", "")
                 cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
                 cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
                 cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))
                 cinema.thanhpho = cursor.getString(cursor.getColumnIndex("thanhpho"))
                 cinema.quan = cursor.getString(cursor.getColumnIndex("quan"))
                 cinema.gioithieu = cursor.getString(cursor.getColumnIndex("gioithieu"))
-                cinema.hinh = cursor.getString(cursor.getColumnIndex("hinh"))
 
                 list.add(cinema)
             } while (cursor.moveToNext())
@@ -93,20 +90,44 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     fun getCinemaALLbyCity(thanhpho: String): ArrayList<Cinema> {
         val list = ArrayList<Cinema>()
         val selectQuery =
-            "SELECT * FROM $TABLE_NAME WHERE thanhpho=\"$thanhpho\""
+            "SELECT * FROM $TABLE_NAME WHERE thanhpho=\"$thanhpho\" ORDER BY tenrap ASC"
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQuery, null)
         if (cursor.moveToFirst()) {
             do {
                 val cinema =
-                    Cinema("", "", "", "", "", "", "")
+                    Cinema("", "", "", "", "", "")
                 cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
                 cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
                 cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))
                 cinema.thanhpho = cursor.getString(cursor.getColumnIndex("thanhpho"))
                 cinema.quan = cursor.getString(cursor.getColumnIndex("quan"))
                 cinema.gioithieu = cursor.getString(cursor.getColumnIndex("gioithieu"))
-                cinema.hinh = cursor.getString(cursor.getColumnIndex("hinh"))
+
+                list.add(cinema)
+            } while (cursor.moveToNext())
+        }
+        db.close()
+        cursor.close()
+        return list
+    }
+
+    fun findCinema(key: String): ArrayList<Cinema> {
+        val list = ArrayList<Cinema>()
+        val selectQuery =
+            "SELECT * FROM $TABLE_NAME WHERE tenrap LIKE '%$key%'"
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(selectQuery, null)
+        if (cursor.moveToFirst()) {
+            do {
+                val cinema =
+                    Cinema("", "", "", "", "", "")
+                cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
+                cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
+                cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))
+                cinema.thanhpho = cursor.getString(cursor.getColumnIndex("thanhpho"))
+                cinema.quan = cursor.getString(cursor.getColumnIndex("quan"))
+                cinema.gioithieu = cursor.getString(cursor.getColumnIndex("gioithieu"))
 
                 list.add(cinema)
             } while (cursor.moveToNext())

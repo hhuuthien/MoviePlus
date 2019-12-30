@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlueDark"
+    tools:ignore="ContentDescription, HardcodedText, SpUsage, Autofill">
+
+    <EditText
+        android:id="@+id/find_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@android:color/transparent"
+        android:drawableStart="@drawable/ic_search_white_24"
+        android:drawablePadding="8dp"
+        android:hint="Bạn muốn tìm rạp nào?"
+        android:inputType="text"
+        android:padding="15dp"
+        android:singleLine="true"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorAccent2"
+        android:textCursorDrawable="@null"
+        android:textSize="14dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/find_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/find_key"
+        android:layout_margin="8dp"
+        android:background="@color/colorBlueDark"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <TextView
+        android:id="@+id/find_noti"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/find_key"
+        android:layout_margin="8dp"
+        android:text="Không tìm thấy kết quả"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="12dp" />
+</RelativeLayout>

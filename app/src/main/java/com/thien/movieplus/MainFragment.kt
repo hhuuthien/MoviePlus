@@ -410,8 +410,7 @@ class Cinema(
     var diachi: String,
     var thanhpho: String,
     var quan: String,
-    var gioithieu: String,
-    var hinh: String
+    var gioithieu: String
 ) : Serializable
 
 class Result(val results: ArrayList<Movie>)
