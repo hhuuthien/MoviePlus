@@ -19,6 +19,11 @@
         android:title="Rạp chiếu phim" />
 
     <item
+        android:id="@+id/nav_news"
+        android:icon="@drawable/ic_news"
+        android:title="Tin điện ảnh" />
+
+    <item
         android:id="@+id/nav_info"
         android:icon="@drawable/ic_info2"
         android:title="Thông tin ứng dụng" />
