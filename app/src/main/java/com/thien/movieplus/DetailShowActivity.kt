@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_detail_show.*
 import kotlinx.android.synthetic.main.list_create_layout.view.*
 import kotlinx.android.synthetic.main.progress.view.*
@@ -61,6 +62,10 @@ class DetailShowActivity : AppCompatActivity(),
                     .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(ds_poster)
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/w300$showPoster")
+                    .transform(BlurTransformation(this, 22, 1))
+                    .into(blurImageViewShow)
             }
 
             val showBackdrop = intent.getStringExtra("SHOW_BACKDROP")

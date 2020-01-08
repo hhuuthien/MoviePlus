@@ -2,11 +2,9 @@ package com.thien.movieplus
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_detail_cinema.*
 
 class DetailCinemaActivity : AppCompatActivity() {
@@ -15,6 +13,7 @@ class DetailCinemaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_cinema)
+        supportActionBar?.title = "Rạp chiếu phim"
 
         val dbHelper = DBHelper(this)
         val cinema = dbHelper.getCinemabyName(intent.getStringExtra("tenrap")!!)
@@ -33,12 +32,7 @@ class DetailCinemaActivity : AppCompatActivity() {
             "meg" -> deci_image.setImageResource(R.drawable.meg)
         }
 
-        val snackbar = Snackbar.make(
-            cinema_view,
-            "Ứng dụng chưa hỗ trợ xem lịch chiếu của rạp này.",
-            Snackbar.LENGTH_INDEFINITE
-        )
-        snackbar.setAction("Đi đến website") {
+        deci_access.setOnClickListener {
             var link = ""
             when (cinema.cumrap) {
                 "glx" -> link = "https://www.galaxycine.vn"
@@ -52,7 +46,5 @@ class DetailCinemaActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             startActivity(intent)
         }
-        snackbar.setActionTextColor(Color.WHITE)
-        snackbar.show()
     }
 }

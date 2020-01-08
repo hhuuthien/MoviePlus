@@ -17,6 +17,7 @@ import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 import kotlinx.android.synthetic.main.list_create_layout.view.*
 import kotlinx.android.synthetic.main.list_layout_item.view.*
@@ -67,9 +68,13 @@ class DetailMovieActivity : AppCompatActivity(),
                     .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(dm_poster)
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/w500$moviePoster")
+                    .transform(BlurTransformation(this, 22, 1))
+                    .into(blurImageView)
             }
 
-            val movieBackdrop = intent.getStringExtra("MOVIE_BACKDROP")
+//            val movieBackdrop = intent.getStringExtra("MOVIE_BACKDROP")
 //            if (movieBackdrop == null || movieBackdrop.isEmpty()) {
 //                dm_backdrop.setImageResource(R.drawable.logo_blue)
 //            }

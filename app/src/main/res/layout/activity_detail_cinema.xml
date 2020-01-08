@@ -67,6 +67,30 @@
                 android:lineSpacingMultiplier="1.2"
                 android:textColor="@color/colorWhite"
                 android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/deci_suat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/deci_info"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="Ứng dụng chưa hỗ trợ xem lịch chiếu của rạp này."
+                android:textColor="@color/colorWhite"
+                android:textSize="12dp" />
+
+            <Button
+                android:id="@+id/deci_access"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/deci_suat"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                android:text="Truy cập website"
+                android:textAllCaps="false" />
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

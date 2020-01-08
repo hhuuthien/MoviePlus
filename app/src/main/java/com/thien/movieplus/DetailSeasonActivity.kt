@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_detail_season.*
 import kotlinx.android.synthetic.main.ep_item.view.*
 import okhttp3.*
@@ -64,6 +65,10 @@ class DetailSeasonActivity : AppCompatActivity() {
                 .placeholder(R.drawable.logo_accent)
                 .fit()
                 .into(dss_poster)
+            Picasso.get()
+                .load("https://image.tmdb.org/t/p/w300$posterPath")
+                .transform(BlurTransformation(this, 22, 1))
+                .into(blurImageViewSS)
 
             fetch(showID.toString(), seasonNumber.toString())
         }

@@ -8,6 +8,18 @@
     tools:context=".DetailShowActivity"
     tools:ignore="HardcodedText, SpUsage, ContentDescription">
 
+    <ImageView
+        android:id="@+id/blurImageViewShow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/blurImageViewShow2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_blur" />
+
     <RelativeLayout
         android:id="@+id/ds_layout_poster"
         android:layout_width="match_parent"

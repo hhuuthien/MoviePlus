@@ -23,9 +23,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".NewsActivity" />
         <activity android:name=".FindCinemaActivity" />
-        <activity
-            android:name=".DetailCinemaActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".DetailCinemaActivity" />
         <activity android:name=".CinemaActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".InfoActivity" />
