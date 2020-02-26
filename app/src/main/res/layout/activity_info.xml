@@ -33,7 +33,7 @@
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="15dp"
             android:lineSpacingMultiplier="1.2"
-            android:text="Đây là phần giới thiệu của ứng dụng\nNhưng tạm thời mình chưa nghĩ ra"
+            android:text="Đây là phần giới thiệu ứng dụng."
             android:textColor="@color/colorWhite"
             android:textSize="12dp" />
 
@@ -46,21 +46,34 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="8dp"
-            android:text="Phiên bản 1.9"
+            android:text="Phiên bản"
             android:textColor="@color/colorWhite"
             android:textSize="14dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/text4"
+            android:id="@+id/text3_5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/text3"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="Số phiên bản: 2.1"
+            android:textColor="@color/colorWhite"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text3_5"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
             android:layout_marginBottom="15dp"
             android:lineSpacingMultiplier="1.2"
-            android:text="Thêm thông tin các rạp chiếu phim\nCập nhật giao diện tối\nHỗ trợ nội dung tiếng Việt"
+            android:text="Thêm thông tin các rạp chiếu phim và tin tức điện ảnh.\nCải thiện giao diện tối.\nHỗ trợ nội dung tiếng Việt.\nSửa một số lỗi nhỏ."
             android:textColor="@color/colorWhite"
             android:textSize="12dp" />
 
@@ -103,9 +116,17 @@
             android:id="@+id/img2"
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_below="@id/img1"
             android:layout_alignTop="@id/img1"
             android:layout_toEndOf="@id/img1"
             android:src="@drawable/power_by_firebase" />
+
+        <ImageView
+            android:id="@+id/img3"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignTop="@id/img2"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@id/img2"
+            android:src="@drawable/mapbox" />
     </RelativeLayout>
 </ScrollView>

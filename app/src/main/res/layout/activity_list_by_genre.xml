@@ -13,7 +13,7 @@
         android:layout_height="30dp"
         android:layout_margin="12dp"
         android:gravity="center_vertical"
-        android:text="Tìm theo năm: "
+        android:text="Phổ biến vào năm: "
         android:textColor="@color/colorWhite"
         android:textSize="14dp" />
 

@@ -11,22 +11,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ir.apend.slider.ui.Slider
-            android:id="@+id/image_slider"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/image_slider_parent"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginBottom="5dp"
-            app:animateIndicators="true"
-            app:defaultIndicators="circle"
-            app:indicatorSize="3dp"
-            app:intervalSecond="7"
-            app:loopSlides="true" />
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="8dp">
+
+            <ir.apend.slider.ui.Slider
+                android:id="@+id/image_slider"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:animateIndicators="true"
+                app:defaultIndicators="circle"
+                app:indicatorSize="3dp"
+                app:intervalSecond="7"
+                app:loopSlides="true" />
+        </androidx.cardview.widget.CardView>
 
         <RelativeLayout
             android:id="@+id/fm_layout_nowshowing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/image_slider"
+            android:layout_below="@id/image_slider_parent"
             android:layout_margin="5dp">
 
             <TextView
@@ -220,6 +228,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/fs_text_nowshowing"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:scrollbars="horizontal" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fs_layout_popular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fs_layout_nowshowing"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/fs_text_popular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="TV show phổ biến"
+                android:textColor="@color/colorWhite"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fs_list_popular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fs_text_popular"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"

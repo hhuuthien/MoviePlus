@@ -21,7 +21,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             if (cursor.moveToFirst()) {
                 do {
                     val cinema =
-                        Cinema("", "", "", "", "", "")
+                        Cinema("", "", "", "", "", "", null, null)
                     cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
                     cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
                     cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))
@@ -46,7 +46,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         if (cursor.moveToFirst()) {
             do {
                 val cinema =
-                    Cinema("", "", "", "", "", "")
+                    Cinema("", "", "", "", "", "", null, null)
                 cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
                 cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
                 cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))
@@ -70,13 +70,15 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         if (cursor.moveToFirst()) {
             do {
                 val cinema =
-                    Cinema("", "", "", "", "", "")
+                    Cinema("", "", "", "", "", "", null, null)
                 cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
                 cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
                 cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))
                 cinema.thanhpho = cursor.getString(cursor.getColumnIndex("thanhpho"))
                 cinema.quan = cursor.getString(cursor.getColumnIndex("quan"))
                 cinema.gioithieu = cursor.getString(cursor.getColumnIndex("gioithieu"))
+                cinema.lat = cursor.getDouble(cursor.getColumnIndex("lat"))
+                cinema.lng = cursor.getDouble(cursor.getColumnIndex("lng"))
 
                 list.add(cinema)
             } while (cursor.moveToNext())
@@ -96,7 +98,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         if (cursor.moveToFirst()) {
             do {
                 val cinema =
-                    Cinema("", "", "", "", "", "")
+                    Cinema("", "", "", "", "", "", null, null)
                 cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
                 cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
                 cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))
@@ -121,7 +123,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         if (cursor.moveToFirst()) {
             do {
                 val cinema =
-                    Cinema("", "", "", "", "", "")
+                    Cinema("", "", "", "", "", "", null, null)
                 cinema.cumrap = cursor.getString(cursor.getColumnIndex("cumrap"))
                 cinema.tenrap = cursor.getString(cursor.getColumnIndex("tenrap"))
                 cinema.diachi = cursor.getString(cursor.getColumnIndex("diachi"))

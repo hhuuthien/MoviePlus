@@ -11,8 +11,8 @@ android {
         applicationId "com.thien.movieplus"
         minSdkVersion 26
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.9"
+        versionCode 2
+        versionName "2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -50,6 +50,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.12.1'
     implementation 'org.sufficientlysecure:html-textview:3.9'
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

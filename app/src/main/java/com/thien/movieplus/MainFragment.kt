@@ -37,6 +37,7 @@ class MainFragment : Fragment() {
     private var listMovieList = ArrayList<ListMain>()
     private var listShowAiring = ArrayList<Show>()
     private var listShowNowShowing = ArrayList<Show>()
+    private var listShowPopular = ArrayList<Show>()
 
     private val adapterNowShowing = GroupAdapter<ViewHolder>()
     private val adapterUpComing = GroupAdapter<ViewHolder>()
@@ -44,6 +45,7 @@ class MainFragment : Fragment() {
     private val adapterList = GroupAdapter<ViewHolder>()
     private val adapterShowAiring = GroupAdapter<ViewHolder>()
     private val adapterShowNowShowing = GroupAdapter<ViewHolder>()
+    private val adapterShowPopular = GroupAdapter<ViewHolder>()
 
     private val slideList = ArrayList<Slide>()
 
@@ -71,6 +73,8 @@ class MainFragment : Fragment() {
         view.findViewById<RecyclerView>(R.id.fs_list_airing).layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fs_list_popular).layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         listMovieList.add(ListMain(1, "Vũ trụ điện ảnh Marvel", R.drawable.marvel))
@@ -199,6 +203,18 @@ class MainFragment : Fragment() {
             startActivity(intent)
         }
 
+        adapterShowPopular.setOnItemClickListener { item, _ ->
+            val intent = Intent(context, DetailShowActivity::class.java)
+            val showItem = item as ShowItem
+            intent.putExtra("SHOW_ID", showItem.show.id)
+            intent.putExtra("SHOW_POSTER", showItem.show.poster_path)
+            intent.putExtra("SHOW_TITLE", showItem.show.name)
+            intent.putExtra("SHOW_BACKDROP", showItem.show.backdrop_path)
+            intent.putExtra("SHOW_VOTE", showItem.show.vote_average)
+            startActivity(intent)
+        }
+
+
         view.findViewById<Slider>(R.id.image_slider).setItemClickListener { _, _, i, _ ->
             try {
                 var movie = Movie("", "", 0, "", "", 0.0, "")
@@ -230,6 +246,7 @@ class MainFragment : Fragment() {
         fetchPopular(view)
         fetchShowAiring(view)
         fetchShowNowShowing(view)
+        fetchShowPopular(view)
     }
 
     private fun fetchNowShowing(view: View) {
@@ -392,6 +409,35 @@ class MainFragment : Fragment() {
             }
         })
     }
+
+    private fun fetchShowPopular(view: View) {
+        val request2 = Request.Builder()
+            .url("https://api.themoviedb.org/3/tv/popular?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
+            .build()
+        val client = OkHttpClient()
+        client.newCall(request2).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, ResultShow::class.java)
+
+                listShowPopular.clear()
+                listShowPopular = result.results
+
+                activity?.runOnUiThread {
+                    adapterShowPopular.clear()
+                    for (m in listShowPopular) {
+                        if (m.poster_path != null) adapterShowPopular.add(ShowItem(m))
+                    }
+                    view.findViewById<RecyclerView>(R.id.fs_list_popular).adapter =
+                        adapterShowPopular
+                }
+            }
+        })
+    }
 }
 
 class Movie(
@@ -410,7 +456,9 @@ class Cinema(
     var diachi: String,
     var thanhpho: String,
     var quan: String,
-    var gioithieu: String
+    var gioithieu: String,
+    var lat: Double?,
+    var lng: Double?
 ) : Serializable
 
 class Result(val results: ArrayList<Movie>)
@@ -604,28 +652,6 @@ class ShowItem(val show: Show) : Item<ViewHolder>() {
             }
 
             viewHolder.itemView.m_title.text = show.name
-        } catch (e: Exception) {
-            Log.d("error_here", e.toString())
-        }
-    }
-}
-
-class ShowItemSmall(val show: Show) : Item<ViewHolder>() {
-    override fun getLayout(): Int {
-        return R.layout.movie_item_small
-    }
-
-    override fun bind(viewHolder: ViewHolder, position: Int) {
-        try {
-            if (show.poster_path == null) {
-                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_blue)
-            } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300" + show.poster_path)
-                    .placeholder(R.drawable.logo_accent)
-                    .fit()
-                    .into(viewHolder.itemView.m_poster)
-            }
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }

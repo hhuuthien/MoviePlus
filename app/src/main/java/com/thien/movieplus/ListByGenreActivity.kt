@@ -28,7 +28,7 @@ class ListByGenreActivity : AppCompatActivity() {
         lbg_list.layoutManager = layoutManager
 
         val listYear = ArrayList<Int>()
-        for (y in 2019 downTo 2010) {
+        for (y in 2020 downTo 2010) {
             listYear.add(y)
         }
         val adapterSpinner = ArrayAdapter(this, R.layout.spinner_item, listYear)

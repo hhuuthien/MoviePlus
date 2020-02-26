@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="130dp"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="4dp"
     android:layout_marginTop="8dp"
     android:layout_marginEnd="12dp"
     android:layout_marginBottom="4dp"
-    android:background="@color/colorBlueDark"
-    tools:ignore="SpUsage, contentDescription">
+    android:elevation="8dp"
+    app:cardCornerRadius="12dp">
 
-    <ImageView
-        android:id="@+id/m_poster"
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="130dp"
-        android:layout_height="195dp" />
-
-    <TextView
-        android:id="@+id/m_title"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/m_poster"
-        android:background="@drawable/bg_title"
-        android:ellipsize="end"
-        android:gravity="bottom"
-        android:lineSpacingMultiplier="1.2"
-        android:lines="1"
-        android:maxLines="1"
-        android:padding="6dp"
-        android:text=""
-        android:textColor="@color/colorWhite"
-        android:textSize="11dp" />
-</RelativeLayout>
+        android:background="@color/colorBlueDark"
+        tools:ignore="SpUsage, contentDescription">
+
+        <ImageView
+            android:id="@+id/m_poster"
+            android:layout_width="130dp"
+            android:layout_height="195dp" />
+
+        <TextView
+            android:id="@+id/m_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/m_poster"
+            android:background="@drawable/bg_title"
+            android:ellipsize="end"
+            android:gravity="bottom"
+            android:lineSpacingMultiplier="1.2"
+            android:lines="1"
+            android:maxLines="1"
+            android:padding="6dp"
+            android:text=""
+            android:textColor="@color/colorWhite"
+            android:textSize="11dp" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -48,11 +48,26 @@
         android:textColor="@color/colorWhite"
         android:textSize="12dp" />
 
+    <FrameLayout xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@id/deci_image"
+        android:layout_margin="15dp">
+
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mapViewCine"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            mapbox:mapbox_cameraTargetLat="0"
+            mapbox:mapbox_cameraTargetLng="0"
+            mapbox:mapbox_cameraZoom="22" />
+    </FrameLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/deci_image"
-        android:layout_marginTop="30dp">
+        android:layout_below="@id/mapView">
 
         <RelativeLayout
             android:layout_width="match_parent"
