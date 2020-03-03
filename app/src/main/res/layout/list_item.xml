@@ -29,8 +29,7 @@
             android:layout_alignBottom="@id/list_item_image"
             android:background="@drawable/bg_title"
             android:ellipsize="end"
-            android:lines="1"
-            android:maxLines="1"
+            android:fontFamily="@font/gg_regular"
             android:padding="6dp"
             android:textColor="@color/colorWhite"
             android:textSize="11dp" />

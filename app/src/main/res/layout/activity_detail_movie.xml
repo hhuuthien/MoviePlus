@@ -50,27 +50,43 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_toEndOf="@id/dm_poster_parent"
+            android:fontFamily="@font/gg_bold"
             android:gravity="bottom"
             android:lineSpacingMultiplier="1.2"
             android:text="Movie tittle"
             android:textColor="@color/colorWhite"
-            android:textSize="22dp"
-            android:textStyle="bold" />
+            android:textSize="22dp" />
 
         <TextView
             android:id="@+id/dm_star"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@id/dm_title"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="13dp"
             android:layout_toEndOf="@id/dm_poster_parent"
-            android:drawableStart="@drawable/ic_star"
+            android:drawableStart="@drawable/imdb"
             android:drawablePadding="5dp"
+            android:fontFamily="@font/gg_bold"
             android:gravity="center_vertical"
             android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/dm_star2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/dm_star"
+            android:layout_alignBottom="@id/dm_star"
+            android:layout_marginEnd="12dp"
+            android:layout_toEndOf="@id/dm_star"
+            android:drawableStart="@drawable/meta"
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/gg_bold"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorWhite"
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/dm_time"
@@ -83,9 +99,10 @@
             android:layout_toEndOf="@id/dm_poster_parent"
             android:drawableStart="@drawable/ic_time"
             android:drawablePadding="5dp"
+            android:fontFamily="@font/gg_regular"
             android:gravity="center_vertical"
             android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/dm_date"
@@ -98,9 +115,10 @@
             android:layout_toEndOf="@id/dm_poster_parent"
             android:drawableStart="@drawable/ic_date2"
             android:drawablePadding="5dp"
+            android:fontFamily="@font/gg_regular"
             android:gravity="center_vertical"
             android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
     </RelativeLayout>
 
     <androidx.viewpager.widget.ViewPager
@@ -115,10 +133,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
         app:elevation="4dp"
-        app:itemIconTint="@color/colorAccent2"
-        app:itemTextColor="@color/colorAccent2"
+        app:itemIconTint="@color/colorWhite"
+        app:itemTextColor="@color/colorWhite"
         app:menu="@menu/navigation_for_movie" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

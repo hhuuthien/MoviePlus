@@ -1,6 +1,5 @@
 package com.thien.movieplus
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,10 +14,12 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_dm_info.*
-import kotlinx.android.synthetic.main.text_layout.view.*
 import okhttp3.*
+import org.jsoup.Jsoup
 import java.io.IOException
 
 class FragmentDMInfo : Fragment() {
@@ -26,9 +27,6 @@ class FragmentDMInfo : Fragment() {
     companion object {
         var overview: String = ""
         var website: String = ""
-        var tagline: String = ""
-        var budget: Long = -1
-        var revenue: Long = -1
     }
 
     override fun onCreateView(
@@ -47,15 +45,6 @@ class FragmentDMInfo : Fragment() {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
             fetch(movieId.toString(), view)
-        }
-
-        view.findViewById<TextView>(R.id.dm_overview).setOnClickListener {
-            val myLayout = layoutInflater.inflate(R.layout.text_layout, null)
-            myLayout.textview.text = overview
-            val dialog = AlertDialog.Builder(context!!)
-                .setView(myLayout)
-                .create()
-            dialog.show()
         }
 
         view.findViewById<TextView>(R.id.dm_website).setOnClickListener {
@@ -94,6 +83,15 @@ class FragmentDMInfo : Fragment() {
                 val gSon = GsonBuilder().create()
                 val detailMovie = gSon.fromJson(body, DetailMovie::class.java)
 
+                val imdbId = detailMovie.imdb_id
+                if (imdbId != null) {
+                    fetchRapidAPI(imdbId)
+                } else {
+                    dm_director.text = "Đang cập nhật"
+                    dm_genre.text = "Đang cập nhật"
+                    dm_revenue.text = "Không có số liệu"
+                }
+
                 overview = if (detailMovie.overview == null || detailMovie.overview.isEmpty()) {
                     "Đang cập nhật"
                 } else {
@@ -106,19 +104,9 @@ class FragmentDMInfo : Fragment() {
                     detailMovie.homepage
                 }
 
-                tagline = if (detailMovie.tagline == null || detailMovie.tagline.isEmpty()) {
-                    "Đang cập nhật"
-                } else {
-                    detailMovie.tagline
-                }
-
-                budget = detailMovie.budget ?: -1
-                revenue = detailMovie.revenue ?: -1
-
                 activity?.runOnUiThread {
                     dm_overview.text = overview
                     dm_website.text = website
-                    dm_tag.text = tagline
 
                     val company = detailMovie.production_companies
                     if (company == null || company.size == 0) {
@@ -133,30 +121,6 @@ class FragmentDMInfo : Fragment() {
                         dm_company.append(company[size - 1].name)
                     }
 
-                    when (budget) {
-                        (-1).toLong() -> {
-                            dm_budget.text = "Đang cập nhật"
-                        }
-                        0.toLong() -> {
-                            dm_budget.text = "Không có số liệu"
-                        }
-                        else -> {
-                            dm_budget.text = formatBudget(budget) + " (USD)"
-                        }
-                    }
-
-                    when (revenue) {
-                        (-1).toLong() -> {
-                            dm_revenue.text = "Đang cập nhật"
-                        }
-                        0.toLong() -> {
-                            dm_revenue.text = "Không có số liệu"
-                        }
-                        else -> {
-                            dm_revenue.text = formatBudget(revenue) + " (USD)"
-                        }
-                    }
-
                     view.findViewById<ProgressBar>(R.id.dm_loading_1).visibility = GONE
                     view.findViewById<RelativeLayout>(R.id.dm_info_layout_child).visibility =
                         VISIBLE
@@ -165,26 +129,98 @@ class FragmentDMInfo : Fragment() {
         })
     }
 
-    private fun formatBudget(num: Long): String {
-        val s = num.toString()
-        val n = s.length
-        var s1 = ""
-        for (i in n - 1 downTo 0) {
-            s1 += s[i]
-        }
-        val nn = s1.length
-        if (nn == n) {
-            var s2 = ""
-            for (i in nn - 1 downTo 0) {
-                s2 += s1[i]
-                if (i % 3 == 0) {
-                    s2 += " "
+    private fun fetchRapidAPI(imdb_id: String) {
+        val client = OkHttpClient()
+
+        val request: Request = Request.Builder()
+            .url("https://movie-database-imdb-alternative.p.rapidapi.com/?i=$imdb_id&r=json")
+            .get()
+            .addHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com")
+            .addHeader("x-rapidapi-key", "c9056de874msh171226ab4868aecp195d81jsn711cc91d5756")
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("onFetchingResult", e.toString())
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val detailMovie = gSon.fromJson(body, DetailMovieRapidAPI::class.java)
+
+                activity?.runOnUiThread {
+                    try {
+                        val director = detailMovie.Director
+                        if (director == null || director == "N/A") {
+                            dm_director.text = "Đang cập nhật"
+                        } else {
+                            dm_director.text = director
+                        }
+
+                        val genre = detailMovie.Genre
+                        if (genre == null || genre == "N/A") {
+                            dm_genre.text = "Đang cập nhật"
+                        } else {
+                            val genreVNese = genre.replace("Action", "Hành động")
+                                .replace("Adventure", "Phiêu lưu")
+                                .replace("Family", "Gia đình")
+                                .replace("Sci-Fi", "Khoa học viễn tưởng")
+                                .replace("Comedy", "Hài hước")
+                                .replace("Crime", "Tội phạm")
+                                .replace("Drama", "Chính kịch")
+                                .replace("Thriller", "Hồi hộp")
+                                .replace("Horror", "Kinh dị")
+                                .replace("Animation", "Hoạt hình")
+                                .replace("Fantasy", "Viễn tưởng")
+                                .replace("Mystery", "Bí ẩn")
+                                .replace("Musical", "Âm nhạc")
+                                .replace("Musical", "Âm nhạc")
+                                .replace("Romance", "Lãng mạn")
+                            dm_genre.text = genreVNese
+                        }
+                    } catch (ex: java.lang.Exception) {
+                        Log.d("error", ex.toString())
+                    }
                 }
             }
-            return s2
-        } else {
-            return "NULL"
-        }
+        })
+
+        //doanh thu
+        val queue = Volley.newRequestQueue(context)
+        val url = "https://www.boxofficemojo.com/title/$imdb_id"
+        val stringRequest = StringRequest(
+            com.android.volley.Request.Method.GET, url,
+            com.android.volley.Response.Listener<String> { response ->
+                try {
+                    val document = Jsoup.parse(response)
+                    val elements =
+                        document.select("div .a-section .a-spacing-none .mojo-performance-summary .money")
+                    val doanhthuDomestic =
+                        elements[0].toString().substringAfter(">").substringBefore("<")
+                    val doanhthuInternational =
+                        elements[1].toString().substringAfter(">").substringBefore("<")
+                    val doanhthuWorldwide =
+                        elements[2].toString().substringAfter(">").substringBefore("<")
+
+                    activity?.runOnUiThread {
+                        dm_revenue.text =
+                            "• $doanhthuDomestic (Domestic)\n• $doanhthuInternational (International)\n• $doanhthuWorldwide (Worldwide)"
+                    }
+                } catch (e: Exception) {
+                    activity?.runOnUiThread {
+                        dm_revenue.text = "Không có số liệu"
+                    }
+                    Log.d("revenue_error", "error in parsing")
+                }
+            },
+            com.android.volley.Response.ErrorListener {
+                activity?.runOnUiThread {
+                    dm_revenue.text = "Không có số liệu"
+                }
+                Log.d("revenue_error", "error in volley")
+            })
+        queue.add(stringRequest)
     }
 }
 
@@ -193,17 +229,19 @@ class DetailMovie(
     val poster_path: String?,
     val title: String,
     val overview: String?,
-    val vote_average: Double?,
-    val vote_count: Int?,
-    val release_date: String?,
     val runtime: Int?,
-    val genres: ArrayList<Genre>,
-    val original_language: String?,
-    val tagline: String?,
     val homepage: String?,
     val production_companies: ArrayList<Company>?,
-    val budget: Long?,
-    val revenue: Long?
+    val imdb_id: String?,
+    val original_language: String?
+)
+
+class DetailMovieRapidAPI(
+    val Director: String?,
+    val Runtime: String?,
+    val Metascore: String?,
+    val imdbRating: String?,
+    val Genre: String?
 )
 
 class Genre(

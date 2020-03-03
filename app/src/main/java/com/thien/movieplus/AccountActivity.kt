@@ -1,14 +1,12 @@
 package com.thien.movieplus
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -37,8 +35,6 @@ class AccountActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
-
-        supportActionBar?.title = "Trang cá nhân"
 
         acc_navigation.setOnNavigationItemSelectedListener(this)
 
@@ -80,31 +76,12 @@ class AccountActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
         super.onResume()
         auth = FirebaseAuth.getInstance()
         if (auth.currentUser == null) {
-            val dialog = AlertDialog.Builder(this)
-                .setMessage("Bạn cần đăng nhập để xem trang cá nhân")
-                .setPositiveButton("Đăng nhập") { _, _ ->
-                    startActivity(Intent(this, LoginActivity::class.java))
-                }
-                .setNegativeButton("Huỷ bỏ") { dialog, _ ->
-                    dialog.dismiss()
-                    finish()
-                }
-                .setCancelable(false)
-                .create()
-            dialog.show()
-
-            acc_info_layout.visibility = GONE
-            acc_view_pager.visibility = GONE
-            acc_navigation.visibility = GONE
+            startActivity(Intent(this, Account2Activity::class.java))
+            finish()
         } else {
-            acc_info_layout.visibility = VISIBLE
-            acc_view_pager.visibility = VISIBLE
-            acc_navigation.visibility = VISIBLE
-
             try {
                 fetchImage()
                 fetchInfo()
-                acc_info_email.text = FirebaseAuth.getInstance().currentUser!!.email
             } catch (e: Exception) {
                 Log.d("error", e.toString())
             }
@@ -122,9 +99,9 @@ class AccountActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
             override fun onDataChange(p0: DataSnapshot) {
                 val name = p0.value.toString()
                 if (name == "null" || name == "") {
-                    acc_info_name.text = "Xin chào!"
+                    acc_info_name.text = "Chào bạn!"
                 } else {
-                    acc_info_name.text = name
+                    acc_info_name.text = "Chào bạn, $name!"
                 }
             }
         }

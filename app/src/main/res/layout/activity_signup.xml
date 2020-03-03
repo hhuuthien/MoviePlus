@@ -1,78 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sign_layout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".SignupActivity">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/splash_head"
+    android:paddingLeft="24dp"
+    android:paddingTop="56dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="24dp"
+    tools:ignore="ContentDescription, Autofill, HardcodedText, SpUsage">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/sign_logo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/logo_blue" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="24dp"
-        android:paddingTop="56dp"
-        android:paddingRight="24dp">
+        android:layout_alignTop="@id/sign_logo"
+        android:layout_alignBottom="@id/sign_logo"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@id/sign_logo"
+        android:fontFamily="@font/gg_bold"
+        android:gravity="center_vertical"
+        android:text="Tạo tài khoản"
+        android:textColor="@color/colorPrimary"
+        android:textSize="26dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:src="@drawable/logo_blue" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sign_logo"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="20dp">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true">
 
-            <EditText
-                android:id="@+id/sign_email"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sign_email_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:textSize="16dp" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:passwordToggleEnabled="true">
+                <EditText
+                    android:id="@+id/sign_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gg_regular"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:textSize="16dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/sign_password"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sign_password_parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mật khẩu"
-                android:inputType="textPassword"
+                android:layout_below="@id/sign_email_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/sign_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gg_regular"
+                    android:hint="Mật khẩu"
+                    android:inputType="textPassword"
+                    android:textSize="16dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/sign_button"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sign_password_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/bg_button"
+                android:fontFamily="@font/gg_medium"
+                android:text="Tạo tài khoản"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
                 android:textSize="16dp" />
-        </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/sign_button"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:padding="12dp"
-            android:text="Đăng kí tài khoản"
-            android:textAllCaps="false"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/sign_link_login"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:gravity="center"
-            android:text="Bạn đã có tài khoản? Hãy đăng nhập ngay"
-            android:textSize="14dp" />
-    </LinearLayout>
-</ScrollView>
+    <Button
+        android:id="@+id/sign_link_login"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/gg_regular"
+        android:text="Đăng nhập"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="13dp" />
+</RelativeLayout>

@@ -42,10 +42,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Phim đang chiếu ở rạp"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                android:textStyle="bold"
+                android:textSize="18dp"
                 tools:ignore="SpUsage" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -71,10 +71,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Thể loại"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:textSize="18dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fm_list_category"
@@ -99,10 +99,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Phim sắp chiếu"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:textSize="18dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fm_list_upcoming"
@@ -116,10 +116,38 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/fm_layout_popular"
+            android:id="@+id/fm_layout_list2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/fm_layout_upcoming"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/fm_text_list2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:fontFamily="@font/gg_bold"
+                android:text="Top phim"
+                android:textColor="@color/colorWhite"
+                android:textSize="18dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fm_list_list2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fm_text_list2"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:scrollbars="horizontal" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fm_layout_popular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fm_layout_list2"
             android:layout_margin="5dp">
 
             <TextView
@@ -127,10 +155,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Phim phổ biến"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:textSize="18dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fm_list_popular"
@@ -162,10 +190,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Danh sách gợi ý cho bạn"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:textSize="18dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fm_list_list"
@@ -190,10 +218,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="TV show hôm nay"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:textSize="18dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_airing"
@@ -218,10 +246,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="TV show đang chiếu"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:textSize="18dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_nowshowing"
@@ -246,10 +274,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="TV show phổ biến"
                 android:textColor="@color/colorWhite"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+                android:textSize="18dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_popular"

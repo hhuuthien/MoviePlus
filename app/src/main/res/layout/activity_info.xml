@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBlueDark">
+    android:background="@color/colorBlueDark"
+    tools:ignore="ContentDescription">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,11 +19,11 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/gg_bold"
             android:text="Giới thiệu"
             android:textColor="@color/colorWhite"
-            android:textSize="14dp"
-            android:textStyle="bold" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/text2"
@@ -31,11 +32,12 @@
             android:layout_below="@id/text1"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/gg_regular"
             android:lineSpacingMultiplier="1.2"
             android:text="Đây là phần giới thiệu ứng dụng."
             android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/text3"
@@ -45,11 +47,11 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/gg_bold"
             android:text="Phiên bản"
             android:textColor="@color/colorWhite"
-            android:textSize="14dp"
-            android:textStyle="bold" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/text3_5"
@@ -58,11 +60,12 @@
             android:layout_below="@id/text3"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/gg_regular"
             android:lineSpacingMultiplier="1.2"
             android:text="Số phiên bản: 2.1"
             android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/text4"
@@ -71,11 +74,12 @@
             android:layout_below="@id/text3_5"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/gg_regular"
             android:lineSpacingMultiplier="1.2"
-            android:text="Thêm thông tin các rạp chiếu phim và tin tức điện ảnh.\nCải thiện giao diện tối.\nHỗ trợ nội dung tiếng Việt.\nSửa một số lỗi nhỏ."
+            android:text="• Thêm tính năng: Rạp chiếu phim, Tin tức điện ảnh.\n• Thêm nội dung cho movie: điểm IMDb, điểm Metacritic, đạo diễn, thể loại, doanh thu (từ Box Office Mojo).\n• Cải tiến giao diện, phông chữ, chế độ tối.\n• Cải tiến nội dung, hình ảnh tiếng Việt."
             android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/text5"
@@ -85,11 +89,11 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/gg_bold"
             android:text="Tác giả"
             android:textColor="@color/colorWhite"
-            android:textSize="14dp"
-            android:textStyle="bold" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/text6"
@@ -98,11 +102,12 @@
             android:layout_below="@id/text5"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/gg_regular"
             android:lineSpacingMultiplier="1.2"
             android:text="Huỳnh Hữu Thiện\nhhuuthien@gmail.com"
             android:textColor="@color/colorWhite"
-            android:textSize="12dp" />
+            android:textSize="14dp" />
 
         <ImageView
             android:id="@+id/img1"

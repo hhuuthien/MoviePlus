@@ -18,8 +18,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        supportActionBar?.title = "Đăng nhập"
-
         log_link_signup.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
             finish()

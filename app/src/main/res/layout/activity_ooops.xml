@@ -10,25 +10,50 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_margin="10dp"
         tools:ignore="UselessParent">
 
-        <ImageView
-            android:id="@+id/ooops_image"
-            android:layout_width="120dp"
-            android:layout_height="70dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/ooops"
-            tools:ignore="ContentDescription" />
-
         <TextView
+            android:id="@+id/ooops_content_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ooops_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/gg_bold"
+            android:lineSpacingMultiplier="1.2"
+            android:text="Ooops...!!\nKhông có kết nối Internet"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlueDark"
+            android:textSize="16dp"
+            tools:ignore="HardcodedText,SpUsage" />
+
+        <TextView
+            android:id="@+id/ooops_content_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ooops_content_1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:fontFamily="@font/gg_regular"
+            android:text="Vui lòng kiểm tra lại kết nối của bạn"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccentDark"
+            android:textSize="12dp"
+            tools:ignore="HardcodedText,SpUsage" />
+
+        <Button
+            android:id="@+id/ooops_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ooops_content_2"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="30dp"
-            android:text="Không có kết nối Internet"
+            android:fontFamily="@font/gg_regular"
+            android:text="Tải lại trang"
+            android:textAllCaps="false"
             android:textColor="@color/colorBlueDark"
             android:textSize="16dp"
             tools:ignore="HardcodedText,SpUsage" />

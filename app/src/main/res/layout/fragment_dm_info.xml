@@ -22,11 +22,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Giới thiệu"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/dm_overview"
@@ -35,51 +35,82 @@
                 android:layout_below="@id/dm_overview_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
-                android:ellipsize="end"
-                android:lineSpacingMultiplier="1.2"
-                android:maxLines="5"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/dm_tag_text"
+                android:id="@+id/dm_genre_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dm_overview"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
-                android:text="Tagline"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
+                android:text="Thể loại"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/dm_tag"
+                android:id="@+id/dm_genre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/dm_tag_text"
+                android:layout_below="@id/dm_genre_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/dm_director_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dm_genre"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
+                android:text="Đạo diễn"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/dm_director"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dm_director_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
+                android:textColor="@color/colorWhite"
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/dm_website_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/dm_tag"
+                android:layout_below="@id/dm_director"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Website"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/dm_website"
@@ -88,10 +119,13 @@
                 android:layout_below="@id/dm_website_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:text=""
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/dm_company_text"
@@ -101,11 +135,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Công ty sản xuất"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/dm_company"
@@ -114,50 +148,27 @@
                 android:layout_below="@id/dm_company_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:text=""
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/dm_budget_text"
+                android:id="@+id/dm_revenue_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dm_company"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
-                android:text="Kinh phí sản xuất"
-                android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/dm_budget"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/dm_budget_text"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
-                android:text=""
-                android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/dm_revenue_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/dm_budget"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Doanh thu"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/dm_revenue"
@@ -166,10 +177,13 @@
                 android:layout_below="@id/dm_revenue_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:text=""
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
         </RelativeLayout>
 
         <ProgressBar

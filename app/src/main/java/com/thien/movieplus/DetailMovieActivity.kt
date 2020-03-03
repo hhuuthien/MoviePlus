@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View.GONE
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +31,7 @@ class DetailMovieActivity : AppCompatActivity(),
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
+    private var originalLanguage = ""
 
     companion object {
         var exist: Boolean = false
@@ -40,14 +42,12 @@ class DetailMovieActivity : AppCompatActivity(),
             R.id.bottom_movie_nav_info -> dm_view_pager.currentItem = 0
             R.id.bottom_movie_nav_cast -> dm_view_pager.currentItem = 1
             R.id.bottom_movie_nav_image -> dm_view_pager.currentItem = 2
-            R.id.bottom_movie_nav_related -> dm_view_pager.currentItem = 3
         }
         return true
     }
 
     private var movieId: Int = -1
     private var posterPath: String = ""
-    private var backdropPath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,21 +74,9 @@ class DetailMovieActivity : AppCompatActivity(),
                     .into(blurImageView)
             }
 
-//            val movieBackdrop = intent.getStringExtra("MOVIE_BACKDROP")
-//            if (movieBackdrop == null || movieBackdrop.isEmpty()) {
-//                dm_backdrop.setImageResource(R.drawable.logo_blue)
-//            }
-
             val movieTitle = intent.getStringExtra("MOVIE_TITLE")
             if (movieTitle != null && movieTitle.isNotEmpty()) {
                 dm_title.text = movieTitle
-            }
-
-            val movieVote = intent.getDoubleExtra("MOVIE_VOTE", -1.0)
-            if (movieVote == -1.0 || movieVote == 0.0) {
-                dm_star.text = "null"
-            } else {
-                dm_star.text = movieVote.toString()
             }
 
             val movieDate = intent.getStringExtra("MOVIE_DATE")
@@ -115,14 +103,11 @@ class DetailMovieActivity : AppCompatActivity(),
         fdmcast.arguments = bundle
         val fdmimage = FragmentDMImage()
         fdmimage.arguments = bundle
-        val fdmrelated = FragmentDMRelated()
-        fdmrelated.arguments = bundle
 
         val adapter = PagerAdapter(supportFragmentManager)
         adapter.addFrag(fdminfo)
         adapter.addFrag(fdmcast)
         adapter.addFrag(fdmimage)
-        adapter.addFrag(fdmrelated)
         dm_view_pager.adapter = adapter
 
         dm_view_pager.currentItem = 0
@@ -141,7 +126,6 @@ class DetailMovieActivity : AppCompatActivity(),
                     0 -> dm_navigation.selectedItemId = R.id.bottom_movie_nav_info
                     1 -> dm_navigation.selectedItemId = R.id.bottom_movie_nav_cast
                     2 -> dm_navigation.selectedItemId = R.id.bottom_movie_nav_image
-                    3 -> dm_navigation.selectedItemId = R.id.bottom_movie_nav_related
                 }
             }
         })
@@ -162,15 +146,6 @@ class DetailMovieActivity : AppCompatActivity(),
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             }
         }
-
-//        dm_backdrop.setOnClickListener {
-//            if (backdropPath != "") {
-//                val intent = Intent(this, PictureActivity::class.java)
-//                intent.putExtra("imageString", backdropPath)
-//                startActivity(intent)
-//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-//            }
-//        }
 
         auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
@@ -388,8 +363,12 @@ class DetailMovieActivity : AppCompatActivity(),
             .create()
         dialog.show()
 
-        val url =
+        val url = if (originalLanguage == "vi") {
             "https://api.themoviedb.org/3/movie/$movieId/videos?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
+        } else {
+            "https://api.themoviedb.org/3/movie/$movieId/videos?api_key=d4a7514dbdd976453d2679e036009283"
+        }
+
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -438,6 +417,7 @@ class DetailMovieActivity : AppCompatActivity(),
     }
 
     private fun fetch(movieId: String) {
+        //to get IMDB ID
         val url1 =
             "https://api.themoviedb.org/3/movie/$movieId?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
         val request1 = Request.Builder().url(url1).build()
@@ -452,11 +432,75 @@ class DetailMovieActivity : AppCompatActivity(),
                 val gSon = GsonBuilder().create()
                 val detailMovie = gSon.fromJson(body, DetailMovie::class.java)
 
-                runOnUiThread {
-                    if (detailMovie.runtime != null) {
-                        dm_time.text = "${detailMovie.runtime} phút"
+                originalLanguage =
+                    if (detailMovie.original_language == null || detailMovie.original_language == "") {
+                        ""
                     } else {
-                        dm_time.text = "null"
+                        detailMovie.original_language
+                    }
+                Log.d("thienthien", originalLanguage)
+
+                val imdbId = detailMovie.imdb_id
+                runOnUiThread {
+                    if (imdbId != null) {
+                        fetchRapidAPI(imdbId)
+                    } else {
+                        if (detailMovie.runtime == null || detailMovie.runtime == 0) {
+                            dm_time.text = "-"
+                        } else {
+                            dm_time.text = "${detailMovie.runtime} phút"
+                        }
+
+                        dm_star.text = "-"
+                        dm_star2.visibility = GONE
+                    }
+                }
+            }
+        })
+    }
+
+    private fun fetchRapidAPI(imdb_id: String) {
+        val client = OkHttpClient()
+
+        val request: Request = Request.Builder()
+            .url("https://movie-database-imdb-alternative.p.rapidapi.com/?i=$imdb_id&r=json")
+            .get()
+            .addHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com")
+            .addHeader("x-rapidapi-key", "c9056de874msh171226ab4868aecp195d81jsn711cc91d5756")
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("onFetchingResult", e.toString())
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val detailMovie = gSon.fromJson(body, DetailMovieRapidAPI::class.java)
+
+                runOnUiThread {
+                    try {
+                        if (detailMovie.Runtime == null || detailMovie.Runtime == "N/A") {
+                            dm_time.text = "-"
+                        } else {
+                            val runtime = detailMovie.Runtime.replace("min", "phút")
+                            dm_time.text = runtime
+                        }
+
+                        if (detailMovie.imdbRating == null || detailMovie.imdbRating == "N/A") {
+                            dm_star.text = "-"
+                        } else {
+                            dm_star.text = detailMovie.imdbRating
+                        }
+
+                        if (detailMovie.Metascore == null || detailMovie.Metascore == "N/A") {
+                            dm_star2.visibility = GONE
+                        } else {
+                            dm_star2.text = detailMovie.Metascore
+                        }
+                    } catch (ex: java.lang.Exception) {
+                        Log.d("error", ex.toString())
                     }
                 }
             }

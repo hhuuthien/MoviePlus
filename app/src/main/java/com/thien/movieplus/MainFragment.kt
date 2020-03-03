@@ -35,6 +35,7 @@ class MainFragment : Fragment() {
     private var listMovieUpComing = ArrayList<Movie>()
     private var listMoviePopular = ArrayList<Movie>()
     private var listMovieList = ArrayList<ListMain>()
+    private var listMovieList2 = ArrayList<ListMain>()
     private var listShowAiring = ArrayList<Show>()
     private var listShowNowShowing = ArrayList<Show>()
     private var listShowPopular = ArrayList<Show>()
@@ -43,6 +44,7 @@ class MainFragment : Fragment() {
     private val adapterUpComing = GroupAdapter<ViewHolder>()
     private val adapterPopular = GroupAdapter<ViewHolder>()
     private val adapterList = GroupAdapter<ViewHolder>()
+    private val adapterList2 = GroupAdapter<ViewHolder>()
     private val adapterShowAiring = GroupAdapter<ViewHolder>()
     private val adapterShowNowShowing = GroupAdapter<ViewHolder>()
     private val adapterShowPopular = GroupAdapter<ViewHolder>()
@@ -68,6 +70,8 @@ class MainFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fm_list_list).layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fm_list_list2).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fm_list_category).layoutManager =
             StaggeredGridLayoutManager(2, LinearLayoutManager.HORIZONTAL)
         view.findViewById<RecyclerView>(R.id.fs_list_airing).layoutManager =
@@ -80,8 +84,8 @@ class MainFragment : Fragment() {
         listMovieList.add(ListMain(1, "Vũ trụ điện ảnh Marvel", R.drawable.marvel))
         listMovieList.add(ListMain(2, "Phim Việt Nam nổi bật", R.drawable.vietnam))
         listMovieList.add(ListMain(3, "Phim hoạt hình Pixar", R.drawable.pixar))
-        listMovieList.add(ListMain(4, "Giải Oscars phim hoạt hình", R.drawable.oscar))
-
+        listMovieList.add(ListMain(4, "Giải Oscars phim hoạt hình hay nhất", R.drawable.oscar))
+        listMovieList.add(ListMain(5, "Giải Oscars phim hay nhất", R.drawable.oscar2))
         listMovieList.shuffle()
 
         for (m in listMovieList) {
@@ -110,6 +114,49 @@ class MainFragment : Fragment() {
                 4 -> {
                     val intent = Intent(context, ListActivity::class.java)
                     intent.putExtra("type", 4)//oscar
+                    startActivity(intent)
+                }
+                5 -> {
+                    val intent = Intent(context, ListActivity::class.java)
+                    intent.putExtra("type", 5)//oscar2
+                    startActivity(intent)
+                }
+            }
+        }
+
+        listMovieList2.add(ListMain(6, "Top 20 phim doanh thu cao nhất", R.drawable.top20))
+        listMovieList2.add(ListMain(7, "Top 15 phim điểm IMDb cao nhất", R.drawable.imdblist))
+        listMovieList2.add(
+            ListMain(
+                8,
+                "Top 20 phim hoạt hình doanh thu cao nhất",
+                R.drawable.animation
+            )
+        )
+        listMovieList2.shuffle()
+
+
+        for (m in listMovieList2) {
+            adapterList2.add(ListItemMain(m))
+        }
+        view.findViewById<RecyclerView>(R.id.fm_list_list2).adapter = adapterList2
+
+        adapterList2.setOnItemClickListener { item, _ ->
+            val myItem = item as ListItemMain
+            when (myItem.list.id) {
+                6 -> {
+                    val intent = Intent(context, ListActivity::class.java)
+                    intent.putExtra("type", 6)//top20
+                    startActivity(intent)
+                }
+                7 -> {
+                    val intent = Intent(context, ListActivity::class.java)
+                    intent.putExtra("type", 7)//imdb
+                    startActivity(intent)
+                }
+                8 -> {
+                    val intent = Intent(context, ListActivity::class.java)
+                    intent.putExtra("type", 8)//animation
                     startActivity(intent)
                 }
             }
@@ -502,49 +549,6 @@ class ListItemMain(val list: ListMain) : Item<ViewHolder>() {
     }
 }
 
-//class MovieItemUpComing(val movie: Movie) : Item<ViewHolder>() {
-//    override fun getLayout(): Int {
-//        return R.layout.movie_item_with_date
-//    }
-//
-//    @SuppressLint("SimpleDateFormat")
-//    private fun daysBetween(releaseDate: String): Int {
-//        val now = System.currentTimeMillis()
-//
-//        val day = releaseDate.substring(8, 10).toInt()
-//        val month = releaseDate.substring(5, 7).toInt()
-//        val year = releaseDate.substring(0, 4).toInt()
-//
-//        val stringDate = "$year/$month/$day"
-//        val date = SimpleDateFormat("yyyy/MM/dd").parse(stringDate) as Date
-//        val time = date.time
-//
-//        val diff = (time - now) / (1000 * 60 * 60 * 24)
-//        return diff.toInt()
-//    }
-//
-//    override fun bind(viewHolder: ViewHolder, position: Int) {
-//        try {
-//            if (movie.poster_path == null) {
-//                viewHolder.itemView.m2_poster.setImageResource(R.drawable.logo_blue)
-//            } else {
-//                Picasso.get()
-//                    .load("https://image.tmdb.org/t/p/w300" + movie.poster_path)
-//                    .placeholder(R.drawable.logo_accent)
-//                    .fit()
-//                    .into(viewHolder.itemView.m2_poster)
-//            }
-//
-//            viewHolder.itemView.m2_date_left.text =
-//                "${daysBetween(movie.release_date!!) + 1} ngày nữa"
-//
-//            viewHolder.itemView.m2_title.text = movie.title
-//        } catch (e: Exception) {
-//            Log.d("error_here", e.toString())
-//        }
-//    }
-//}
-
 class MovieItemRow(val movie: Movie) : Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.movie_item_row
@@ -625,7 +629,6 @@ class Season(
     val episode_count: Int,
     val id: Int,
     val name: String,
-    val overview: String?,
     val poster_path: String?,
     val season_number: Int?
 ) : Serializable
