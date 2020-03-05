@@ -65,7 +65,6 @@ class DetailMovieActivity : AppCompatActivity(),
                 posterPath = moviePoster
                 Picasso.get()
                     .load("https://image.tmdb.org/t/p/w500$moviePoster")
-                    .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(dm_poster)
                 Picasso.get()
@@ -446,12 +445,12 @@ class DetailMovieActivity : AppCompatActivity(),
                         fetchRapidAPI(imdbId)
                     } else {
                         if (detailMovie.runtime == null || detailMovie.runtime == 0) {
-                            dm_time.text = "-"
+                            dm_time.text = "n/a"
                         } else {
                             dm_time.text = "${detailMovie.runtime} phút"
                         }
 
-                        dm_star.text = "-"
+                        dm_star.text = "n/a"
                         dm_star2.visibility = GONE
                     }
                 }
@@ -482,14 +481,14 @@ class DetailMovieActivity : AppCompatActivity(),
                 runOnUiThread {
                     try {
                         if (detailMovie.Runtime == null || detailMovie.Runtime == "N/A") {
-                            dm_time.text = "-"
+                            dm_time.text = "n/a"
                         } else {
                             val runtime = detailMovie.Runtime.replace("min", "phút")
                             dm_time.text = runtime
                         }
 
                         if (detailMovie.imdbRating == null || detailMovie.imdbRating == "N/A") {
-                            dm_star.text = "-"
+                            dm_star.text = "n/a"
                         } else {
                             dm_star.text = detailMovie.imdbRating
                         }

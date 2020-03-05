@@ -107,11 +107,10 @@ class CastItem(val cast: Cast) : Item<ViewHolder>() {
 
         try {
             if (cast.profile_path == null) {
-                viewHolder.itemView.c_poster.setImageResource(R.drawable.logo_blue)
+                viewHolder.itemView.c_poster.setImageResource(R.drawable.logo_accent)
             } else {
                 Picasso.get()
                     .load("https://image.tmdb.org/t/p/w300" + cast.profile_path)
-                    .placeholder(R.drawable.logo_accent)
                     .noFade()
                     .into(viewHolder.itemView.c_poster)
             }

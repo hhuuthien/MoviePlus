@@ -20,7 +20,8 @@
             android:id="@+id/list_item_image"
             android:layout_width="200dp"
             android:layout_height="100dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo_blue" />
 
         <TextView
             android:id="@+id/list_item_name"

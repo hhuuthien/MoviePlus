@@ -62,7 +62,6 @@ class DetailSeasonActivity : AppCompatActivity() {
 
             Picasso.get()
                 .load("https://image.tmdb.org/t/p/w300$posterPath")
-                .placeholder(R.drawable.logo_accent)
                 .fit()
                 .into(dss_poster)
             Picasso.get()

@@ -111,11 +111,10 @@ class SeasonItem(val season: Season) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         try {
             if (season.poster_path == null) {
-                viewHolder.itemView.ss_poster.setImageResource(R.drawable.logo_blue)
+                viewHolder.itemView.ss_poster.setImageResource(R.drawable.logo_accent)
             } else {
                 Picasso.get()
                     .load("https://image.tmdb.org/t/p/w300" + season.poster_path)
-                    .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(viewHolder.itemView.ss_poster)
             }

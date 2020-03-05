@@ -120,7 +120,6 @@ class AccountActivity : AppCompatActivity(), BottomNavigationView.OnNavigationIt
                 val link = p0.value.toString()
                 Picasso.get()
                     .load(link)
-                    .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(acc_info_image)
             }

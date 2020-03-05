@@ -18,7 +18,6 @@ class PictureActivity : AppCompatActivity() {
 
         Picasso.get()
             .load("https://image.tmdb.org/t/p/original$path")
-            .placeholder(R.drawable.logo_accent)
             .into(picture_frame)
     }
 

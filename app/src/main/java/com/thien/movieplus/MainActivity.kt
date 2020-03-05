@@ -189,7 +189,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 Picasso.get()
                     .load(link)
-                    .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(imageView)
             }

@@ -19,7 +19,8 @@
         <ImageView
             android:id="@+id/m_poster"
             android:layout_width="130dp"
-            android:layout_height="195dp" />
+            android:layout_height="195dp"
+            android:src="@drawable/logo_blue" />
 
         <TextView
             android:id="@+id/m_title"

@@ -164,11 +164,10 @@ class SearchItem(val searchResult: SearchResult) : Item<ViewHolder>() {
                 "movie" -> {
                     viewHolder.itemView.lis_type.text = "Phim"
                     if (searchResult.poster_path == null) {
-                        viewHolder.itemView.lis_poster.setImageResource(R.drawable.logo_blue)
+                        viewHolder.itemView.lis_poster.setImageResource(R.drawable.logo_accent)
                     } else {
                         Picasso.get()
                             .load("https://image.tmdb.org/t/p/w300" + searchResult.poster_path)
-                            .placeholder(R.drawable.logo_accent)
                             .fit()
                             .into(viewHolder.itemView.lis_poster)
                     }
@@ -177,11 +176,10 @@ class SearchItem(val searchResult: SearchResult) : Item<ViewHolder>() {
                 "tv" -> {
                     viewHolder.itemView.lis_type.text = "TV show"
                     if (searchResult.poster_path == null) {
-                        viewHolder.itemView.lis_poster.setImageResource(R.drawable.logo_blue)
+                        viewHolder.itemView.lis_poster.setImageResource(R.drawable.logo_accent)
                     } else {
                         Picasso.get()
                             .load("https://image.tmdb.org/t/p/w300" + searchResult.poster_path)
-                            .placeholder(R.drawable.logo_accent)
                             .fit()
                             .into(viewHolder.itemView.lis_poster)
                     }
@@ -190,11 +188,10 @@ class SearchItem(val searchResult: SearchResult) : Item<ViewHolder>() {
                 "person" -> {
                     viewHolder.itemView.lis_type.text = "Người"
                     if (searchResult.profile_path == null) {
-                        viewHolder.itemView.lis_poster.setImageResource(R.drawable.logo_blue)
+                        viewHolder.itemView.lis_poster.setImageResource(R.drawable.logo_accent)
                     } else {
                         Picasso.get()
                             .load("https://image.tmdb.org/t/p/w300" + searchResult.profile_path)
-                            .placeholder(R.drawable.logo_accent)
                             .fit()
                             .into(viewHolder.itemView.lis_poster)
                     }

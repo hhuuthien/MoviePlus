@@ -12,12 +12,14 @@
         android:id="@+id/blurImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/dm_navigation"
         android:scaleType="centerCrop" />
 
     <ImageView
         android:id="@+id/blurImageView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/dm_navigation"
         android:src="@drawable/bg_blur" />
 
     <RelativeLayout
@@ -39,7 +41,7 @@
                 android:id="@+id/dm_poster"
                 android:layout_width="130dp"
                 android:layout_height="195dp"
-                android:src="@drawable/logo_accent" />
+                android:src="@drawable/logo_blue" />
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -53,7 +55,6 @@
             android:fontFamily="@font/gg_bold"
             android:gravity="bottom"
             android:lineSpacingMultiplier="1.2"
-            android:text="Movie tittle"
             android:textColor="@color/colorWhite"
             android:textSize="22dp" />
 
@@ -133,7 +134,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true"
-        app:elevation="4dp"
+        android:background="@color/colorBlueDark"
         app:itemIconTint="@color/colorWhite"
         app:itemTextColor="@color/colorWhite"
         app:menu="@menu/navigation_for_movie" />

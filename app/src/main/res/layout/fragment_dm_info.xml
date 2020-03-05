@@ -99,10 +99,34 @@
                 android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/dm_website_text"
+                android:id="@+id/dm_crew_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/dm_director"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
+                android:text="Credits"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dm_crew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dm_crew_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="10dp"
+                android:scrollbars="horizontal" />
+
+            <TextView
+                android:id="@+id/dm_website_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dm_crew"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"

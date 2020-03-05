@@ -151,11 +151,10 @@ class ImageItem(val image: Image) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         try {
             if (image.file_path == null) {
-                viewHolder.itemView.i_image.setImageResource(R.drawable.logo_blue)
+                viewHolder.itemView.i_image.setImageResource(R.drawable.logo_accent)
             } else {
                 Picasso.get()
                     .load("https://image.tmdb.org/t/p/w300" + image.file_path)
-                    .placeholder(R.drawable.logo_accent)
                     .into(viewHolder.itemView.i_image)
             }
         } catch (e: Exception) {

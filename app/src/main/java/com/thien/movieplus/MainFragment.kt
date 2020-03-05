@@ -518,11 +518,10 @@ class MovieItem(val movie: Movie) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         try {
             if (movie.poster_path == null) {
-                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_blue)
+                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_accent)
             } else {
                 Picasso.get()
                     .load("https://image.tmdb.org/t/p/w300" + movie.poster_path)
-                    .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(viewHolder.itemView.m_poster)
             }
@@ -557,11 +556,10 @@ class MovieItemRow(val movie: Movie) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         try {
             if (movie.poster_path == null) {
-                viewHolder.itemView.mrow_poster.setImageResource(R.drawable.logo_blue)
+                viewHolder.itemView.mrow_poster.setImageResource(R.drawable.logo_accent)
             } else {
                 Picasso.get()
                     .load("https://image.tmdb.org/t/p/w200" + movie.poster_path)
-                    .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(viewHolder.itemView.mrow_poster)
             }
@@ -582,11 +580,10 @@ class ShowItemRow(val show: Show) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         try {
             if (show.poster_path == null) {
-                viewHolder.itemView.mrow_poster.setImageResource(R.drawable.logo_blue)
+                viewHolder.itemView.mrow_poster.setImageResource(R.drawable.logo_accent)
             } else {
                 Picasso.get()
                     .load("https://image.tmdb.org/t/p/w300" + show.poster_path)
-                    .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(viewHolder.itemView.mrow_poster)
             }
@@ -645,11 +642,10 @@ class ShowItem(val show: Show) : Item<ViewHolder>() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         try {
             if (show.poster_path == null) {
-                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_blue)
+                viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_accent)
             } else {
                 Picasso.get()
                     .load("https://image.tmdb.org/t/p/w300" + show.poster_path)
-                    .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(viewHolder.itemView.m_poster)
             }

@@ -59,7 +59,6 @@ class DetailShowActivity : AppCompatActivity(),
                 posterPath = showPoster
                 Picasso.get()
                     .load("https://image.tmdb.org/t/p/w300$showPoster")
-                    .placeholder(R.drawable.logo_accent)
                     .fit()
                     .into(ds_poster)
                 Picasso.get()

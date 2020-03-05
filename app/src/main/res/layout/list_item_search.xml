@@ -18,7 +18,8 @@
         <ImageView
             android:id="@+id/lis_poster"
             android:layout_width="90dp"
-            android:layout_height="135dp" />
+            android:layout_height="135dp"
+            android:src="@drawable/logo_blue" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -28,7 +29,6 @@
         android:layout_alignTop="@id/lis_poster_parent"
         android:layout_margin="5dp"
         android:layout_toEndOf="@id/lis_poster_parent"
-        android:text=""
         android:textColor="@color/colorAccent2"
         android:textSize="10dp" />
 

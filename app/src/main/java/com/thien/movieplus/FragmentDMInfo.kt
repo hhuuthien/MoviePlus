@@ -14,9 +14,16 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.GsonBuilder
+import com.squareup.picasso.Picasso
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Item
+import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.crew_item.view.*
 import kotlinx.android.synthetic.main.fragment_dm_info.*
 import okhttp3.*
 import org.jsoup.Jsoup
@@ -28,6 +35,9 @@ class FragmentDMInfo : Fragment() {
         var overview: String = ""
         var website: String = ""
     }
+
+    private var listCrew = ArrayList<Crew>()
+    private val adapterCrew = GroupAdapter<ViewHolder>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +55,11 @@ class FragmentDMInfo : Fragment() {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
             fetch(movieId.toString(), view)
+            fetchCrew(movieId.toString(), view)
         }
+
+        view.findViewById<RecyclerView>(R.id.dm_crew).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         view.findViewById<TextView>(R.id.dm_website).setOnClickListener {
             if (website.isEmpty() || website.isBlank() || website == "" || website == "Đang cập nhật") {
@@ -124,6 +138,35 @@ class FragmentDMInfo : Fragment() {
                     view.findViewById<ProgressBar>(R.id.dm_loading_1).visibility = GONE
                     view.findViewById<RelativeLayout>(R.id.dm_info_layout_child).visibility =
                         VISIBLE
+                }
+            }
+        })
+    }
+
+    private fun fetchCrew(movieId: String, view: View) {
+        val url =
+            "https://api.themoviedb.org/3/movie/$movieId/credits?api_key=d4a7514dbdd976453d2679e036009283"
+        val request = Request.Builder().url(url).build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("onFetchingResult", e.toString())
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, CrewList::class.java)
+
+                listCrew.clear()
+                listCrew = result.crew
+
+                activity?.runOnUiThread {
+                    adapterCrew.clear()
+                    for (m in listCrew) {
+                        adapterCrew.add(CrewItem(m))
+                    }
+                    dm_crew.adapter = adapterCrew
                 }
             }
         })
@@ -221,6 +264,41 @@ class FragmentDMInfo : Fragment() {
                 Log.d("revenue_error", "error in volley")
             })
         queue.add(stringRequest)
+    }
+}
+
+class Crew(
+    val id: Int,
+    val name: String,
+    val job: String,
+    val profile_path: String?
+)
+
+class CrewList(
+    val crew: ArrayList<Crew>
+)
+
+class CrewItem(private val crew: Crew) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.crew_item
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        try {
+            if (crew.profile_path == null) {
+                viewHolder.itemView.cr_poster.setImageResource(R.drawable.logo_accent)
+            } else {
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/w300" + crew.profile_path)
+                    .noFade()
+                    .into(viewHolder.itemView.cr_poster)
+            }
+
+            viewHolder.itemView.cr_name.text = crew.name
+            viewHolder.itemView.cr_job.text = crew.job
+        } catch (e: Exception) {
+            Log.d("error_here", e.toString())
+        }
     }
 }
 

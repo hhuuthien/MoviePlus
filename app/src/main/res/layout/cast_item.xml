@@ -8,6 +8,7 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/c_poster"
         android:layout_width="85dp"
+        android:src="@drawable/logo_blue"
         android:layout_height="85dp"
         android:layout_margin="5dp" />
 
@@ -23,7 +24,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:fontFamily="@font/gg_bold"
-            android:text=""
             android:textColor="@color/colorWhite"
             android:textSize="14dp"
             tools:ignore="SpUsage" />
