@@ -1,17 +1,21 @@
 package com.thien.movieplus
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_detail_cast.*
 import kotlinx.android.synthetic.main.product_of_cast_item.view.*
 import okhttp3.*
@@ -22,19 +26,28 @@ class DetailCastActivity : AppCompatActivity() {
 
     var castID: Int = -1
     private var posterPath: String = ""
+    private var backdropPath: String = ""
 
     private var listProduct = ArrayList<ProductOfCast>()
     private var listMovie = ArrayList<ProductOfCast>()
     private var listShow = ArrayList<ProductOfCast>()
+    private var listImage = ArrayList<Image>()
+    private var listTagImage = ArrayList<Image>()
     private val adapterMovie = GroupAdapter<ViewHolder>()
     private val adapterShow = GroupAdapter<ViewHolder>()
+    private val adapterImage = GroupAdapter<ViewHolder>()
+    private val adapterTagImage = GroupAdapter<ViewHolder>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_cast)
 
-        dc_deathday_text.visibility = View.GONE
-        dc_deathday.visibility = View.GONE
+        dc_deathday_text.visibility = GONE
+        dc_deathday.visibility = GONE
+
+        val pref = this.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
 
         castID = intent.getIntExtra("CAST_ID", -1)
         if (castID == -1) {
@@ -46,10 +59,22 @@ class DetailCastActivity : AppCompatActivity() {
                 dc_poster.setImageResource(R.drawable.logo_accent)
             } else {
                 posterPath = castPoster
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500$castPoster")
+                        .fit()
+                        .into(dc_poster)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200$castPoster")
+                        .fit()
+                        .into(dc_poster)
+                }
+
                 Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300$castPoster")
-                    .fit()
-                    .into(dc_poster)
+                    .load("https://image.tmdb.org/t/p/w200$castPoster")
+                    .transform(BlurTransformation(this, 22, 1))
+                    .into(dc_blurImageView)
             }
 
             val castName = intent.getStringExtra("CAST_NAME")
@@ -58,7 +83,10 @@ class DetailCastActivity : AppCompatActivity() {
             }
 
             fetch(castID.toString())
-            fetchProduct(castID.toString(), castName!!)
+            fetchProduct(castID.toString(), castName!!, english, goodquality)
+            fetchImage(castID.toString(), goodquality)
+            fetchTagImage(castID.toString(), goodquality)
+            fetchExternalID(castID.toString(), castName)
         }
 
         dc_name.setOnClickListener {
@@ -74,10 +102,21 @@ class DetailCastActivity : AppCompatActivity() {
             }
         }
 
+        dc_backdrop.setOnClickListener {
+            if (backdropPath != "") {
+                val intent = Intent(this, PictureActivity::class.java)
+                intent.putExtra("imageString", backdropPath)
+                startActivity(intent)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            }
+        }
+
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         dc_movie.layoutManager = layoutManager
         val layoutManager2 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         dc_tvshow.layoutManager = layoutManager2
+        dc_image.layoutManager = StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL)
+        dc_tagimage.layoutManager = StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL)
 
         adapterShow.setOnItemClickListener { item, _ ->
             val intent = Intent(this, DetailShowActivity::class.java)
@@ -100,6 +139,22 @@ class DetailCastActivity : AppCompatActivity() {
             intent.putExtra("MOVIE_VOTE", myItem.productOfCast.vote_average)
             intent.putExtra("MOVIE_BACKDROP", myItem.productOfCast.backdrop_path)
             startActivity(intent)
+        }
+
+        adapterImage.setOnItemClickListener { item, _ ->
+            val intent = Intent(this, PictureActivity::class.java)
+            val myItem = item as ImageItem2
+            intent.putExtra("imageString", myItem.image.file_path)
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
+
+        adapterTagImage.setOnItemClickListener { item, _ ->
+            val intent = Intent(this, PictureActivity::class.java)
+            val myItem = item as ImageItem2
+            intent.putExtra("imageString", myItem.image.file_path)
+            startActivity(intent)
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 
@@ -150,18 +205,28 @@ class DetailCastActivity : AppCompatActivity() {
                         val year = detailCast.deathday?.substring(0, 4)
                         dc_deathday.text = "$day-$month-$year"
                     } else {
-                        dc_deathday_text.visibility = View.GONE
-                        dc_deathday.visibility = View.GONE
+                        dc_deathday_text.visibility = GONE
+                        dc_deathday.visibility = GONE
                     }
                 }
             }
         })
     }
 
-    private fun fetchProduct(castId: String, castName: String) {
-        val url =
+    private fun fetchProduct(
+        castId: String,
+        castName: String,
+        english: Boolean,
+        goodquality: Boolean
+    ) {
+        var u = ""
+        u = if (english) {
+            "https://api.themoviedb.org/3/person/$castId/combined_credits?api_key=d4a7514dbdd976453d2679e036009283"
+        } else {
             "https://api.themoviedb.org/3/person/$castId/combined_credits?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
-        val request = Request.Builder().url(url).build()
+        }
+
+        val request = Request.Builder().url(u).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -189,13 +254,15 @@ class DetailCastActivity : AppCompatActivity() {
 
                 runOnUiThread {
                     if (listMovie.size == 0) {
-                        dc_movie_text.text = "$castName chưa tham gia phim nào"
+                        dc_movie_text.visibility = GONE
+                        dc_movie.visibility = GONE
                     } else {
                         listMovie.sortByDescending { it.popularity }
                     }
 
                     if (listShow.size == 0) {
-                        dc_tvshow_text.text = "$castName chưa tham gia TV show nào"
+                        dc_tvshow_text.visibility = GONE
+                        dc_tvshow.visibility = GONE
                     }
 
                     adapterMovie.clear()
@@ -204,18 +271,186 @@ class DetailCastActivity : AppCompatActivity() {
                     try {
                         for (m in listMovie) {
                             adapterMovie.add(
-                                ProductOfCastItem(m)
+                                ProductOfCastItem(m, goodquality)
                             )
                         }
                         for (m in listShow) {
                             adapterShow.add(
-                                ProductOfCastItem(m)
+                                ProductOfCastItem(m, goodquality)
                             )
                         }
                         dc_movie.adapter = adapterMovie
                         dc_tvshow.adapter = adapterShow
                     } catch (e: Exception) {
                         Log.d("error_here", e.toString())
+                    }
+                }
+            }
+        })
+    }
+
+    private fun fetchImage(castId: String, goodquality: Boolean) {
+        val url =
+            "https://api.themoviedb.org/3/person/$castId/images?api_key=d4a7514dbdd976453d2679e036009283"
+        val request = Request.Builder().url(url).build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, ImageResult::class.java)
+
+                listImage.clear()
+                listImage = result.profiles as ArrayList<Image>
+
+                runOnUiThread {
+                    if (listImage.size == 0) {
+                        dc_image.visibility = GONE
+                        dc_image_text.visibility = GONE
+                    } else {
+                        for (m in listImage) {
+                            adapterImage.add(ImageItem2(m, goodquality))
+                        }
+                        dc_image.adapter = adapterImage
+                    }
+                }
+            }
+        })
+    }
+
+    private fun fetchTagImage(castId: String, goodquality: Boolean) {
+        val url =
+            "https://api.themoviedb.org/3/person/$castId/tagged_images?api_key=d4a7514dbdd976453d2679e036009283"
+        val request = Request.Builder().url(url).build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, TagImageResult::class.java)
+
+                listTagImage.clear()
+                listTagImage = result.results
+
+                runOnUiThread {
+                    if (listTagImage.size == 0) {
+                        dc_tagimage.visibility = GONE
+                        dc_tagimage_text.visibility = GONE
+                    } else {
+                        for (m in listTagImage) {
+                            adapterTagImage.add(ImageItem2(m, goodquality))
+                        }
+                        dc_tagimage.adapter = adapterTagImage
+
+                        //find horizontalImage to set to dc_backdrop
+                        var horizontalImage = Image("", -1.0)
+                        for (m in listTagImage) {
+                            if (m.aspect_ratio != null && m.aspect_ratio > 1) {
+                                horizontalImage = m
+                                break
+                            }
+                        }
+
+                        if (horizontalImage.file_path != null && horizontalImage.file_path != "") {
+                            Picasso.get()
+                                .load("https://image.tmdb.org/t/p/w500${horizontalImage.file_path}")
+                                .fit()
+                                .into(dc_backdrop)
+                            backdropPath = horizontalImage.file_path.toString()
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    private fun fetchExternalID(castId: String, name: String) {
+        var numOfID = 0
+        val url =
+            "https://api.themoviedb.org/3/person/$castId/external_ids?api_key=d4a7514dbdd976453d2679e036009283"
+        val request = Request.Builder().url(url).build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, ExID::class.java)
+
+                runOnUiThread {
+                    if (result.facebook_id != null && result.facebook_id != "") {
+                        numOfID++
+                        dc_more_fb.setOnClickListener {
+                            try {
+                                val i = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.facebook.com/${result.facebook_id}")
+                                )
+                                startActivity(i)
+                            } catch (e: Exception) {
+                                Toast.makeText(
+                                    this@DetailCastActivity,
+                                    "Có lỗi xảy ra",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    } else {
+                        dc_more_fb.visibility = GONE
+                    }
+                    if (result.twitter_id != null && result.twitter_id != "") {
+                        numOfID++
+                        dc_more_tw.setOnClickListener {
+                            try {
+                                val i = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://twitter.com/${result.twitter_id}")
+                                )
+                                startActivity(i)
+                            } catch (e: Exception) {
+                                Toast.makeText(
+                                    this@DetailCastActivity,
+                                    "Có lỗi xảy ra",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    } else {
+                        dc_more_tw.visibility = GONE
+                    }
+                    if (result.instagram_id != null && result.instagram_id != "") {
+                        numOfID++
+                        dc_more_in.setOnClickListener {
+                            try {
+                                val i = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.instagram.com/${result.instagram_id}")
+                                )
+                                startActivity(i)
+                            } catch (e: Exception) {
+                                Toast.makeText(
+                                    this@DetailCastActivity,
+                                    "Có lỗi xảy ra",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    } else {
+                        dc_more_in.visibility = GONE
+                    }
+                    if (numOfID == 0) {
+                        dc_more_text.visibility = GONE
+                        dc_more.visibility = GONE
+                    } else {
+                        dc_more_text.text = "Tìm hiểu thêm về $name"
                     }
                 }
             }
@@ -248,7 +483,8 @@ class ProductOfCast(
     val popularity: Double
 )
 
-class ProductOfCastItem(val productOfCast: ProductOfCast) : Item<ViewHolder>() {
+class ProductOfCastItem(val productOfCast: ProductOfCast, val goodquality: Boolean) :
+    Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.product_of_cast_item
     }
@@ -271,13 +507,35 @@ class ProductOfCastItem(val productOfCast: ProductOfCast) : Item<ViewHolder>() {
             if (productOfCast.poster_path == null) {
                 viewHolder.itemView.poc_poster.setImageResource(R.drawable.logo_accent)
             } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300" + productOfCast.poster_path)
-                    .fit()
-                    .into(viewHolder.itemView.poc_poster)
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500" + productOfCast.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.poc_poster)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200" + productOfCast.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.poc_poster)
+                }
             }
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }
     }
 }
+
+class ExID(
+    val facebook_id: String?,
+    val twitter_id: String?,
+    val instagram_id: String?,
+    val imdb_id: String?
+)
+
+class ImageResult(
+    val profiles: List<Image>
+)
+
+class TagImageResult(
+    val results: ArrayList<Image>
+)

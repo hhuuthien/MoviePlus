@@ -57,7 +57,7 @@ class FragmentDSCast : Fragment() {
     private fun fetchCast(showId: String, view: View) {
         view.findViewById<ProgressBar>(R.id.dm_loading_6).visibility = View.VISIBLE
         val url =
-            "https://api.themoviedb.org/3/tv/$showId/credits?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
+            "https://api.themoviedb.org/3/tv/$showId/credits?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {

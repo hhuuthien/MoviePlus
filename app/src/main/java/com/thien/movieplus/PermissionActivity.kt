@@ -12,6 +12,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
@@ -123,20 +124,36 @@ class PermissionActivity : AppCompatActivity() {
     @SuppressLint("SdCardPath")
     private fun download(path: String) {
         progress_circular.visibility = VISIBLE
-        val f = File("/sdcard/Movie Plus")
-        if (!f.exists()) f.mkdirs()
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.Q) {
+            val f = File("/sdcard/Movius")
+            if (!f.exists()) f.mkdirs()
 
-        val timestamp = System.currentTimeMillis().toString()
-        val link = "https://image.tmdb.org/t/p/original$path"
-        val uri = Uri.parse(link)
-        val request = DownloadManager.Request(uri)
-        request.setTitle("Hình ảnh phim")
-            .setDescription("Đang tải")
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-            .setDestinationInExternalPublicDir("/Movie Plus", "${timestamp}.jpg")
+            val timestamp = System.currentTimeMillis().toString()
+            val fileName = "$timestamp.jpg"
+            val link = "https://image.tmdb.org/t/p/original$path"
+            val uri = Uri.parse(link)
+            val request = DownloadManager.Request(uri)
+            request.setTitle(fileName)
+                .setDescription("Đang tải")
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+                .setDestinationInExternalPublicDir("/Movius", fileName)
 
-        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        downloadID = downloadManager.enqueue(request)
+            val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            downloadID = downloadManager.enqueue(request)
+        } else {
+            val timestamp = System.currentTimeMillis().toString()
+            val fileName = "$timestamp.jpg"
+            val link = "https://image.tmdb.org/t/p/original$path"
+            val uri = Uri.parse(link)
+            val request = DownloadManager.Request(uri)
+            request.setTitle(fileName)
+                .setDescription("Đang tải")
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, fileName)
+
+            val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            downloadID = downloadManager.enqueue(request)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

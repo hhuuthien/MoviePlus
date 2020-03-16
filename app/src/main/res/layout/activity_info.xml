@@ -77,7 +77,7 @@
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/gg_regular"
             android:lineSpacingMultiplier="1.2"
-            android:text="• Thêm tính năng: Rạp chiếu phim, Tin tức điện ảnh.\n• Thêm nội dung cho movie: điểm IMDb, điểm Metacritic, đạo diễn, thể loại, doanh thu (từ Box Office Mojo).\n• Cải tiến giao diện, phông chữ, chế độ tối.\n• Cải tiến nội dung, hình ảnh tiếng Việt."
+            android:text="Có gì mới trong phiên bản này?\n• Thêm tính năng: Rạp chiếu phim (beta), Tin tức điện ảnh (beta).\n• Thêm nội dung: điểm IMDb, điểm Metacritic, doanh thu (từ Box Office Mojo).\n• Cải tiến giao diện, phông chữ, chế độ tối.\n• Cải tiến nội dung, hình ảnh tiếng Việt.\n• Sửa lỗi tải hình ảnh trên Android 10 (API 29)."
             android:textColor="@color/colorWhite"
             android:textSize="14dp" />
 
@@ -116,22 +116,5 @@
             android:layout_below="@id/text6"
             android:layout_margin="12dp"
             android:src="@drawable/power_by_tmdb" />
-
-        <ImageView
-            android:id="@+id/img2"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignTop="@id/img1"
-            android:layout_toEndOf="@id/img1"
-            android:src="@drawable/power_by_firebase" />
-
-        <ImageView
-            android:id="@+id/img3"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignTop="@id/img2"
-            android:layout_marginStart="12dp"
-            android:layout_toEndOf="@id/img2"
-            android:src="@drawable/mapbox" />
     </RelativeLayout>
 </ScrollView>

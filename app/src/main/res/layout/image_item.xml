@@ -5,4 +5,5 @@
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
     android:adjustViewBounds="true"
-    android:src="@drawable/logo_blue" />
+    android:background="@color/colorAccentDark"
+    android:src="@drawable/logo_accent" />

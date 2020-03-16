@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingActivity">
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_eng"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:checked="false"
+        android:fontFamily="@font/gg_regular"
+        android:padding="8dp"
+        android:text="Ưu tiên nội dung quốc tế"
+        android:textColor="@color/colorBlueDark"
+        android:textSize="14dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <TextView
+        android:id="@+id/switch_eng_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/switch_eng"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/gg_regular"
+        android:lineSpacingMultiplier="1.1"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="Khi bật tính năng này, Movius sẽ ưu tiên tìm và hiển thị nội dung gốc. Khi tắt tính năng này, Movius sẽ ưu tiên tìm và hiển thị nội dung tiếng Việt."
+        android:textSize="11dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/switch_eng_info"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:checked="true"
+        android:fontFamily="@font/gg_regular"
+        android:padding="8dp"
+        android:text="Dùng hình ảnh chất lượng cao"
+        android:textColor="@color/colorBlueDark"
+        android:textSize="14dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <TextView
+        android:id="@+id/switch_size_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/switch_size"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/gg_regular"
+        android:lineSpacingMultiplier="1.1"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="Hình ảnh chất lượng cao sẽ giúp ứng dụng hiển thị đẹp hơn, tuy nhiên sẽ mất nhiều thời gian tải hơn và chiếm nhiều bộ nhớ hơn.\nTính năng này chỉ ảnh hưởng đến hình ảnh hiển thị trên ứng dụng. Khi tải ảnh về máy, chất lượng ảnh luôn là tốt nhất."
+        android:textSize="11dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <TextView
+        android:id="@+id/switch_default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/switch_size_info"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/gg_regular"
+        android:padding="8dp"
+        android:text="Khôi phục cài đặt mặc định"
+        android:textColor="@color/colorBlueDark"
+        android:textSize="14dp"
+        tools:ignore="HardcodedText,SpUsage" />
+</RelativeLayout>

@@ -42,6 +42,10 @@ class FragmentAccountMovie : Fragment() {
         view.findViewById<TextView>(R.id.fam_text2).visibility = VISIBLE
         view.findViewById<RecyclerView>(R.id.fam_list).visibility = GONE
 
+        val pref = context!!.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
+
         adapter.setOnItemClickListener { item, _ ->
             val myItem = item as MovieItem
             startActivity(
@@ -55,10 +59,10 @@ class FragmentAccountMovie : Fragment() {
             )
         }
 
-        fetch(view)
+        fetch(view, goodquality)
     }
 
-    private fun fetch(view: View) {
+    private fun fetch(view: View, goodquality: Boolean) {
         try {
             val currentUser = FirebaseAuth.getInstance().currentUser
             val myRef =
@@ -97,7 +101,7 @@ class FragmentAccountMovie : Fragment() {
                             ""
                         )
                         list.add(movie)
-                        adapter.add(MovieItem(movie))
+                        adapter.add(MovieItem(movie, goodquality))
                         adapter.notifyDataSetChanged()
                     }
 

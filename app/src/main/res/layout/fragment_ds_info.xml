@@ -21,11 +21,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Giới thiệu"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/ds_overview"
@@ -34,27 +34,98 @@
                 android:layout_below="@id/ds_overview_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
-                android:ellipsize="end"
-                android:lineSpacingMultiplier="1.2"
-                android:maxLines="5"
-                android:text=""
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/ds_web_text"
+                android:id="@+id/ds_genre_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ds_overview"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
+                android:text="Thể loại"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_genre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_genre_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
+                android:textColor="@color/colorWhite"
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_director_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_genre"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
+                android:text="Đạo diễn"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_director"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_director_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
+                android:textColor="@color/colorWhite"
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_crew_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_director"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="10dp"
+                android:drawableEnd="@drawable/ic_open"
+                android:drawablePadding="5dp"
+                android:fontFamily="@font/gg_bold"
+                android:text="Đội ngũ sản xuất"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/ds_web_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ds_crew_text"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Website"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/ds_web"
@@ -63,9 +134,12 @@
                 android:layout_below="@id/ds_web_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/ds_numEp_text"
@@ -75,11 +149,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Số tập"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/ds_numEp"
@@ -88,9 +162,12 @@
                 android:layout_below="@id/ds_numEp_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/ds_date_text"
@@ -100,11 +177,11 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Ngày bắt đầu"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/ds_date"
@@ -113,9 +190,12 @@
                 android:layout_below="@id/ds_date_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/ds_last_text"
@@ -125,83 +205,67 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Tập gần đây nhất"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/ds_last_1"
+                android:id="@+id/ds_last"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ds_last_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/ds_last_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ds_last_1"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
-                android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/ds_next_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ds_last_2"
+                android:layout_below="@id/ds_last"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Tập tiếp theo"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/ds_next_1"
+                android:id="@+id/ds_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ds_next_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/ds_next_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ds_next_1"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
-                android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/ds_company_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ds_next_2"
+                android:layout_below="@id/ds_next"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="6dp"
+                android:fontFamily="@font/gg_bold"
                 android:text="Công ty sản xuất"
                 android:textColor="@color/colorWhite"
-                android:textSize="14dp"
-                android:textStyle="bold" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/ds_company"
@@ -210,9 +274,12 @@
                 android:layout_below="@id/ds_company_text"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textIsSelectable="true"
+                android:textSize="14dp" />
         </RelativeLayout>
 
         <ProgressBar

@@ -11,20 +11,36 @@
     <item
         android:id="@+id/nav_movie"
         android:icon="@drawable/ic_movie"
-        android:title="Trang chủ" />
+        android:title="Trang chủ"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/ic_search"
+        android:title="Tìm kiếm" />
+
+    <item
+        android:id="@+id/nav_discover"
+        android:icon="@drawable/ic_discover"
+        android:title="Khám phá" />
 
     <item
         android:id="@+id/nav_cine"
         android:icon="@drawable/ic_place"
-        android:title="Rạp chiếu phim" />
+        android:title="Rạp chiếu phim (beta)" />
 
     <item
         android:id="@+id/nav_news"
         android:icon="@drawable/ic_news"
-        android:title="Tin điện ảnh" />
+        android:title="Tin điện ảnh (beta)" />
+
+    <item
+        android:id="@+id/nav_setting"
+        android:icon="@drawable/ic_settings"
+        android:title="Cài đặt" />
 
     <item
         android:id="@+id/nav_info"
         android:icon="@drawable/ic_info2"
-        android:title="Thông tin ứng dụng" />
+        android:title="Giới thiệu" />
 </menu>

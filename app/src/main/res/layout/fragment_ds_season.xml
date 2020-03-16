@@ -11,7 +11,7 @@
         android:scrollbars="vertical" />
 
     <ProgressBar
-        android:id="@+id/ds_loading_8"
+        android:id="@+id/ds_loading_9"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"

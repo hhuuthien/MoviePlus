@@ -37,11 +37,15 @@ class FragmentDSImage : Fragment() {
     }
 
     private fun init(view: View) {
+        val pref = context!!.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
+
         val showId = arguments?.getInt("s_id", -1)
         if (showId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetch(showId.toString(),view)
+            fetch(showId.toString(), view, goodquality)
         }
 
         val layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
@@ -73,10 +77,10 @@ class FragmentDSImage : Fragment() {
         }
     }
 
-    private fun fetch(showId: String, view: View) {
+    private fun fetch(showId: String, view: View, goodquality: Boolean) {
         view.findViewById<ProgressBar>(R.id.dm_loading_7).visibility = View.VISIBLE
         val url =
-            "https://api.themoviedb.org/3/tv/$showId/images?api_key=d4a7514dbdd976453d2679e036009283&language=en"
+            "https://api.themoviedb.org/3/tv/$showId/images?api_key=d4a7514dbdd976453d2679e036009283&include_image_language=vi,en,null"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -103,26 +107,26 @@ class FragmentDSImage : Fragment() {
                     when {
                         a < b -> {
                             for (m in 0 until a) {
-                                adapterImage.add(ImageItem(listPoster[m]))
-                                adapterImage.add(ImageItem(listBackdrop[m]))
+                                adapterImage.add(ImageItem(listPoster[m], goodquality))
+                                adapterImage.add(ImageItem(listBackdrop[m], goodquality))
                             }
                             for (m in a until b) {
-                                adapterImage.add(ImageItem(listBackdrop[m]))
+                                adapterImage.add(ImageItem(listBackdrop[m], goodquality))
                             }
                         }
                         a > b -> {
                             for (m in 0 until b) {
-                                adapterImage.add(ImageItem(listPoster[m]))
-                                adapterImage.add(ImageItem(listBackdrop[m]))
+                                adapterImage.add(ImageItem(listPoster[m], goodquality))
+                                adapterImage.add(ImageItem(listBackdrop[m], goodquality))
                             }
                             for (m in b until a) {
-                                adapterImage.add(ImageItem(listPoster[m]))
+                                adapterImage.add(ImageItem(listPoster[m], goodquality))
                             }
                         }
                         else -> {
                             for (m in 0 until a) {
-                                adapterImage.add(ImageItem(listPoster[m]))
-                                adapterImage.add(ImageItem(listBackdrop[m]))
+                                adapterImage.add(ImageItem(listPoster[m], goodquality))
+                                adapterImage.add(ImageItem(listBackdrop[m], goodquality))
                             }
                         }
                     }

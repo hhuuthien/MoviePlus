@@ -9,32 +9,35 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.list_item_search.view.*
+import kotlinx.android.synthetic.main.search_item.view.*
 import okhttp3.*
 import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class SearchActivity : AppCompatActivity() {
 
     private var listSearch = ArrayList<SearchResult>()
     private val adapterSearch = GroupAdapter<ViewHolder>()
 
-    override fun onPause() {
-        super.onPause()
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm!!.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
         supportActionBar?.title = "Tìm kiếm"
+
+        val pref = this.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
 
         listSearch.clear()
         adapterSearch.clear()
@@ -44,6 +47,8 @@ class SearchActivity : AppCompatActivity() {
 
         s_key.text = null
         s_key.requestFocus()
+
+        s_list.layoutManager = GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false)
 
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm!!.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
@@ -86,19 +91,40 @@ class SearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0.toString().trim().isNotEmpty()) {
-                    fetchSearch(p0.toString().trim())
-                } else {
-                    listSearch.clear()
-                    adapterSearch.clear()
+                if (p0.toString().trim().isNotBlank()) {
+                    when (s_spinner.selectedIndex) {
+                        0 -> fetchSearch(p0.toString().trim(), 1, english)
+                        1 -> fetchSearch(p0.toString().trim(), 2, english)
+                        2 -> fetchSearch(p0.toString().trim(), 3, english)
+                        3 -> fetchSearch(p0.toString().trim(), 4, english)
+                    }
                 }
             }
         })
+
+        val dataset = LinkedList(listOf("Tất cả", "Movie", "TV show", "Person"))
+        s_spinner.attachDataSource(dataset)
+        s_spinner.setOnSpinnerItemSelectedListener { _, _, position, _ ->
+            if (s_key.text.toString().trim().isNotBlank()) {
+                val string = s_key.text.toString().trim()
+                when (position) {
+                    0 -> fetchSearch(string, 1, english)
+                    1 -> fetchSearch(string, 2, english)
+                    2 -> fetchSearch(string, 3, english)
+                    3 -> fetchSearch(string, 4, english)
+                }
+            }
+        }
     }
 
-    private fun fetchSearch(keyWord: String) {
-        val url =
+    private fun fetchSearch(keyWord: String, mode: Int, english: Boolean) {
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/3/search/multi?api_key=d4a7514dbdd976453d2679e036009283&query=$keyWord"
+        } else {
             "https://api.themoviedb.org/3/search/multi?api_key=d4a7514dbdd976453d2679e036009283&language=vi&query=$keyWord"
+        }
+
         val request = Request.Builder()
             .url(url)
             .build()
@@ -113,24 +139,110 @@ class SearchActivity : AppCompatActivity() {
                 val gSon = GsonBuilder().create()
                 val result = gSon.fromJson(body, ListSearchResult::class.java)
 
+                listSearch = result.results as ArrayList<SearchResult>
+            }
+        })
+        var url2 = ""
+        url2 = if (english) {
+            "https://api.themoviedb.org/3/search/multi?api_key=d4a7514dbdd976453d2679e036009283&query=$keyWord&page=2"
+        } else {
+            "https://api.themoviedb.org/3/search/multi?api_key=d4a7514dbdd976453d2679e036009283&language=vi&query=$keyWord&page=2"
+        }
+
+        val request2 = Request.Builder()
+            .url(url2)
+            .build()
+        val client2 = OkHttpClient()
+        client2.newCall(request2).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("onFetchingResult", e.toString())
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, ListSearchResult::class.java)
+
+                val listTemp = result.results as ArrayList<SearchResult>
+                listSearch.addAll(listTemp)
+
                 runOnUiThread {
-                    listSearch.clear()
                     adapterSearch.clear()
 
-                    listSearch = result.results as ArrayList<SearchResult>
+                    val listM = ArrayList<SearchResult>()
+                    val listS = ArrayList<SearchResult>()
+                    val listP = ArrayList<SearchResult>()
 
-                    if (listSearch.size != 0) {
-                        s_noti.visibility = View.GONE
-                        s_list.visibility = View.VISIBLE
-                    } else {
-                        s_noti.visibility = View.VISIBLE
-                        s_list.visibility = View.GONE
+                    for (m in listSearch) {
+                        when (m.media_type) {
+                            "movie" -> listM.add(m)
+                            "tv" -> listS.add(m)
+                            "person" -> listP.add(m)
+                        }
                     }
 
-                    for (l in listSearch) {
-                        adapterSearch.add(SearchItem(l))
+                    when (mode) {
+                        1 -> {
+                            adapterSearch.clear()
+                            if (listSearch.size != 0) {
+                                s_noti.visibility = View.GONE
+                                s_list.visibility = View.VISIBLE
+
+                                for (l in listSearch) {
+                                    adapterSearch.add(SearchItem(l))
+                                }
+                                s_list.adapter = adapterSearch
+                            } else {
+                                s_noti.visibility = View.VISIBLE
+                                s_list.visibility = View.GONE
+                            }
+                        }
+                        2 -> {
+                            adapterSearch.clear()
+                            if (listM.size != 0) {
+                                s_noti.visibility = View.GONE
+                                s_list.visibility = View.VISIBLE
+
+                                for (l in listM) {
+                                    adapterSearch.add(SearchItem(l))
+                                }
+                                s_list.adapter = adapterSearch
+                            } else {
+                                s_noti.visibility = View.VISIBLE
+                                s_list.visibility = View.GONE
+                            }
+                        }
+                        3 -> {
+                            adapterSearch.clear()
+                            if (listS.size != 0) {
+                                s_noti.visibility = View.GONE
+                                s_list.visibility = View.VISIBLE
+
+                                for (l in listS) {
+                                    adapterSearch.add(SearchItem(l))
+                                }
+                                s_list.adapter = adapterSearch
+                            } else {
+                                s_noti.visibility = View.VISIBLE
+                                s_list.visibility = View.GONE
+                            }
+                        }
+                        4 -> {
+                            adapterSearch.clear()
+                            if (listP.size != 0) {
+                                s_noti.visibility = View.GONE
+                                s_list.visibility = View.VISIBLE
+
+                                for (l in listP) {
+                                    adapterSearch.add(SearchItem(l))
+                                }
+                                s_list.adapter = adapterSearch
+                            } else {
+                                s_noti.visibility = View.VISIBLE
+                                s_list.visibility = View.GONE
+                            }
+                        }
                     }
-                    s_list.adapter = adapterSearch
                 }
             }
         })
@@ -143,26 +255,23 @@ class SearchResult(
     val poster_path: String?,
     val profile_path: String?,
     val name: String?,
-    val known_for_department: String?,
     val title: String?,
     val backdrop_path: String?,
     val vote_average: Double?,
-    val release_date: String?,
-    val overview: String?
+    val release_date: String?
 )
 
 class ListSearchResult(val results: List<SearchResult>)
 
 class SearchItem(val searchResult: SearchResult) : Item<ViewHolder>() {
     override fun getLayout(): Int {
-        return R.layout.list_item_search
+        return R.layout.search_item
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         try {
             when (searchResult.media_type) {
                 "movie" -> {
-                    viewHolder.itemView.lis_type.text = "Phim"
                     if (searchResult.poster_path == null) {
                         viewHolder.itemView.lis_poster.setImageResource(R.drawable.logo_accent)
                     } else {
@@ -174,7 +283,6 @@ class SearchItem(val searchResult: SearchResult) : Item<ViewHolder>() {
                     viewHolder.itemView.lis_title.text = searchResult.title
                 }
                 "tv" -> {
-                    viewHolder.itemView.lis_type.text = "TV show"
                     if (searchResult.poster_path == null) {
                         viewHolder.itemView.lis_poster.setImageResource(R.drawable.logo_accent)
                     } else {
@@ -186,7 +294,6 @@ class SearchItem(val searchResult: SearchResult) : Item<ViewHolder>() {
                     viewHolder.itemView.lis_title.text = searchResult.name
                 }
                 "person" -> {
-                    viewHolder.itemView.lis_type.text = "Người"
                     if (searchResult.profile_path == null) {
                         viewHolder.itemView.lis_poster.setImageResource(R.drawable.logo_accent)
                     } else {

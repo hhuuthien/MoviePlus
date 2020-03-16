@@ -1,5 +1,6 @@
 package com.thien.movieplus
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -15,7 +16,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.GsonBuilder
@@ -24,6 +24,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.crew_item.view.*
+import kotlinx.android.synthetic.main.crew_list_layout.view.*
 import kotlinx.android.synthetic.main.fragment_dm_info.*
 import okhttp3.*
 import org.jsoup.Jsoup
@@ -36,9 +37,6 @@ class FragmentDMInfo : Fragment() {
         var website: String = ""
     }
 
-    private var listCrew = ArrayList<Crew>()
-    private val adapterCrew = GroupAdapter<ViewHolder>()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,19 +48,18 @@ class FragmentDMInfo : Fragment() {
     }
 
     private fun init(view: View) {
+        val pref = context!!.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+
         val movieId = arguments?.getInt("m_id", -1)
         if (movieId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetch(movieId.toString(), view)
-            fetchCrew(movieId.toString(), view)
+            fetch(movieId.toString(), view, english)
         }
 
-        view.findViewById<RecyclerView>(R.id.dm_crew).layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
         view.findViewById<TextView>(R.id.dm_website).setOnClickListener {
-            if (website.isEmpty() || website.isBlank() || website == "" || website == "Đang cập nhật") {
+            if (website.isEmpty() || website.isBlank() || website == "" || website == "Đang cập nhật" || website == "Updating") {
                 return@setOnClickListener
             } else {
                 try {
@@ -74,14 +71,23 @@ class FragmentDMInfo : Fragment() {
                 }
             }
         }
+
+        view.findViewById<TextView>(R.id.dm_crew_text).setOnClickListener {
+            fetchCrew(movieId.toString())
+        }
     }
 
-    private fun fetch(movieId: String, view: View) {
+    private fun fetch(movieId: String, view: View, english: Boolean) {
         view.findViewById<ProgressBar>(R.id.dm_loading_1).visibility = VISIBLE
         view.findViewById<RelativeLayout>(R.id.dm_info_layout_child).visibility = GONE
 
-        val url =
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/3/movie/$movieId?api_key=d4a7514dbdd976453d2679e036009283"
+        } else {
             "https://api.themoviedb.org/3/movie/$movieId?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
+        }
+
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -99,7 +105,7 @@ class FragmentDMInfo : Fragment() {
 
                 val imdbId = detailMovie.imdb_id
                 if (imdbId != null) {
-                    fetchRapidAPI(imdbId)
+                    fetchRapidAPI(imdbId, english)
                 } else {
                     dm_director.text = "Đang cập nhật"
                     dm_genre.text = "Đang cập nhật"
@@ -143,7 +149,11 @@ class FragmentDMInfo : Fragment() {
         })
     }
 
-    private fun fetchCrew(movieId: String, view: View) {
+    private fun fetchCrew(movieId: String) {
+        val myLayout = layoutInflater.inflate(R.layout.crew_list_layout, null)
+        myLayout.dm_crew.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         val url =
             "https://api.themoviedb.org/3/movie/$movieId/credits?api_key=d4a7514dbdd976453d2679e036009283"
         val request = Request.Builder().url(url).build()
@@ -158,7 +168,8 @@ class FragmentDMInfo : Fragment() {
                 val gSon = GsonBuilder().create()
                 val result = gSon.fromJson(body, CrewList::class.java)
 
-                listCrew.clear()
+                val listCrew: ArrayList<Crew>
+                val adapterCrew = GroupAdapter<ViewHolder>()
                 listCrew = result.crew
 
                 activity?.runOnUiThread {
@@ -166,13 +177,19 @@ class FragmentDMInfo : Fragment() {
                     for (m in listCrew) {
                         adapterCrew.add(CrewItem(m))
                     }
-                    dm_crew.adapter = adapterCrew
+
+                    myLayout.dm_crew.adapter = adapterCrew
+
+                    val dialog = AlertDialog.Builder(context)
+                        .setView(myLayout)
+                        .create()
+                    dialog.show()
                 }
             }
         })
     }
 
-    private fun fetchRapidAPI(imdb_id: String) {
+    private fun fetchRapidAPI(imdb_id: String, english: Boolean) {
         val client = OkHttpClient()
 
         val request: Request = Request.Builder()
@@ -205,22 +222,26 @@ class FragmentDMInfo : Fragment() {
                         if (genre == null || genre == "N/A") {
                             dm_genre.text = "Đang cập nhật"
                         } else {
-                            val genreVNese = genre.replace("Action", "Hành động")
-                                .replace("Adventure", "Phiêu lưu")
-                                .replace("Family", "Gia đình")
-                                .replace("Sci-Fi", "Khoa học viễn tưởng")
-                                .replace("Comedy", "Hài hước")
-                                .replace("Crime", "Tội phạm")
-                                .replace("Drama", "Chính kịch")
-                                .replace("Thriller", "Hồi hộp")
-                                .replace("Horror", "Kinh dị")
-                                .replace("Animation", "Hoạt hình")
-                                .replace("Fantasy", "Viễn tưởng")
-                                .replace("Mystery", "Bí ẩn")
-                                .replace("Musical", "Âm nhạc")
-                                .replace("Musical", "Âm nhạc")
-                                .replace("Romance", "Lãng mạn")
-                            dm_genre.text = genreVNese
+                            if (english) {
+                                dm_genre.text = genre
+                            } else {
+                                val genreVNese = genre.replace("Action", "Hành động")
+                                    .replace("Adventure", "Phiêu lưu")
+                                    .replace("Family", "Gia đình")
+                                    .replace("Sci-Fi", "Khoa học viễn tưởng")
+                                    .replace("Comedy", "Hài hước")
+                                    .replace("Crime", "Tội phạm")
+                                    .replace("Drama", "Chính kịch")
+                                    .replace("Thriller", "Hồi hộp")
+                                    .replace("Horror", "Kinh dị")
+                                    .replace("Animation", "Hoạt hình")
+                                    .replace("Fantasy", "Viễn tưởng")
+                                    .replace("Mystery", "Bí ẩn")
+                                    .replace("Musical", "Âm nhạc")
+                                    .replace("Musical", "Âm nhạc")
+                                    .replace("Romance", "Lãng mạn")
+                                dm_genre.text = genreVNese
+                            }
                         }
                     } catch (ex: java.lang.Exception) {
                         Log.d("error", ex.toString())
@@ -254,14 +275,12 @@ class FragmentDMInfo : Fragment() {
                     activity?.runOnUiThread {
                         dm_revenue.text = "Không có số liệu"
                     }
-                    Log.d("revenue_error", "error in parsing")
                 }
             },
             com.android.volley.Response.ErrorListener {
                 activity?.runOnUiThread {
                     dm_revenue.text = "Không có số liệu"
                 }
-                Log.d("revenue_error", "error in volley")
             })
         queue.add(stringRequest)
     }

@@ -22,8 +22,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:theme="@style/Theme.MaterialComponents"
+            app:popupTheme="@style/Theme.MaterialComponents" />
 
         <FrameLayout
             android:id="@+id/m_fragment_container"
@@ -36,6 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/colorBlueDark"
+        android:theme="@style/Theme.MaterialComponents"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

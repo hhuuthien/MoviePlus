@@ -1,8 +1,6 @@
 package com.thien.movieplus
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -22,7 +20,6 @@ import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_detail_movie.*
 import kotlinx.android.synthetic.main.list_create_layout.view.*
 import kotlinx.android.synthetic.main.list_layout_item.view.*
-import kotlinx.android.synthetic.main.progress.view.*
 import okhttp3.*
 import java.io.IOException
 
@@ -31,7 +28,6 @@ class DetailMovieActivity : AppCompatActivity(),
 
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
-    private var originalLanguage = ""
 
     companion object {
         var exist: Boolean = false
@@ -42,16 +38,24 @@ class DetailMovieActivity : AppCompatActivity(),
             R.id.bottom_movie_nav_info -> dm_view_pager.currentItem = 0
             R.id.bottom_movie_nav_cast -> dm_view_pager.currentItem = 1
             R.id.bottom_movie_nav_image -> dm_view_pager.currentItem = 2
+            R.id.bottom_movie_nav_video -> dm_view_pager.currentItem = 3
         }
         return true
     }
 
     private var movieId: Int = -1
     private var posterPath: String = ""
+    private var backdropPath: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_movie)
+
+        val pref = this.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
+
+        dm_navigation.menu
 
         movieId = intent.getIntExtra("MOVIE_ID", -1)
         if (movieId == -1) {
@@ -60,17 +64,43 @@ class DetailMovieActivity : AppCompatActivity(),
             //set Available Info
             val moviePoster = intent.getStringExtra("MOVIE_POSTER")
             if (moviePoster == null || moviePoster.isEmpty()) {
-                dm_poster.setImageResource(R.drawable.logo_blue)
+                dm_poster.setImageResource(R.drawable.logo_accent)
             } else {
                 posterPath = moviePoster
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500$moviePoster")
+                        .fit()
+                        .into(dm_poster)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200$moviePoster")
+                        .fit()
+                        .into(dm_poster)
+                }
+
                 Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w500$moviePoster")
-                    .fit()
-                    .into(dm_poster)
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w500$moviePoster")
+                    .load("https://image.tmdb.org/t/p/w200$moviePoster")
                     .transform(BlurTransformation(this, 22, 1))
-                    .into(blurImageView)
+                    .into(dm_blurImageView)
+            }
+
+            val movieBackdrop = intent.getStringExtra("MOVIE_BACKDROP")
+            if (movieBackdrop == null || movieBackdrop.isEmpty()) {
+                dm_backdrop.setImageResource(R.drawable.logo_accent)
+            } else {
+                backdropPath = movieBackdrop
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500$movieBackdrop")
+                        .fit()
+                        .into(dm_backdrop)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200$movieBackdrop")
+                        .fit()
+                        .into(dm_backdrop)
+                }
             }
 
             val movieTitle = intent.getStringExtra("MOVIE_TITLE")
@@ -88,7 +118,7 @@ class DetailMovieActivity : AppCompatActivity(),
                 dm_date.text = "$day-$month-$year"
             }
 
-            fetch(movieId.toString())
+            fetch(movieId.toString(), english)
         }
 
         dm_navigation.setOnNavigationItemSelectedListener(this)
@@ -102,11 +132,14 @@ class DetailMovieActivity : AppCompatActivity(),
         fdmcast.arguments = bundle
         val fdmimage = FragmentDMImage()
         fdmimage.arguments = bundle
+        val fdmvideo = FragmentDMVideo()
+        fdmvideo.arguments = bundle
 
         val adapter = PagerAdapter(supportFragmentManager)
         adapter.addFrag(fdminfo)
         adapter.addFrag(fdmcast)
         adapter.addFrag(fdmimage)
+        adapter.addFrag(fdmvideo)
         dm_view_pager.adapter = adapter
 
         dm_view_pager.currentItem = 0
@@ -125,6 +158,7 @@ class DetailMovieActivity : AppCompatActivity(),
                     0 -> dm_navigation.selectedItemId = R.id.bottom_movie_nav_info
                     1 -> dm_navigation.selectedItemId = R.id.bottom_movie_nav_cast
                     2 -> dm_navigation.selectedItemId = R.id.bottom_movie_nav_image
+                    3 -> dm_navigation.selectedItemId = R.id.bottom_movie_nav_video
                 }
             }
         })
@@ -133,14 +167,19 @@ class DetailMovieActivity : AppCompatActivity(),
             Toast.makeText(this, "ID: $movieId", Toast.LENGTH_LONG).show()
         }
 
-        fab_trailer.setOnClickListener {
-            fetchTrailer(movieId.toString())
-        }
-
         dm_poster.setOnClickListener {
             if (posterPath != "") {
                 val intent = Intent(this, PictureActivity::class.java)
                 intent.putExtra("imageString", posterPath)
+                startActivity(intent)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            }
+        }
+
+        dm_backdrop.setOnClickListener {
+            if (backdropPath != "") {
+                val intent = Intent(this, PictureActivity::class.java)
+                intent.putExtra("imageString", backdropPath)
                 startActivity(intent)
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             }
@@ -352,74 +391,16 @@ class DetailMovieActivity : AppCompatActivity(),
         }
     }
 
-    private fun fetchTrailer(movieId: String) {
-        var isTrailer = false
-
-        val myLayout = layoutInflater.inflate(R.layout.progress, null)
-        myLayout.p_text.text = "Đang tìm trailer ..."
-        val dialog = AlertDialog.Builder(this)
-            .setView(myLayout)
-            .create()
-        dialog.show()
-
-        val url = if (originalLanguage == "vi") {
-            "https://api.themoviedb.org/3/movie/$movieId/videos?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
+    private fun fetch(movieId: String, english: Boolean) {
+        //to get IMDB ID
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/3/movie/$movieId?api_key=d4a7514dbdd976453d2679e036009283"
         } else {
-            "https://api.themoviedb.org/3/movie/$movieId/videos?api_key=d4a7514dbdd976453d2679e036009283"
+            "https://api.themoviedb.org/3/movie/$movieId?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
         }
 
-        val request = Request.Builder().url(url).build()
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, VideoResult::class.java)
-
-                val listVideo = result.results
-                for (video in listVideo) {
-                    if (video.site == "YouTube" && video.name.contains("trailer", true)) {
-                        isTrailer = true
-                        val appIntent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:${video.key}"))
-                        val webIntent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("http://www.youtube.com/watch?v=${video.key}")
-                        )
-                        try {
-                            startActivity(appIntent)
-                            dialog.dismiss()
-                            return
-                        } catch (ex: ActivityNotFoundException) {
-                            startActivity(webIntent)
-                            dialog.dismiss()
-                            return
-                        }
-                    }
-                }
-                if (!isTrailer) {
-                    runOnUiThread {
-                        dialog.dismiss()
-                        Toast.makeText(
-                            this@DetailMovieActivity,
-                            "Không tìm thấy trailer",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            }
-        })
-    }
-
-    private fun fetch(movieId: String) {
-        //to get IMDB ID
-        val url1 =
-            "https://api.themoviedb.org/3/movie/$movieId?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
-        val request1 = Request.Builder().url(url1).build()
+        val request1 = Request.Builder().url(url).build()
         val client1 = OkHttpClient()
         client1.newCall(request1).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -431,18 +412,10 @@ class DetailMovieActivity : AppCompatActivity(),
                 val gSon = GsonBuilder().create()
                 val detailMovie = gSon.fromJson(body, DetailMovie::class.java)
 
-                originalLanguage =
-                    if (detailMovie.original_language == null || detailMovie.original_language == "") {
-                        ""
-                    } else {
-                        detailMovie.original_language
-                    }
-                Log.d("thienthien", originalLanguage)
-
                 val imdbId = detailMovie.imdb_id
                 runOnUiThread {
                     if (imdbId != null) {
-                        fetchRapidAPI(imdbId)
+                        fetchRapidAPI(imdbId, english)
                     } else {
                         if (detailMovie.runtime == null || detailMovie.runtime == 0) {
                             dm_time.text = "n/a"
@@ -458,7 +431,7 @@ class DetailMovieActivity : AppCompatActivity(),
         })
     }
 
-    private fun fetchRapidAPI(imdb_id: String) {
+    private fun fetchRapidAPI(imdb_id: String, english: Boolean) {
         val client = OkHttpClient()
 
         val request: Request = Request.Builder()
@@ -483,8 +456,7 @@ class DetailMovieActivity : AppCompatActivity(),
                         if (detailMovie.Runtime == null || detailMovie.Runtime == "N/A") {
                             dm_time.text = "n/a"
                         } else {
-                            val runtime = detailMovie.Runtime.replace("min", "phút")
-                            dm_time.text = runtime
+                            dm_time.text = detailMovie.Runtime.replace("min", "phút")
                         }
 
                         if (detailMovie.imdbRating == null || detailMovie.imdbRating == "N/A") {

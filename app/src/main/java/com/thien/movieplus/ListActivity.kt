@@ -1,6 +1,5 @@
 package com.thien.movieplus
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -8,6 +7,7 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -32,26 +32,54 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
+        val pref = this.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
+
         when (intent.getIntExtra("type", 0)) {
             0 -> finish()
-            1 -> fetch("124045")
-            2 -> fetch("124046")
-            3 -> fetch("124047")
-            4 -> fetch("124053")
-            5 -> fetch("134631")
-            6 -> fetch("134629")
-            7 -> fetch("134632")
-            8 -> fetch("134633")
-            101 -> fetchUserList()
+            1 -> {
+                fetch("124045", english, goodquality)
+                list_img.setImageResource(R.drawable.marvel)
+            }
+            2 -> {
+                fetch("124046", english, goodquality)
+                list_img.setImageResource(R.drawable.vietnam)
+            }
+            3 -> {
+                fetch("124047", english, goodquality)
+                list_img.setImageResource(R.drawable.pixar)
+            }
+            4 -> {
+                fetch("124053", english, goodquality)
+                list_img.setImageResource(R.drawable.oscar)
+            }
+            5 -> {
+                fetch("134631", english, goodquality)
+                list_img.setImageResource(R.drawable.oscar2)
+            }
+            6 -> {
+                fetch("134629", english, goodquality)
+                list_img.setImageResource(R.drawable.top20)
+            }
+            7 -> {
+                fetch("134632", english, goodquality)
+                list_img.setImageResource(R.drawable.imdblist)
+            }
+            8 -> {
+                fetch("134633", english, goodquality)
+                list_img.setImageResource(R.drawable.animation)
+            }
+            101 -> fetchUserList(goodquality)
         }
 
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false)
         list_list.layoutManager = layoutManager
 
         adapter.setOnItemClickListener { item, _ ->
             try {
                 val intent = Intent(this, DetailMovieActivity::class.java)
-                val movieItem = item as MovieItemRow
+                val movieItem = item as MovieItemSmall
                 intent.putExtra("MOVIE_ID", movieItem.movie.id)
                 intent.putExtra("MOVIE_POSTER", movieItem.movie.poster_path)
                 intent.putExtra("MOVIE_BACKDROP", movieItem.movie.backdrop_path)
@@ -61,7 +89,7 @@ class ListActivity : AppCompatActivity() {
                 startActivity(intent)
             } catch (e: Exception) {
                 val intent = Intent(this, DetailShowActivity::class.java)
-                val showItem = item as ShowItemRow
+                val showItem = item as ShowItemSmall
                 intent.putExtra("SHOW_ID", showItem.show.id)
                 intent.putExtra("SHOW_POSTER", showItem.show.poster_path)
                 intent.putExtra("SHOW_TITLE", showItem.show.name)
@@ -70,79 +98,15 @@ class ListActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-
-        adapter.setOnItemLongClickListener { item, _ ->
-            try {
-                val movieItem = item as MovieItemRow
-                if (movieItem.movie.overview.equals("Mô tả phim đang được cập nhật")) {
-                    val dialog = AlertDialog.Builder(this)
-                        .setMessage("Xoá phim \"${movieItem.movie.title}\" khỏi list?")
-                        .setPositiveButton("Xoá") { _, _ ->
-                            val currentUser = FirebaseAuth.getInstance().currentUser
-                            val database = FirebaseDatabase.getInstance()
-                            val ref = database
-                                .getReference(currentUser!!.uid).child("list").child(
-                                    intent.getStringExtra("listID")!!
-                                ).child("movies").child(movieItem.movie.id.toString())
-                            ref.removeValue().addOnCompleteListener {
-                                Toast.makeText(
-                                    this,
-                                    "Đã xoá",
-                                    Toast.LENGTH_LONG
-                                )
-                                    .show()
-                                this.recreate()
-                            }
-                        }
-                        .setNegativeButton("Huỷ bỏ") { _, _ ->
-                            return@setNegativeButton
-                        }
-                        .setCancelable(true)
-                        .create()
-                    dialog.show()
-                }
-            } catch (e: Exception) {
-                val showItem = item as ShowItemRow
-                if (showItem.show.overview.equals("Mô tả TV show đang được cập nhật")) {
-                    val dialog = AlertDialog.Builder(this)
-                        .setMessage("Xoá show \"${showItem.show.name}\" khỏi list?")
-                        .setPositiveButton("Xoá") { _, _ ->
-                            val currentUser = FirebaseAuth.getInstance().currentUser
-                            val database = FirebaseDatabase.getInstance()
-                            val ref = database
-                                .getReference(currentUser!!.uid).child("list").child(
-                                    intent.getStringExtra("listID")!!
-                                ).child("shows").child(showItem.show.id.toString())
-                            ref.removeValue().addOnCompleteListener {
-                                Toast.makeText(
-                                    this,
-                                    "Đã xoá",
-                                    Toast.LENGTH_LONG
-                                )
-                                    .show()
-                                this.recreate()
-                            }
-                        }
-                        .setNegativeButton("Huỷ bỏ") { _, _ ->
-                            return@setNegativeButton
-                        }
-                        .setCancelable(true)
-                        .create()
-                    dialog.show()
-                }
-            }
-            false
-        }
     }
 
-    private fun fetchUserList() {
+    private fun fetchUserList(goodquality: Boolean) {
         list_list.visibility = INVISIBLE
         list_progress.visibility = VISIBLE
 
         val listId = intent.getStringExtra("listID")
         if (listId != null && listId.isNotEmpty()) {
             val listName = intent.getStringExtra("listName")
-            if (listName != null && listName.isNotEmpty()) supportActionBar?.title = listName
 
             val ref =
                 FirebaseDatabase.getInstance()
@@ -179,7 +143,7 @@ class ListActivity : AppCompatActivity() {
                             "Mô tả phim đang được cập nhật"
                         )
                         list.add(movie)
-                        adapter.add(MovieItemRow(movie))
+                        adapter.add(MovieItemRow(movie, goodquality))
                     }
                 }
             }
@@ -215,7 +179,7 @@ class ListActivity : AppCompatActivity() {
                             "Mô tả TV show đang được cập nhật"
                         )
                         listS.add(show)
-                        adapter.add(ShowItemRow(show))
+                        adapter.add(ShowItemRow(show, goodquality))
                     }
                 }
             }
@@ -233,12 +197,17 @@ class ListActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetch(type: String) {
+    private fun fetch(type: String, english: Boolean, goodquality: Boolean) {
         list_list.visibility = INVISIBLE
         list_progress.visibility = VISIBLE
 
-        val url =
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/3/list/$type?api_key=d4a7514dbdd976453d2679e036009283"
+        } else {
             "https://api.themoviedb.org/3/list/$type?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
+        }
+
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -248,7 +217,7 @@ class ListActivity : AppCompatActivity() {
                     Snackbar
                         .make(list_layout, "Không có kết nối", Snackbar.LENGTH_INDEFINITE)
                         .setAction("Thử lại") {
-                            fetch(type)
+                            fetch(type, english, goodquality)
                         }
                         .setActionTextColor(Color.WHITE)
                         .show()
@@ -264,11 +233,11 @@ class ListActivity : AppCompatActivity() {
                 list = detailList.items
 
                 runOnUiThread {
-                    supportActionBar?.title = detailList.name
+                    list_name.text = detailList.name
 
                     adapter.clear()
                     for (m in list) {
-                        adapter.add(MovieItemRow(m))
+                        adapter.add(MovieItemSmall(m, goodquality))
                     }
                     list_list.adapter = adapter
 

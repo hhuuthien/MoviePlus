@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.genre_item.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
 import kotlinx.android.synthetic.main.movie_item.view.*
 import kotlinx.android.synthetic.main.movie_item_row.view.*
+import kotlinx.android.synthetic.main.movie_item_small.view.*
 import okhttp3.*
 import java.io.IOException
 import java.io.Serializable
@@ -48,6 +49,7 @@ class MainFragment : Fragment() {
     private val adapterShowAiring = GroupAdapter<ViewHolder>()
     private val adapterShowNowShowing = GroupAdapter<ViewHolder>()
     private val adapterShowPopular = GroupAdapter<ViewHolder>()
+    private val adapterPeople = GroupAdapter<ViewHolder>()
 
     private val slideList = ArrayList<Slide>()
 
@@ -62,6 +64,10 @@ class MainFragment : Fragment() {
     }
 
     private fun init(view: View) {
+        val pref = context!!.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
+
         view.findViewById<RecyclerView>(R.id.fm_list_nowshowing).layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fm_list_upcoming).layoutManager =
@@ -80,13 +86,24 @@ class MainFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fs_list_popular).layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fp_list_popular).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-        listMovieList.add(ListMain(1, "Vũ trụ điện ảnh Marvel", R.drawable.marvel))
-        listMovieList.add(ListMain(2, "Phim Việt Nam nổi bật", R.drawable.vietnam))
-        listMovieList.add(ListMain(3, "Phim hoạt hình Pixar", R.drawable.pixar))
-        listMovieList.add(ListMain(4, "Giải Oscars phim hoạt hình hay nhất", R.drawable.oscar))
-        listMovieList.add(ListMain(5, "Giải Oscars phim hay nhất", R.drawable.oscar2))
-        listMovieList.shuffle()
+        if (english) {
+            listMovieList.add(ListMain(1, "Marvel Cinematic Universe", R.drawable.marvel))
+            listMovieList.add(ListMain(2, "Popular Vietnamese movies", R.drawable.vietnam))
+            listMovieList.add(ListMain(3, "Pixar animated movies", R.drawable.pixar))
+            listMovieList.add(ListMain(4, "Oscars for Best Animated Movies", R.drawable.oscar))
+            listMovieList.add(ListMain(5, "Oscars for Best Picture", R.drawable.oscar2))
+            listMovieList.shuffle()
+        } else {
+            listMovieList.add(ListMain(1, "Vũ trụ điện ảnh Marvel", R.drawable.marvel))
+            listMovieList.add(ListMain(2, "Phim Việt Nam nổi bật", R.drawable.vietnam))
+            listMovieList.add(ListMain(3, "Phim hoạt hình Pixar", R.drawable.pixar))
+            listMovieList.add(ListMain(4, "Giải Oscars phim hoạt hình hay nhất", R.drawable.oscar))
+            listMovieList.add(ListMain(5, "Giải Oscars phim hay nhất", R.drawable.oscar2))
+            listMovieList.shuffle()
+        }
 
         for (m in listMovieList) {
             adapterList.add(ListItemMain(m))
@@ -124,16 +141,35 @@ class MainFragment : Fragment() {
             }
         }
 
-        listMovieList2.add(ListMain(6, "Top 20 phim doanh thu cao nhất", R.drawable.top20))
-        listMovieList2.add(ListMain(7, "Top 15 phim điểm IMDb cao nhất", R.drawable.imdblist))
-        listMovieList2.add(
-            ListMain(
-                8,
-                "Top 20 phim hoạt hình doanh thu cao nhất",
-                R.drawable.animation
+        if (english) {
+            listMovieList2.add(ListMain(6, "Top 20 highest-grossing movies", R.drawable.top20))
+            listMovieList2.add(
+                ListMain(
+                    7,
+                    "Top 15 IMDb highest-rating movies",
+                    R.drawable.imdblist
+                )
             )
-        )
-        listMovieList2.shuffle()
+            listMovieList2.add(
+                ListMain(
+                    8,
+                    "Top 20 highest-grossing animated movies",
+                    R.drawable.animation
+                )
+            )
+            listMovieList2.shuffle()
+        } else {
+            listMovieList2.add(ListMain(6, "Top 20 phim doanh thu cao nhất", R.drawable.top20))
+            listMovieList2.add(ListMain(7, "Top 15 phim điểm IMDb cao nhất", R.drawable.imdblist))
+            listMovieList2.add(
+                ListMain(
+                    8,
+                    "Top 20 phim hoạt hình doanh thu cao nhất",
+                    R.drawable.animation
+                )
+            )
+            listMovieList2.shuffle()
+        }
 
 
         for (m in listMovieList2) {
@@ -163,15 +199,41 @@ class MainFragment : Fragment() {
         }
 
         val listGenre = ArrayList<Genre>()
-        listGenre.add(Genre(28, "Hành động"))
-        listGenre.add(Genre(16, "Hoạt hình"))
-        listGenre.add(Genre(878, "Khoa học viễn tưởng"))
-        listGenre.add(Genre(35, "Hài kịch"))
-        listGenre.add(Genre(10749, "Lãng mạn"))
-        listGenre.add(Genre(27, "Kinh dị"))
-        listGenre.add(Genre(18, "Chính kịch"))
-        listGenre.add(Genre(10751, "Gia đình"))
-        listGenre.add(Genre(10402, "Âm nhạc"))
+        if (!english) {
+            listGenre.add(Genre(28, "Hành động"))
+            listGenre.add(Genre(53, "Hồi hộp"))
+            listGenre.add(Genre(9648, "Bí ẩn"))
+            listGenre.add(Genre(14, "Giả tưởng"))
+            listGenre.add(Genre(36, "Lịch sử"))
+            listGenre.add(Genre(12, "Phiêu lưu"))
+            listGenre.add(Genre(80, "Tội phạm"))
+            listGenre.add(Genre(16, "Hoạt hình"))
+            listGenre.add(Genre(878, "Khoa học viễn tưởng"))
+            listGenre.add(Genre(35, "Hài kịch"))
+            listGenre.add(Genre(10749, "Lãng mạn"))
+            listGenre.add(Genre(27, "Kinh dị"))
+            listGenre.add(Genre(18, "Chính kịch"))
+            listGenre.add(Genre(10751, "Gia đình"))
+            listGenre.add(Genre(10402, "Âm nhạc"))
+            listGenre.add(Genre(10752, "Chiến tranh"))
+        } else {
+            listGenre.add(Genre(28, "Action"))
+            listGenre.add(Genre(53, "Thriller"))
+            listGenre.add(Genre(9648, "Mystery"))
+            listGenre.add(Genre(14, "Fantasy"))
+            listGenre.add(Genre(36, "History"))
+            listGenre.add(Genre(12, "Advanture"))
+            listGenre.add(Genre(80, "Crime"))
+            listGenre.add(Genre(16, "Animation"))
+            listGenre.add(Genre(878, "Sci-Fi"))
+            listGenre.add(Genre(35, "Comedy"))
+            listGenre.add(Genre(10749, "Romance"))
+            listGenre.add(Genre(27, "Horror"))
+            listGenre.add(Genre(18, "Drama"))
+            listGenre.add(Genre(10751, "Family"))
+            listGenre.add(Genre(10402, "Musical"))
+            listGenre.add(Genre(10752, "War"))
+        }
 
         listGenre.shuffle()
 
@@ -183,23 +245,21 @@ class MainFragment : Fragment() {
 
         adapterGenre.setOnItemClickListener { item, _ ->
             val myItem = item as GenreItem
-            val intent = Intent(context, ListByGenreActivity::class.java)
+            val intent = Intent(context, DiscoverActivity::class.java)
             intent.putExtra("genre_id", myItem.genre.id)
-            intent.putExtra("genre_name", myItem.genre.name)
             startActivity(intent)
         }
 
         adapterNowShowing.setOnItemClickListener { item, _ ->
             val myItem = item as MovieItem
-            startActivity(
-                Intent(context, DetailMovieActivity::class.java)
-                    .putExtra("MOVIE_ID", myItem.movie.id)
-                    .putExtra("MOVIE_POSTER", myItem.movie.poster_path)
-                    .putExtra("MOVIE_BACKDROP", myItem.movie.backdrop_path)
-                    .putExtra("MOVIE_VOTE", myItem.movie.vote_average)
-                    .putExtra("MOVIE_DATE", myItem.movie.release_date)
-                    .putExtra("MOVIE_TITLE", myItem.movie.title)
-            )
+            val intent = Intent(context, DetailMovieActivity::class.java)
+                .putExtra("MOVIE_ID", myItem.movie.id)
+                .putExtra("MOVIE_POSTER", myItem.movie.poster_path)
+                .putExtra("MOVIE_BACKDROP", myItem.movie.backdrop_path)
+                .putExtra("MOVIE_VOTE", myItem.movie.vote_average)
+                .putExtra("MOVIE_DATE", myItem.movie.release_date)
+                .putExtra("MOVIE_TITLE", myItem.movie.title)
+            startActivity(intent)
         }
 
         adapterUpComing.setOnItemClickListener { item, _ ->
@@ -261,12 +321,20 @@ class MainFragment : Fragment() {
             startActivity(intent)
         }
 
+        adapterPeople.setOnItemClickListener { item, _ ->
+            val intent = Intent(context, DetailCastActivity::class.java)
+            val myItem = item as PeopleItem
+            intent.putExtra("CAST_ID", myItem.people.id)
+            intent.putExtra("CAST_NAME", myItem.people.name)
+            intent.putExtra("CAST_POSTER", myItem.people.profile_path)
+            startActivity(intent)
+        }
 
         view.findViewById<Slider>(R.id.image_slider).setItemClickListener { _, _, i, _ ->
             try {
                 var movie = Movie("", "", 0, "", "", 0.0, "")
                 val mID = slideList[i].id
-                for (m in listMovieNowShowing) {
+                for (m in listMovieUpComing) {
                     if (m.id == mID) {
                         movie = m
                         break
@@ -288,17 +356,24 @@ class MainFragment : Fragment() {
             }
         }
 
-        fetchNowShowing(view)
-        fetchUpComing(view)
-        fetchPopular(view)
-        fetchShowAiring(view)
-        fetchShowNowShowing(view)
-        fetchShowPopular(view)
+        fetchNowShowing(view, english, goodquality)
+        fetchUpComing(view, english, goodquality)
+        fetchPopular(view, english, goodquality)
+        fetchShowAiring(view, english, goodquality)
+        fetchShowNowShowing(view, english, goodquality)
+        fetchShowPopular(view, english, goodquality)
+        fetchCast(view)
     }
 
-    private fun fetchNowShowing(view: View) {
+    private fun fetchNowShowing(view: View, english: Boolean, goodquality: Boolean) {
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&region=VN"
+        } else {
+            "https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi"
+        }
         val requestNowShowing = Request.Builder()
-            .url("https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi")
+            .url(url)
             .build()
         val client = OkHttpClient()
         client.newCall(requestNowShowing).enqueue(object : Callback {
@@ -316,30 +391,24 @@ class MainFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterNowShowing.clear()
                     for (m in listMovieNowShowing) {
-                        if (m.poster_path != null) adapterNowShowing.add(MovieItem(m))
+                        if (m.poster_path != null) adapterNowShowing.add(MovieItem(m, goodquality))
                     }
                     view.findViewById<RecyclerView>(R.id.fm_list_nowshowing).adapter =
                         adapterNowShowing
-
-                    slideList.clear()
-                    for (m in listMovieNowShowing) {
-                        slideList.add(
-                            Slide(
-                                m.id,
-                                "https://image.tmdb.org/t/p/original/${m.backdrop_path.toString()}",
-                                0
-                            )
-                        )
-                    }
-                    view.findViewById<Slider>(R.id.image_slider).addSlides(slideList)
                 }
             }
         })
     }
 
-    private fun fetchUpComing(view: View) {
+    private fun fetchUpComing(view: View, english: Boolean, goodquality: Boolean) {
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/3/movie/upcoming?api_key=d4a7514dbdd976453d2679e036009283&region=VN"
+        } else {
+            "https://api.themoviedb.org/3/movie/upcoming?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi"
+        }
         val requestUpComing = Request.Builder()
-            .url("https://api.themoviedb.org/3/movie/upcoming?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi")
+            .url(url)
             .build()
         val client = OkHttpClient()
         client.newCall(requestUpComing).enqueue(object : Callback {
@@ -358,19 +427,52 @@ class MainFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterUpComing.clear()
                     for (m in listMovieUpComing) {
-                        if (m.poster_path != null) adapterUpComing.add(MovieItem(m))
+                        if (m.poster_path != null) adapterUpComing.add(MovieItem(m, goodquality))
                     }
                     view.findViewById<RecyclerView>(R.id.fm_list_upcoming).adapter = adapterUpComing
-                }
 
+                    slideList.clear()
+                    if (goodquality) {
+                        for (m in listMovieUpComing) {
+                            if (m.backdrop_path != null) {
+                                slideList.add(
+                                    Slide(
+                                        m.id,
+                                        "https://image.tmdb.org/t/p/w500/${m.backdrop_path}",
+                                        0
+                                    )
+                                )
+                            }
+                        }
+                    } else {
+                        for (m in listMovieUpComing) {
+                            if (m.backdrop_path != null) {
+                                slideList.add(
+                                    Slide(
+                                        m.id,
+                                        "https://image.tmdb.org/t/p/w300/${m.backdrop_path}",
+                                        0
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    view.findViewById<Slider>(R.id.image_slider).addSlides(slideList)
+                }
             }
         })
     }
 
-    private fun fetchPopular(view: View) {
+    private fun fetchPopular(view: View, english: Boolean, goodquality: Boolean) {
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/3/movie/popular?api_key=d4a7514dbdd976453d2679e036009283&region=VN"
+        } else {
+            "https://api.themoviedb.org/3/movie/popular?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi"
+        }
         view.findViewById<ProgressBar>(R.id.fm_loading_popular).visibility = VISIBLE
         val request = Request.Builder()
-            .url("https://api.themoviedb.org/3/movie/popular?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
+            .url(url)
             .build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -391,7 +493,7 @@ class MainFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterPopular.clear()
                     for (m in listMoviePopular) {
-                        adapterPopular.add(MovieItem(m))
+                        adapterPopular.add(MovieItem(m, goodquality))
                     }
                     fm_list_popular.adapter = adapterPopular
                     view.findViewById<ProgressBar>(R.id.fm_loading_popular).visibility = GONE
@@ -400,9 +502,15 @@ class MainFragment : Fragment() {
         })
     }
 
-    private fun fetchShowAiring(view: View) {
+    private fun fetchShowAiring(view: View, english: Boolean, goodquality: Boolean) {
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&region=US"
+        } else {
+            "https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US"
+        }
         val request1 = Request.Builder()
-            .url("https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
+            .url(url)
             .build()
         val client = OkHttpClient()
         client.newCall(request1).enqueue(object : Callback {
@@ -420,7 +528,7 @@ class MainFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterShowAiring.clear()
                     for (m in listShowAiring) {
-                        if (m.poster_path != null) adapterShowAiring.add(ShowItem(m))
+                        if (m.poster_path != null) adapterShowAiring.add(ShowItem(m, goodquality))
                     }
                     view.findViewById<RecyclerView>(R.id.fs_list_airing).adapter = adapterShowAiring
                 }
@@ -428,9 +536,15 @@ class MainFragment : Fragment() {
         })
     }
 
-    private fun fetchShowNowShowing(view: View) {
+    private fun fetchShowNowShowing(view: View, english: Boolean, goodquality: Boolean) {
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/3/tv/on_the_air?api_key=d4a7514dbdd976453d2679e036009283&region=US"
+        } else {
+            "https://api.themoviedb.org/3/tv/on_the_air?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US"
+        }
         val request2 = Request.Builder()
-            .url("https://api.themoviedb.org/3/tv/on_the_air?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
+            .url(url)
             .build()
         val client = OkHttpClient()
         client.newCall(request2).enqueue(object : Callback {
@@ -448,7 +562,12 @@ class MainFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterShowNowShowing.clear()
                     for (m in listShowNowShowing) {
-                        if (m.poster_path != null) adapterShowNowShowing.add(ShowItem(m))
+                        if (m.poster_path != null) adapterShowNowShowing.add(
+                            ShowItem(
+                                m,
+                                goodquality
+                            )
+                        )
                     }
                     view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).adapter =
                         adapterShowNowShowing
@@ -457,9 +576,15 @@ class MainFragment : Fragment() {
         })
     }
 
-    private fun fetchShowPopular(view: View) {
+    private fun fetchShowPopular(view: View, english: Boolean, goodquality: Boolean) {
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/3/tv/popular?api_key=d4a7514dbdd976453d2679e036009283&region=US"
+        } else {
+            "https://api.themoviedb.org/3/tv/popular?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US"
+        }
         val request2 = Request.Builder()
-            .url("https://api.themoviedb.org/3/tv/popular?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US")
+            .url(url)
             .build()
         val client = OkHttpClient()
         client.newCall(request2).enqueue(object : Callback {
@@ -477,10 +602,64 @@ class MainFragment : Fragment() {
                 activity?.runOnUiThread {
                     adapterShowPopular.clear()
                     for (m in listShowPopular) {
-                        if (m.poster_path != null) adapterShowPopular.add(ShowItem(m))
+                        if (m.poster_path != null) adapterShowPopular.add(ShowItem(m, goodquality))
                     }
                     view.findViewById<RecyclerView>(R.id.fs_list_popular).adapter =
                         adapterShowPopular
+                }
+            }
+        })
+    }
+
+    private fun fetchCast(view: View) {
+        val url =
+            "https://api.themoviedb.org/3/trending/person/day?api_key=d4a7514dbdd976453d2679e036009283"
+        val request = Request.Builder()
+            .url(url)
+            .build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, TrendingPeopleClass::class.java)
+
+                fetchCast2(view, result.results)
+            }
+        })
+    }
+
+    private fun fetchCast2(view: View, listBefore: ArrayList<People>) {
+        val url =
+            "https://api.themoviedb.org/3/trending/person/day?api_key=d4a7514dbdd976453d2679e036009283&page=2"
+        val request = Request.Builder()
+            .url(url)
+            .build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, TrendingPeopleClass::class.java)
+
+                val list = result.results
+                listBefore.addAll(list)
+
+                activity?.runOnUiThread {
+                    adapterPeople.clear()
+                    for (m in listBefore) {
+                        if (m.known_for_department == "Acting") {
+                            adapterPeople.add(PeopleItem(m))
+                        }
+                    }
+                    view.findViewById<RecyclerView>(R.id.fp_list_popular).adapter =
+                        adapterPeople
                 }
             }
         })
@@ -510,7 +689,7 @@ class Cinema(
 
 class Result(val results: ArrayList<Movie>)
 
-class MovieItem(val movie: Movie) : Item<ViewHolder>() {
+class MovieItem(val movie: Movie, val goodquality: Boolean) : Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.movie_item
     }
@@ -520,13 +699,50 @@ class MovieItem(val movie: Movie) : Item<ViewHolder>() {
             if (movie.poster_path == null) {
                 viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_accent)
             } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300" + movie.poster_path)
-                    .fit()
-                    .into(viewHolder.itemView.m_poster)
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500" + movie.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.m_poster)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200" + movie.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.m_poster)
+                }
             }
 
             viewHolder.itemView.m_title.text = movie.title
+        } catch (e: Exception) {
+            Log.d("error_here", e.toString())
+        }
+    }
+}
+
+class MovieItemSmall(val movie: Movie, val goodquality: Boolean) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.movie_item_small
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        try {
+            if (movie.poster_path == null) {
+                viewHolder.itemView.m_poster_small.setImageResource(R.drawable.logo_accent)
+            } else {
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500" + movie.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.m_poster_small)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200" + movie.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.m_poster_small)
+                }
+            }
+
+            viewHolder.itemView.m_title_small.text = movie.title
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }
@@ -548,7 +764,7 @@ class ListItemMain(val list: ListMain) : Item<ViewHolder>() {
     }
 }
 
-class MovieItemRow(val movie: Movie) : Item<ViewHolder>() {
+class MovieItemRow(val movie: Movie, val goodquality: Boolean) : Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.movie_item_row
     }
@@ -558,10 +774,17 @@ class MovieItemRow(val movie: Movie) : Item<ViewHolder>() {
             if (movie.poster_path == null) {
                 viewHolder.itemView.mrow_poster.setImageResource(R.drawable.logo_accent)
             } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w200" + movie.poster_path)
-                    .fit()
-                    .into(viewHolder.itemView.mrow_poster)
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500" + movie.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.mrow_poster)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200" + movie.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.mrow_poster)
+                }
             }
 
             viewHolder.itemView.mrow_title.text = movie.title
@@ -572,7 +795,7 @@ class MovieItemRow(val movie: Movie) : Item<ViewHolder>() {
     }
 }
 
-class ShowItemRow(val show: Show) : Item<ViewHolder>() {
+class ShowItemRow(val show: Show, val goodquality: Boolean) : Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.movie_item_row
     }
@@ -582,10 +805,17 @@ class ShowItemRow(val show: Show) : Item<ViewHolder>() {
             if (show.poster_path == null) {
                 viewHolder.itemView.mrow_poster.setImageResource(R.drawable.logo_accent)
             } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300" + show.poster_path)
-                    .fit()
-                    .into(viewHolder.itemView.mrow_poster)
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500" + show.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.mrow_poster)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200" + show.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.mrow_poster)
+                }
             }
 
             viewHolder.itemView.mrow_title.text = show.name
@@ -634,7 +864,11 @@ class ResultShow(
     val results: ArrayList<Show>
 )
 
-class ShowItem(val show: Show) : Item<ViewHolder>() {
+class TrendingPeopleClass(
+    val results: ArrayList<People>
+)
+
+class ShowItem(val show: Show, val goodquality: Boolean) : Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.movie_item
     }
@@ -644,13 +878,50 @@ class ShowItem(val show: Show) : Item<ViewHolder>() {
             if (show.poster_path == null) {
                 viewHolder.itemView.m_poster.setImageResource(R.drawable.logo_accent)
             } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300" + show.poster_path)
-                    .fit()
-                    .into(viewHolder.itemView.m_poster)
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500" + show.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.m_poster)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200" + show.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.m_poster)
+                }
             }
 
             viewHolder.itemView.m_title.text = show.name
+        } catch (e: Exception) {
+            Log.d("error_here", e.toString())
+        }
+    }
+}
+
+class ShowItemSmall(val show: Show, val goodquality: Boolean) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.movie_item_small
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        try {
+            if (show.poster_path == null) {
+                viewHolder.itemView.m_poster_small.setImageResource(R.drawable.logo_accent)
+            } else {
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500" + show.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.m_poster_small)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200" + show.poster_path)
+                        .fit()
+                        .into(viewHolder.itemView.m_poster_small)
+                }
+            }
+
+            viewHolder.itemView.m_title_small.text = show.name
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }

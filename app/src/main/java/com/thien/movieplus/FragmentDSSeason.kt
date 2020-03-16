@@ -1,12 +1,10 @@
 package com.thien.movieplus
 
-import android.content.Intent
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -18,19 +16,17 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.ep_item.view.*
 import kotlinx.android.synthetic.main.fragment_ds_season.*
-import kotlinx.android.synthetic.main.season_item.view.*
+import kotlinx.android.synthetic.main.season_layout.view.*
 import okhttp3.*
 import java.io.IOException
 
 class FragmentDSSeason : Fragment() {
 
-    private var list = ArrayList<Season>()
-    private val adapter = GroupAdapter<ViewHolder>()
-
-    companion object {
-        private var showName = ""
-    }
+    private var listS = ArrayList<Season>()
+    private val adapterS = GroupAdapter<ViewHolder>()
+    private var showName = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,35 +39,73 @@ class FragmentDSSeason : Fragment() {
     }
 
     private fun init(view: View) {
+        val pref = context!!.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
+
         val showId = arguments?.getInt("s_id", -1)
         if (showId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetch(showId.toString(), view)
+            fetchSeason(showId.toString(), view, goodquality)
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         view.findViewById<RecyclerView>(R.id.ds_list_season).layoutManager = layoutManager
 
-        adapter.setOnItemClickListener { item, _ ->
+        adapterS.setOnItemClickListener { item, _ ->
             val myItem = item as SeasonItem
-            startActivity(
-                Intent(context, DetailSeasonActivity::class.java)
-                    .putExtra("showID", showId)
-                    .putExtra("showName", showName)
-                    .putExtra("seasonNumber", myItem.season.season_number)
-                    .putExtra("seasonName", myItem.season.name)
-                    .putExtra("seasonDate", myItem.season.air_date)
-                    .putExtra("seasonImage", myItem.season.poster_path)
-            )
+
+            val myLayoutInflater = layoutInflater.inflate(R.layout.season_layout, null)
+            myLayoutInflater.dss_title.text = myItem.season.name
+            myLayoutInflater.dss_title2.text = showName
+            myLayoutInflater.dss_list_ep.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            Picasso.get().load("https://image.tmdb.org/t/p/w300/${myItem.season.poster_path}")
+                .fit()
+                .into(myLayoutInflater.dss_poster)
+
+            val url =
+                "https://api.themoviedb.org/3/tv/$showId/season/${myItem.season.season_number}?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+            val request = Request.Builder().url(url).build()
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("onFetchingResult", e.toString())
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    val gSon = GsonBuilder().create()
+                    val result = gSon.fromJson(body, EpList::class.java)
+
+                    val listEp = result.episodes
+                    val adapterEp = GroupAdapter<ViewHolder>()
+
+                    activity?.runOnUiThread {
+                        try {
+                            for (m in listEp) {
+                                adapterEp.add(EpItem(m))
+                            }
+                            myLayoutInflater.dss_list_ep.adapter = adapterEp
+
+                            val dialog = AlertDialog.Builder(context)
+                                .setView(myLayoutInflater).create()
+                            dialog.show()
+                        } catch (e: Exception) {
+                            Log.d("error_here", e.toString())
+                        }
+                    }
+                }
+            })
         }
     }
 
-    private fun fetch(showId: String, view: View) {
-        view.findViewById<ProgressBar>(R.id.ds_loading_8).visibility = VISIBLE
+    private fun fetchSeason(showId: String, view: View, goodquality: Boolean) {
+        view.findViewById<ProgressBar>(R.id.ds_loading_9).visibility = View.VISIBLE
 
         val url =
-            "https://api.themoviedb.org/3/tv/${showId}?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
+            "https://api.themoviedb.org/3/tv/$showId?api_key=d4a7514dbdd976453d2679e036009283"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -84,48 +118,64 @@ class FragmentDSSeason : Fragment() {
                 val gSon = GsonBuilder().create()
                 val detailShow = gSon.fromJson(body, DeShow::class.java)
 
-                showName = detailShow.name
-
-                list.clear()
-                list = detailShow.seasons
+                showName = detailShow.name.toString()
 
                 activity?.runOnUiThread {
-                    adapter.clear()
-                    for (m in list) {
-                        adapter.add(SeasonItem(m))
-                    }
-                    ds_list_season.adapter = adapter
+                    try {
+                        listS.clear()
+                        adapterS.clear()
+                        listS = detailShow.seasons
 
-                    view.findViewById<ProgressBar>(R.id.ds_loading_8).visibility = GONE
+                        for (m in listS) {
+                            if (m.season_number != 0) {
+                                adapterS.add(SeasonItem(m, goodquality))
+                            }
+                        }
+                        ds_list_season.adapter = adapterS
+
+                    } catch (e: Exception) {
+                        Log.d("error_here", e.toString())
+                    }
+
+                    view.findViewById<ProgressBar>(R.id.ds_loading_9).visibility = View.GONE
                 }
             }
         })
     }
 }
 
-class SeasonItem(val season: Season) : Item<ViewHolder>() {
+class Ep(
+    val name: String?,
+    val air_date: String?,
+    val episode_number: Int?,
+    val overview: String?,
+    val id: Int?,
+    val season_number: Int?
+)
+
+class EpList(
+    val episodes: ArrayList<Ep>
+)
+
+class EpItem(val ep: Ep) : Item<ViewHolder>() {
     override fun getLayout(): Int {
-        return R.layout.season_item
+        return R.layout.ep_item
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         try {
-            if (season.poster_path == null) {
-                viewHolder.itemView.ss_poster.setImageResource(R.drawable.logo_accent)
+            viewHolder.itemView.ep_title.text = ep.name
+            viewHolder.itemView.ep_num.text = ep.episode_number.toString()
+            if (ep.overview == null || ep.overview == "") {
+                viewHolder.itemView.ep_overview.visibility = View.GONE
             } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300" + season.poster_path)
-                    .fit()
-                    .into(viewHolder.itemView.ss_poster)
+                viewHolder.itemView.ep_overview.text = ep.overview
             }
 
-            viewHolder.itemView.ss_title.text = season.name
-            viewHolder.itemView.ss_num_ep.text = "${season.episode_count} tập"
-
-            val day = season.air_date?.substring(8, 10)
-            val month = season.air_date?.substring(5, 7)
-            val year = season.air_date?.substring(0, 4)
-            viewHolder.itemView.ss_date.text = "$day-$month-$year"
+            val day = ep.air_date?.substring(8, 10)
+            val month = ep.air_date?.substring(5, 7)
+            val year = ep.air_date?.substring(0, 4)
+            viewHolder.itemView.ep_date.text = "$day-$month-$year"
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }

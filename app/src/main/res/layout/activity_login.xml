@@ -5,7 +5,7 @@
     android:id="@+id/log_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/splash_head"
+    android:background="@drawable/splash_head_dark"
     android:paddingLeft="24dp"
     android:paddingTop="56dp"
     android:paddingRight="24dp"
@@ -17,7 +17,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginBottom="24dp"
-        android:src="@drawable/logo_blue" />
+        android:src="@drawable/logo_accent" />
 
     <TextView
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         android:fontFamily="@font/gg_bold"
         android:gravity="center_vertical"
         android:text="Đăng nhập"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
         android:textSize="26dp" />
 
     <androidx.cardview.widget.CardView
@@ -46,7 +46,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/log_email_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -65,7 +65,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/log_password_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/log_email_parent"
@@ -86,18 +86,20 @@
 
             <Button
                 android:id="@+id/log_button"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/log_password_parent"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="40dp"
-                android:background="@drawable/bg_button"
-                android:fontFamily="@font/gg_medium"
+                android:fontFamily="@font/gg_regular"
+                android:letterSpacing="0"
                 android:text="Đăng nhập"
                 android:textAllCaps="false"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16dp" />
+                android:textColor="@color/colorBlueDark"
+                android:textSize="16dp"
+                app:backgroundTint="@color/colorWhite" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
@@ -109,6 +111,7 @@
         android:layout_above="@id/log_link_signup"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/gg_regular"
+        android:letterSpacing="0"
         android:text="Lấy lại mật khẩu"
         android:textAllCaps="false"
         android:textColor="@color/colorAccentDark"
@@ -122,6 +125,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/gg_regular"
+        android:letterSpacing="0"
         android:text="Tạo tài khoản mới"
         android:textAllCaps="false"
         android:textColor="@color/colorAccentDark"

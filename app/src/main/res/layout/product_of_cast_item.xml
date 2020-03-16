@@ -22,8 +22,9 @@
             <ImageView
                 android:id="@+id/poc_poster"
                 android:layout_width="130dp"
-                android:src="@drawable/logo_blue"
-                android:layout_height="195dp" />
+                android:layout_height="195dp"
+                android:background="@color/colorAccentDark"
+                android:src="@drawable/logo_accent" />
 
             <TextView
                 android:id="@+id/poc_title"

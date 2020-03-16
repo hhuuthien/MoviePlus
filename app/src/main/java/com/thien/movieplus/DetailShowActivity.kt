@@ -1,8 +1,6 @@
 package com.thien.movieplus
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -18,7 +16,6 @@ import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_detail_show.*
 import kotlinx.android.synthetic.main.list_create_layout.view.*
-import kotlinx.android.synthetic.main.progress.view.*
 import okhttp3.*
 import java.io.IOException
 
@@ -47,6 +44,10 @@ class DetailShowActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_show)
 
+        val pref = this.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
+
         showId = intent.getIntExtra("SHOW_ID", -1)
         if (showId == -1) {
             Toast.makeText(applicationContext, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
@@ -54,35 +55,51 @@ class DetailShowActivity : AppCompatActivity(),
             //set Available Info
             val showPoster = intent.getStringExtra("SHOW_POSTER")
             if (showPoster == null || showPoster.isEmpty()) {
-                ds_poster.setImageResource(R.drawable.logo_blue)
+                ds_poster.setImageResource(R.drawable.logo_accent)
             } else {
                 posterPath = showPoster
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500$showPoster")
+                        .fit()
+                        .into(ds_poster)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200$showPoster")
+                        .fit()
+                        .into(ds_poster)
+                }
+
                 Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300$showPoster")
-                    .fit()
-                    .into(ds_poster)
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300$showPoster")
+                    .load("https://image.tmdb.org/t/p/w200$showPoster")
                     .transform(BlurTransformation(this, 22, 1))
-                    .into(blurImageViewShow)
+                    .into(ds_blurImageView)
             }
 
             val showBackdrop = intent.getStringExtra("SHOW_BACKDROP")
-//            if (showBackdrop == null || showBackdrop.isEmpty()) {
-//                ds_backdrop.setImageResource(R.drawable.logo_blue)
-//            }
+            if (showBackdrop == null || showBackdrop.isEmpty()) {
+                ds_backdrop.setImageResource(R.drawable.logo_accent)
+            } else {
+                backdropPath = showBackdrop
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500$showBackdrop")
+                        .fit()
+                        .into(ds_backdrop)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200$showBackdrop")
+                        .fit()
+                        .into(ds_backdrop)
+                }
+            }
 
             val showTitle = intent.getStringExtra("SHOW_TITLE")
             if (showTitle != null && showTitle.isNotEmpty()) {
                 ds_title.text = showTitle
             }
 
-            val showVote = intent.getDoubleExtra("SHOW_VOTE", -1.0)
-            if (showVote == -1.0 || showVote == 0.0) {
-                ds_star.text = "null"
-            } else {
-                ds_star.text = showVote.toString()
-            }
+            fetchExID(showId.toString())
         }
 
         ds_navigation.setOnNavigationItemSelectedListener(this)
@@ -96,14 +113,14 @@ class DetailShowActivity : AppCompatActivity(),
         fdscast.arguments = bundle
         val fdsimage = FragmentDSImage()
         fdsimage.arguments = bundle
-        val fdsseason = FragmentDSSeason()
-        fdsseason.arguments = bundle
+        val fdssaeason = FragmentDSSeason()
+        fdssaeason.arguments = bundle
 
         val adapter = PagerAdapter(supportFragmentManager)
         adapter.addFrag(fdsinfo)
         adapter.addFrag(fdscast)
         adapter.addFrag(fdsimage)
-        adapter.addFrag(fdsseason)
+        adapter.addFrag(fdssaeason)
         ds_view_pager.adapter = adapter
 
         ds_view_pager.currentItem = 0
@@ -131,14 +148,19 @@ class DetailShowActivity : AppCompatActivity(),
             Toast.makeText(this, "ID: $showId", Toast.LENGTH_LONG).show()
         }
 
-        ds_fab_love.setOnClickListener {
-            fetchTrailer(showId.toString())
-        }
-
         ds_poster.setOnClickListener {
             if (posterPath != "") {
                 val intent = Intent(this, PictureActivity::class.java)
                 intent.putExtra("imageString", posterPath)
+                startActivity(intent)
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+            }
+        }
+
+        ds_backdrop.setOnClickListener {
+            if (backdropPath != "") {
+                val intent = Intent(this, PictureActivity::class.java)
+                intent.putExtra("imageString", backdropPath)
                 startActivity(intent)
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             }
@@ -320,6 +342,69 @@ class DetailShowActivity : AppCompatActivity(),
 //        }
     }
 
+    private fun fetchExID(id: String) {
+        val url =
+            "https://api.themoviedb.org/3/tv/$id/external_ids?api_key=d4a7514dbdd976453d2679e036009283&language=en-US"
+
+        val request = Request.Builder().url(url).build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("onFetchingResult", e.toString())
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, ShowID::class.java)
+
+                runOnUiThread {
+                    val imdb = result.imdb_id
+                    if (imdb == null || imdb == "") {
+                        ds_star.text = "n/a"
+                    } else {
+                        fetchRapidAPI(imdb)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun fetchRapidAPI(imdb: String) {
+        val client = OkHttpClient()
+
+        val request: Request = Request.Builder()
+            .url("https://movie-database-imdb-alternative.p.rapidapi.com/?i=$imdb&r=json")
+            .get()
+            .addHeader("x-rapidapi-host", "movie-database-imdb-alternative.p.rapidapi.com")
+            .addHeader("x-rapidapi-key", "c9056de874msh171226ab4868aecp195d81jsn711cc91d5756")
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("onFetchingResult", e.toString())
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, DetailShowRapidAPI::class.java)
+
+                runOnUiThread {
+                    try {
+                        if (result.imdbRating == null || result.imdbRating == "N/A") {
+                            ds_star.text = "n/a"
+                        } else {
+                            ds_star.text = result.imdbRating
+                        }
+                    } catch (ex: java.lang.Exception) {
+                        Log.d("error", ex.toString())
+                    }
+                }
+            }
+        })
+    }
+
     private fun createList() {
         try {
             val myLayout = layoutInflater.inflate(R.layout.list_create_layout, null)
@@ -346,92 +431,29 @@ class DetailShowActivity : AppCompatActivity(),
             Log.d("error", e.toString())
         }
     }
-
-    private fun fetchTrailer(showId: String) {
-        var isTrailer = false
-
-        val myLayout = layoutInflater.inflate(R.layout.progress, null)
-        myLayout.p_text.text = "Đang tìm trailer ..."
-        val dialog = AlertDialog.Builder(this)
-            .setView(myLayout)
-            .create()
-        dialog.show()
-
-        val url =
-            "https://api.themoviedb.org/3/tv/$showId/videos?api_key=d4a7514dbdd976453d2679e036009283"
-        val request = Request.Builder().url(url).build()
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, VideoResult::class.java)
-
-                val listVideo = result.results
-                for (video in listVideo) {
-                    if (video.site == "YouTube" && video.name.contains("trailer", true)) {
-                        isTrailer = true
-                        val appIntent =
-                            Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:${video.key}"))
-                        val webIntent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("http://www.youtube.com/watch?v=${video.key}")
-                        )
-                        try {
-                            startActivity(appIntent)
-                            dialog.dismiss()
-                            return
-                        } catch (ex: ActivityNotFoundException) {
-                            startActivity(webIntent)
-                            dialog.dismiss()
-                            return
-                        }
-                    }
-                }
-                if (!isTrailer) {
-                    runOnUiThread {
-                        dialog.dismiss()
-                        Toast.makeText(
-                            this@DetailShowActivity,
-                            "Không tìm thấy trailer",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            }
-        })
-    }
 }
 
 class DeShow(
     val backdrop_path: String,
-    val episode_run_time: List<Int>,
     val first_air_date: String,
-    val genres: ArrayList<Genre>,
     val id: Int,
-    val last_air_date: String,
     val last_episode_to_air: Ep?,
     val next_episode_to_air: Ep?,
-    val name: String,
+    val name: String?,
     val number_of_episodes: Int,
-    val original_language: String,
     val overview: String?,
     val poster_path: String,
-    val vote_average: Double?,
-    val vote_count: Int,
     val homepage: String?,
     val seasons: ArrayList<Season>,
     val production_companies: ArrayList<Company>?
 )
 
-class Ep(
-    val name: String?,
-    val air_date: String?,
-    val episode_number: Int?,
-    val season_number: Int?
+class ShowID(
+    val imdb_id: String?
 )
 
+class DetailShowRapidAPI(
+    val Director: String?,
+    val Genre: String?,
+    val imdbRating: String?
+)

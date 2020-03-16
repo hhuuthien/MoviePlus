@@ -21,6 +21,5 @@
     <item
         android:id="@+id/bottom_show_nav_season"
         android:icon="@drawable/ic_season"
-        android:title="Seasons" />
-
+        android:title="Season" />
 </menu>

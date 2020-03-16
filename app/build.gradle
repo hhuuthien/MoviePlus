@@ -51,6 +51,7 @@ dependencies {
     implementation 'org.sufficientlysecure:html-textview:3.9'
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.6.2'
+    implementation 'com.github.arcadefire:nice-spinner:1.4.4'
 }
 
 apply plugin: 'com.google.gms.google-services'

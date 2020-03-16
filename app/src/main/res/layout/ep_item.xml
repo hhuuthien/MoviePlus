@@ -3,17 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="3dp"
-    android:elevation="2dp"
-    android:outlineProvider="bounds"
-    android:padding="5dp"
-    tools:ignore="SpUsage, contentDescription">
+    android:layout_margin="4dp"
+    tools:ignore="SpUsage,ContentDescription">
 
     <TextView
-        android:id="@+id/ep_name"
+        android:id="@+id/ep_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/ep_title"
+        android:layout_alignBottom="@id/ep_date"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:fontFamily="@font/gg_bold"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorWhite"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/ep_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
+        android:layout_toEndOf="@id/ep_num"
+        android:fontFamily="@font/gg_bold"
         android:textColor="@color/colorWhite"
         android:textSize="14dp" />
 
@@ -21,12 +33,26 @@
         android:id="@+id/ep_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ep_name"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:drawableStart="@drawable/ic_date"
+        android:layout_below="@id/ep_title"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toEndOf="@id/ep_num"
+        android:drawableStart="@drawable/ic_date3"
         android:drawablePadding="5dp"
+        android:fontFamily="@font/gg_regular"
+        android:textColor="@color/colorAccent2"
+        android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/ep_overview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ep_date"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/gg_regular"
         android:textColor="@color/colorAccent2"
         android:textSize="12dp" />
 </RelativeLayout>

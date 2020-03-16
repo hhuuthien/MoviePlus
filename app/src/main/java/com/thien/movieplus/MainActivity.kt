@@ -49,6 +49,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_news -> {
                 startActivity(Intent(this, NewsActivity::class.java))
             }
+            R.id.nav_setting -> {
+                startActivity(Intent(this, SettingActivity::class.java))
+            }
+            R.id.nav_search -> {
+                startActivity(Intent(this, SearchActivity::class.java))
+            }
+            R.id.nav_discover -> {
+                startActivity(Intent(this, DiscoverActivity::class.java))
+            }
         }
         m_layout_drawer.closeDrawer(GravityCompat.START)
         return true

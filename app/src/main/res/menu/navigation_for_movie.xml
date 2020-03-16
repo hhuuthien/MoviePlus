@@ -17,4 +17,9 @@
         android:id="@+id/bottom_movie_nav_image"
         android:icon="@drawable/ic_image"
         android:title="Hình ảnh" />
+
+    <item
+        android:id="@+id/bottom_movie_nav_video"
+        android:icon="@drawable/ic_slow_motion_video"
+        android:title="Videos" />
 </menu>

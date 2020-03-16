@@ -40,6 +40,10 @@ class FragmentAccountShow : Fragment() {
         view.findViewById<TextView>(R.id.fas_text2).visibility = View.VISIBLE
         view.findViewById<RecyclerView>(R.id.fas_list).visibility = View.GONE
 
+        val pref = context!!.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
+
         adapterShow.setOnItemClickListener { item, _ ->
             val intent = Intent(context, DetailShowActivity::class.java)
             val showItem = item as ShowItem
@@ -51,10 +55,10 @@ class FragmentAccountShow : Fragment() {
             startActivity(intent)
         }
 
-        fetchShow(view)
+        fetchShow(view, goodquality)
     }
 
-    private fun fetchShow(view: View) {
+    private fun fetchShow(view: View, goodquality: Boolean) {
         try {
             val currentUser = FirebaseAuth.getInstance().currentUser
             val myRef =
@@ -88,7 +92,7 @@ class FragmentAccountShow : Fragment() {
                             ""
                         )
                         listShow.add(show)
-                        adapterShow.add(ShowItem(show))
+                        adapterShow.add(ShowItem(show, goodquality))
                         adapterShow.notifyDataSetChanged()
                     }
 

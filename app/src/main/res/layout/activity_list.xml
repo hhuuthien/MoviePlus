@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_layout"
     android:layout_width="match_parent"
@@ -7,18 +8,69 @@
     android:background="@color/colorBlueDark"
     tools:context=".ListActivity">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/list_img_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/colorBlueDark"
+        android:elevation="8dp"
+        app:cardCornerRadius="30dp">
+
+        <ImageView
+            android:id="@+id/list_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@color/colorBlueDark"
+            tools:ignore="ContentDescription" />
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/list_img2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignStart="@id/list_img_parent"
+        android:layout_alignTop="@id/list_img_parent"
+        android:layout_alignEnd="@id/list_img_parent"
+        android:layout_alignBottom="@id/list_img_parent"
+        android:elevation="10dp"
+        android:src="@drawable/bg_blur4" />
+
+    <TextView
+        android:id="@+id/list_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignStart="@id/list_img_parent"
+        android:layout_alignTop="@id/list_img_parent"
+        android:layout_alignEnd="@id/list_img_parent"
+        android:layout_alignBottom="@id/list_img_parent"
+        android:elevation="10dp"
+        android:fontFamily="@font/gg_bold"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.2"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="22dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="12dp"
+        android:layout_below="@id/list_img_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
         android:scrollbars="horizontal" />
 
     <ProgressBar
         android:id="@+id/list_progress"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/list_img_parent"
         android:layout_centerHorizontal="true"
-        android:layout_margin="12dp"
+        android:layout_margin="15dp"
         android:theme="@style/MyProgressBar" />
 </RelativeLayout>

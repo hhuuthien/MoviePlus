@@ -40,11 +40,15 @@ class FragmentDMImage : Fragment() {
     }
 
     private fun init(view: View) {
+        val pref = context!!.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+        val goodquality = pref.getBoolean("goodquality", true)
+
         val movieId = arguments?.getInt("m_id", -1)
         if (movieId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetch(movieId.toString(), view)
+            fetch(movieId.toString(), view, goodquality)
         }
 
         val layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
@@ -76,10 +80,10 @@ class FragmentDMImage : Fragment() {
         }
     }
 
-    private fun fetch(movieId: String, view: View) {
+    private fun fetch(movieId: String, view: View, goodquality: Boolean) {
         view.findViewById<ProgressBar>(R.id.dm_loading_3).visibility = View.VISIBLE
         val url =
-            "https://api.themoviedb.org/3/movie/$movieId/images?api_key=d4a7514dbdd976453d2679e036009283&include_image_language=vi,en"
+            "https://api.themoviedb.org/3/movie/$movieId/images?api_key=d4a7514dbdd976453d2679e036009283&include_image_language=vi,en,null"
         val request = Request.Builder().url(url).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
@@ -106,26 +110,26 @@ class FragmentDMImage : Fragment() {
                     when {
                         a < b -> {
                             for (m in 0 until a) {
-                                adapterImage.add(ImageItem(listPoster[m]))
-                                adapterImage.add(ImageItem(listBackdrop[m]))
+                                adapterImage.add(ImageItem(listPoster[m], goodquality))
+                                adapterImage.add(ImageItem(listBackdrop[m], goodquality))
                             }
                             for (m in a until b) {
-                                adapterImage.add(ImageItem(listBackdrop[m]))
+                                adapterImage.add(ImageItem(listBackdrop[m], goodquality))
                             }
                         }
                         a > b -> {
                             for (m in 0 until b) {
-                                adapterImage.add(ImageItem(listPoster[m]))
-                                adapterImage.add(ImageItem(listBackdrop[m]))
+                                adapterImage.add(ImageItem(listPoster[m], goodquality))
+                                adapterImage.add(ImageItem(listBackdrop[m], goodquality))
                             }
                             for (m in b until a) {
-                                adapterImage.add(ImageItem(listPoster[m]))
+                                adapterImage.add(ImageItem(listPoster[m], goodquality))
                             }
                         }
                         else -> {
                             for (m in 0 until a) {
-                                adapterImage.add(ImageItem(listPoster[m]))
-                                adapterImage.add(ImageItem(listBackdrop[m]))
+                                adapterImage.add(ImageItem(listPoster[m], goodquality))
+                                adapterImage.add(ImageItem(listBackdrop[m], goodquality))
                             }
                         }
                     }
@@ -143,7 +147,7 @@ class ResultMovieImage(
     val posters: List<Image>?
 )
 
-class ImageItem(val image: Image) : Item<ViewHolder>() {
+class ImageItem(val image: Image, val goodquality: Boolean) : Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.image_item
     }
@@ -153,9 +157,41 @@ class ImageItem(val image: Image) : Item<ViewHolder>() {
             if (image.file_path == null) {
                 viewHolder.itemView.i_image.setImageResource(R.drawable.logo_accent)
             } else {
-                Picasso.get()
-                    .load("https://image.tmdb.org/t/p/w300" + image.file_path)
-                    .into(viewHolder.itemView.i_image)
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500" + image.file_path)
+                        .into(viewHolder.itemView.i_image)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200" + image.file_path)
+                        .into(viewHolder.itemView.i_image)
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("error_here", e.toString())
+        }
+    }
+}
+
+class ImageItem2(val image: Image, val goodquality: Boolean) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.image_item2
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        try {
+            if (image.file_path == null) {
+                viewHolder.itemView.i_image.setImageResource(R.drawable.logo_accent)
+            } else {
+                if (goodquality) {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w500" + image.file_path)
+                        .into(viewHolder.itemView.i_image)
+                } else {
+                    Picasso.get()
+                        .load("https://image.tmdb.org/t/p/w200" + image.file_path)
+                        .into(viewHolder.itemView.i_image)
+                }
             }
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
@@ -164,5 +200,6 @@ class ImageItem(val image: Image) : Item<ViewHolder>() {
 }
 
 class Image(
-    val file_path: String?
+    val file_path: String?,
+    val aspect_ratio: Double?
 )

@@ -289,5 +289,33 @@
                 android:layout_marginBottom="8dp"
                 android:scrollbars="horizontal" />
         </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fp_layout_popular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fs_layout_popular"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/fp_text_popular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:fontFamily="@font/gg_bold"
+                android:text="Trending people"
+                android:textColor="@color/colorWhite"
+                android:textSize="18dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fp_list_popular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fp_text_popular"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:scrollbars="horizontal" />
+        </RelativeLayout>
     </RelativeLayout>
 </ScrollView>

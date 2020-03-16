@@ -8,7 +8,7 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/c_poster"
         android:layout_width="85dp"
-        android:src="@drawable/logo_blue"
+        android:src="@drawable/logo_accent"
         android:layout_height="85dp"
         android:layout_margin="5dp" />
 

@@ -5,7 +5,7 @@
     android:id="@+id/sign_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/splash_head"
+    android:background="@drawable/splash_head_dark"
     android:paddingLeft="24dp"
     android:paddingTop="56dp"
     android:paddingRight="24dp"
@@ -17,7 +17,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginBottom="24dp"
-        android:src="@drawable/logo_blue" />
+        android:src="@drawable/logo_accent" />
 
     <TextView
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         android:fontFamily="@font/gg_bold"
         android:gravity="center_vertical"
         android:text="Tạo tài khoản"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
         android:textSize="26dp" />
 
     <androidx.cardview.widget.CardView
@@ -46,7 +46,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sign_email_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -65,7 +65,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/sign_password_parent"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sign_email_parent"
@@ -92,12 +92,13 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="40dp"
-                android:background="@drawable/bg_button"
-                android:fontFamily="@font/gg_medium"
+                android:fontFamily="@font/gg_regular"
+                android:letterSpacing="0"
                 android:text="Tạo tài khoản"
                 android:textAllCaps="false"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16dp" />
+                android:textColor="@color/colorBlueDark"
+                android:textSize="16dp"
+                app:backgroundTint="@color/colorWhite" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
@@ -109,6 +110,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/gg_regular"
+        android:letterSpacing="0"
         android:text="Đăng nhập"
         android:textAllCaps="false"
         android:textColor="@color/colorAccentDark"

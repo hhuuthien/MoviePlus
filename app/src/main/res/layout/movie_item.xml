@@ -20,7 +20,8 @@
             android:id="@+id/m_poster"
             android:layout_width="130dp"
             android:layout_height="195dp"
-            android:src="@drawable/logo_blue" />
+            android:background="@color/colorAccentDark"
+            android:src="@drawable/logo_accent" />
 
         <TextView
             android:id="@+id/m_title"

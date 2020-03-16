@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="12dp"
+    android:elevation="8dp"
+    app:cardCornerRadius="10dp">
+
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlueDark"
+        tools:ignore="SpUsage, contentDescription">
+
+        <ImageView
+            android:id="@+id/m_poster_small"
+            android:layout_width="110dp"
+            android:layout_height="165dp"
+            android:background="@color/colorAccentDark"
+            android:src="@drawable/logo_accent" />
+
+        <TextView
+            android:id="@+id/m_title_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/m_poster_small"
+            android:background="@drawable/bg_title"
+            android:ellipsize="end"
+            android:fontFamily="@font/gg_regular"
+            android:gravity="bottom"
+            android:lineSpacingMultiplier="1.2"
+            android:lines="1"
+            android:maxLines="1"
+            android:padding="6dp"
+            android:text=""
+            android:textColor="@color/colorWhite"
+            android:textSize="11dp" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

@@ -18,6 +18,7 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.cast_item.view.*
 import kotlinx.android.synthetic.main.fragment_dm_cast.*
+import kotlinx.android.synthetic.main.people_item.view.*
 import okhttp3.*
 import java.io.IOException
 
@@ -37,11 +38,14 @@ class FragmentDMCast : Fragment() {
     }
 
     private fun init(view: View) {
+        val pref = context!!.getSharedPreferences("SettingPref", 0)
+        val english = pref.getBoolean("english", false)
+
         val movieId = arguments?.getInt("m_id", -1)
         if (movieId == -1) {
             Toast.makeText(context, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
         } else {
-            fetchCast(movieId.toString(), view)
+            fetchCast(movieId.toString(), view, english)
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -57,11 +61,17 @@ class FragmentDMCast : Fragment() {
         }
     }
 
-    private fun fetchCast(movieId: String, view: View) {
+    private fun fetchCast(movieId: String, view: View, english: Boolean) {
         view.findViewById<ProgressBar>(R.id.dm_loading_2).visibility = View.VISIBLE
-        val url =
+
+        var u = ""
+        u = if (english) {
+            "https://api.themoviedb.org/3/movie/$movieId/credits?api_key=d4a7514dbdd976453d2679e036009283"
+        } else {
             "https://api.themoviedb.org/3/movie/$movieId/credits?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
-        val request = Request.Builder().url(url).build()
+        }
+
+        val request = Request.Builder().url(u).build()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -96,6 +106,13 @@ class Cast(
     val character: String
 )
 
+class People(
+    val name: String,
+    val profile_path: String?,
+    val id: Int,
+    val known_for_department: String?
+)
+
 class CastItem(val cast: Cast) : Item<ViewHolder>() {
     override fun getLayout(): Int {
         return R.layout.cast_item
@@ -113,6 +130,29 @@ class CastItem(val cast: Cast) : Item<ViewHolder>() {
                     .load("https://image.tmdb.org/t/p/w300" + cast.profile_path)
                     .noFade()
                     .into(viewHolder.itemView.c_poster)
+            }
+        } catch (e: Exception) {
+            Log.d("error_here", e.toString())
+        }
+    }
+}
+
+class PeopleItem(val people: People) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.people_item
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        viewHolder.itemView.p_name.text = people.name
+
+        try {
+            if (people.profile_path == null) {
+                viewHolder.itemView.p_poster.setImageResource(R.drawable.logo_accent)
+            } else {
+                Picasso.get()
+                    .load("https://image.tmdb.org/t/p/w300" + people.profile_path)
+                    .noFade()
+                    .into(viewHolder.itemView.p_poster)
             }
         } catch (e: Exception) {
             Log.d("error_here", e.toString())

@@ -4,14 +4,14 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dc_list_show"
+        android:id="@+id/dm_list_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="13dp"
         android:scrollbars="vertical" />
 
     <ProgressBar
-        android:id="@+id/dc_loading_3"
+        android:id="@+id/dm_loading_9"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
