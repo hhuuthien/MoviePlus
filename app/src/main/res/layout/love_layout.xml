@@ -10,8 +10,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:drawablePadding="8dp"
+        android:drawableTint="@color/colorBlueDark"
         android:fontFamily="@font/gg_regular"
-        android:text="Tải hình ảnh"
+        android:gravity="center_vertical"
         android:textColor="@color/colorBlueDark"
         android:textSize="14dp"
         tools:ignore="HardcodedText,SpUsage" />

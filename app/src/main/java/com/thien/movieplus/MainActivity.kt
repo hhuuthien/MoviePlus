@@ -1,10 +1,13 @@
 package com.thien.movieplus
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -13,6 +16,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -24,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -103,8 +108,40 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.menu_search -> {
                 startActivity(Intent(this, SearchActivity::class.java))
             }
+            R.id.menu_search_voice -> {
+                askSpeechInput()
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun askSpeechInput() {
+        if (!SpeechRecognizer.isRecognitionAvailable(this)) {
+            val errorString = "Thiết bị của bạn không hỗ trợ tìm kiếm bằng giọng nói"
+            Toast.makeText(this, errorString, Toast.LENGTH_LONG).show()
+        } else {
+            //ok -> call dialog
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Bạn muốn tìm gì?")
+            startActivityForResult(intent, 11)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 11 && resultCode == Activity.RESULT_OK) {
+            val results = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            val key = results!![0].toString()
+            startActivity(
+                Intent(this, SearchActivity::class.java)
+                    .putExtra("voice_key", key)
+            )
+        }
     }
 
     private fun isNetworkConnected(): Boolean {
@@ -196,10 +233,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val headerView: View = navigationView.getHeaderView(0)
                 val imageView = headerView.findViewById(R.id.nh_image) as ImageView
 
-                Picasso.get()
-                    .load(link)
-                    .fit()
-                    .into(imageView)
+                if (link == "null" || link == "") {
+                    imageView.setImageResource(R.drawable.logo_accent)
+                } else {
+                    Picasso.get()
+                        .load(link)
+                        .fit()
+                        .into(imageView)
+                }
             }
         }
         ref.addValueEventListener(listener)

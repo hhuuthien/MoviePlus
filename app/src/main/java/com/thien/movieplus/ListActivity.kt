@@ -1,7 +1,6 @@
 package com.thien.movieplus
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -9,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -212,16 +210,6 @@ class ListActivity : AppCompatActivity() {
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                runOnUiThread {
-                    list_progress.visibility = INVISIBLE
-                    Snackbar
-                        .make(list_layout, "Không có kết nối", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("Thử lại") {
-                            fetch(type, english, goodquality)
-                        }
-                        .setActionTextColor(Color.WHITE)
-                        .show()
-                }
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -252,4 +240,19 @@ class ListActivity : AppCompatActivity() {
 class MyList(
     val name: String,
     val items: ArrayList<Movie>
+)
+
+class MyListV4(
+    val name: String,
+    val results: ArrayList<Movie>
+)
+
+class MyListShow(
+    val name: String,
+    val items: ArrayList<Show>
+)
+
+class MyListShowV4(
+    val name: String,
+    val results: ArrayList<Show>
 )

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    tools:ignore="Autofill,HardcodedText,SpUsage">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/cn_name_parent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <EditText
+            android:id="@+id/cn_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorWhite"
+            android:fontFamily="@font/gg_regular"
+            android:hint="Tên của bạn"
+            android:inputType="textEmailAddress"
+            android:textSize="14dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/cn_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cn_name_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/gg_regular"
+        android:letterSpacing="0"
+        android:text="Đổi tên"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBlueDark"
+        android:textSize="14dp"
+        app:backgroundTint="@color/colorWhite" />
+</RelativeLayout>

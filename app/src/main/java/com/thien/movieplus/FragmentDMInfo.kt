@@ -92,10 +92,6 @@ class FragmentDMInfo : Fragment() {
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
-                activity?.runOnUiThread {
-                    view.findViewById<ProgressBar>(R.id.dm_loading_1).visibility = GONE
-                }
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -160,7 +156,6 @@ class FragmentDMInfo : Fragment() {
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -201,7 +196,6 @@ class FragmentDMInfo : Fragment() {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {

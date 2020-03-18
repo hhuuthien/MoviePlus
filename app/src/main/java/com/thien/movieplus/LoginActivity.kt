@@ -1,13 +1,13 @@
 package com.thien.movieplus
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.email_layout.view.*
 import kotlinx.android.synthetic.main.progress.view.*
 
 class LoginActivity : AppCompatActivity() {
@@ -25,35 +25,30 @@ class LoginActivity : AppCompatActivity() {
 
         log_button.setOnClickListener {
             if (log_email.text.isEmpty() || log_password.text.isEmpty()) {
-                Snackbar.make(
-                    log_layout,
-                    "Không được để trống email hoặc mật khẩu",
-                    Snackbar.LENGTH_LONG
-                ).show()
+                Toast.makeText(this, "Không được để trống email hoặc mật khẩu", Toast.LENGTH_LONG)
+                    .show()
             } else {
                 login(log_email.text.toString(), log_password.text.toString())
             }
         }
 
         log_forgot_password.setOnClickListener {
-            if (log_email.text.isEmpty()) {
-                Snackbar.make(
-                    log_layout,
-                    "Hãy nhập địa chỉ email để lấy lại mật khẩu",
-                    Snackbar.LENGTH_LONG
-                ).show()
-            } else {
-                val dialog = AlertDialog.Builder(this)
-                    .setMessage("Movie Plus sẽ gửi một email đến địa chỉ ${log_email.text}. Bạn hãy kiểm tra hộp thư của mình và làm theo hướng dẫn trong email để khôi phục mật khẩu.")
-                    .setPositiveButton("Đồng ý") { _, _ ->
-                        sendEmail(log_email.text.toString())
-                    }
-                    .setNegativeButton("Nhập email khác") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .setCancelable(true)
-                    .create()
-                dialog.show()
+            val myLayoutInflater = layoutInflater.inflate(R.layout.email_layout, null)
+
+            val dialog = AlertDialog.Builder(this)
+                .setView(myLayoutInflater)
+                .setCancelable(true)
+                .show()
+
+            myLayoutInflater.el_button.setOnClickListener {
+                val em = myLayoutInflater.el_email.text.toString().trim()
+                if (em.isNotEmpty() && em.isNotBlank()) {
+                    sendEmail(em)
+                    dialog.dismiss()
+                } else {
+                    myLayoutInflater.el_email.setText("")
+                    Toast.makeText(this, "Vui lòng nhập email", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
@@ -65,8 +60,24 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Đã gửi email", Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(this, "Có lỗi xảy ra. Vui lòng thử lại", Toast.LENGTH_LONG)
-                        .show()
+                    val errorString = task.exception.toString()
+                    when {
+                        errorString.contains("The email address is badly formatted") -> {
+                            Toast.makeText(this, "Email không đúng định dạng", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                        errorString.contains("There is no user record") -> {
+                            Toast.makeText(this, "Email không tồn tại", Toast.LENGTH_LONG).show()
+                        }
+                        else -> {
+                            Toast.makeText(
+                                    this,
+                                    "Có lỗi xảy ra. Vui lòng thử lại",
+                                    Toast.LENGTH_LONG
+                                )
+                                .show()
+                        }
+                    }
                 }
             }
     }

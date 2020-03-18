@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -45,17 +46,20 @@
 
         <Button
             android:id="@+id/ooops_button"
-            android:layout_width="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/ooops_content_2"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="30dp"
             android:fontFamily="@font/gg_regular"
+            android:letterSpacing="0"
             android:text="Tải lại trang"
             android:textAllCaps="false"
             android:textColor="@color/colorBlueDark"
-            android:textSize="16dp"
+            android:textSize="14dp"
+            app:backgroundTint="@color/colorWhite"
             tools:ignore="HardcodedText,SpUsage" />
     </RelativeLayout>
 </RelativeLayout>

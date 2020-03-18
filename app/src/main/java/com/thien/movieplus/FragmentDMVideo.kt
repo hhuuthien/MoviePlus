@@ -75,7 +75,6 @@ class FragmentDMVideo : Fragment() {
         val client1 = OkHttpClient()
         client1.newCall(request1).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -102,7 +101,6 @@ class FragmentDMVideo : Fragment() {
         val client2 = OkHttpClient()
         client2.newCall(request2).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {

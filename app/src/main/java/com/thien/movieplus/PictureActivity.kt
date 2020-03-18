@@ -15,10 +15,15 @@ class PictureActivity : AppCompatActivity() {
         setContentView(R.layout.activity_picture)
 
         val path = intent.getStringExtra("imageString")
-
-        Picasso.get()
-            .load("https://image.tmdb.org/t/p/original$path")
-            .into(picture_frame)
+        if (path != null) {
+            Picasso.get()
+                .load("https://image.tmdb.org/t/p/original$path")
+                .into(picture_frame)
+        } else {
+            Picasso.get()
+                .load(intent.getStringExtra("avatarString"))
+                .into(picture_frame)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

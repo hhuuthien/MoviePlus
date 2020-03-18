@@ -1,13 +1,11 @@
 package com.thien.movieplus
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,19 +37,22 @@ class SearchActivity : AppCompatActivity() {
         val english = pref.getBoolean("english", false)
         val goodquality = pref.getBoolean("goodquality", true)
 
+        val voiceKey = intent.getStringExtra("voice_key")
+        if (voiceKey != null && voiceKey.isNotBlank() && voiceKey.isNotEmpty()) {
+            s_key.setText(voiceKey.trim())
+            val stringToSearch = s_key.text.toString()
+            fetchSearch(stringToSearch, 1, english)
+        } else {
+            s_key.text = null
+        }
+
         listSearch.clear()
         adapterSearch.clear()
 
         s_noti.visibility = View.GONE
         s_list.visibility = View.GONE
 
-        s_key.text = null
-        s_key.requestFocus()
-
         s_list.layoutManager = GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false)
-
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-        imm!!.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
 
         adapterSearch.setOnItemClickListener { item, _ ->
             val searchItem = item as SearchItem
@@ -118,6 +119,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun fetchSearch(keyWord: String, mode: Int, english: Boolean) {
+        Log.d("rhieere", "     $keyWord     $mode")
         var url = ""
         url = if (english) {
             "https://api.themoviedb.org/3/search/multi?api_key=d4a7514dbdd976453d2679e036009283&query=$keyWord"
@@ -131,7 +133,6 @@ class SearchActivity : AppCompatActivity() {
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -155,7 +156,6 @@ class SearchActivity : AppCompatActivity() {
         val client2 = OkHttpClient()
         client2.newCall(request2).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {

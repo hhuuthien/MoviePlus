@@ -40,6 +40,8 @@ class MainFragment : Fragment() {
     private var listShowAiring = ArrayList<Show>()
     private var listShowNowShowing = ArrayList<Show>()
     private var listShowPopular = ArrayList<Show>()
+    private var listNetflix = ArrayList<Show>()
+    private var listNetflixM = ArrayList<Movie>()
 
     private val adapterNowShowing = GroupAdapter<ViewHolder>()
     private val adapterUpComing = GroupAdapter<ViewHolder>()
@@ -50,7 +52,11 @@ class MainFragment : Fragment() {
     private val adapterShowNowShowing = GroupAdapter<ViewHolder>()
     private val adapterShowPopular = GroupAdapter<ViewHolder>()
     private val adapterPeople = GroupAdapter<ViewHolder>()
+    private val adapterNetflix = GroupAdapter<ViewHolder>()
+    private val adapterNetflixM = GroupAdapter<ViewHolder>()
 
+    private var stringNetflixID = ""
+    private var stringNetflixMovieID = ""
     private val slideList = ArrayList<Slide>()
 
     override fun onCreateView(
@@ -87,6 +93,10 @@ class MainFragment : Fragment() {
         view.findViewById<RecyclerView>(R.id.fs_list_popular).layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fp_list_popular).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fs_list_netflix).layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view.findViewById<RecyclerView>(R.id.fm_list_netflix).layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         if (english) {
@@ -321,6 +331,32 @@ class MainFragment : Fragment() {
             startActivity(intent)
         }
 
+        adapterNetflix.setOnItemClickListener { item, _ ->
+            val intent = Intent(context, DetailShowActivity::class.java)
+            val showItem = item as ShowItem
+            intent.putExtra("SHOW_ID", showItem.show.id)
+            intent.putExtra("SHOW_POSTER", showItem.show.poster_path)
+            intent.putExtra("SHOW_TITLE", showItem.show.name)
+            intent.putExtra("SHOW_BACKDROP", showItem.show.backdrop_path)
+            intent.putExtra("SHOW_VOTE", showItem.show.vote_average)
+            intent.putExtra("NETFLIX_ID", stringNetflixID)
+            startActivity(intent)
+        }
+
+        adapterNetflixM.setOnItemClickListener { item, _ ->
+            val myItem = item as MovieItem
+            startActivity(
+                Intent(context, DetailMovieActivity::class.java)
+                    .putExtra("MOVIE_ID", myItem.movie.id)
+                    .putExtra("MOVIE_POSTER", myItem.movie.poster_path)
+                    .putExtra("MOVIE_BACKDROP", myItem.movie.backdrop_path)
+                    .putExtra("MOVIE_TITLE", myItem.movie.title)
+                    .putExtra("MOVIE_VOTE", myItem.movie.vote_average)
+                    .putExtra("MOVIE_DATE", myItem.movie.release_date)
+                    .putExtra("NETFLIX_ID", stringNetflixMovieID)
+            )
+        }
+
         adapterPeople.setOnItemClickListener { item, _ ->
             val intent = Intent(context, DetailCastActivity::class.java)
             val myItem = item as PeopleItem
@@ -363,6 +399,8 @@ class MainFragment : Fragment() {
         fetchShowNowShowing(view, english, goodquality)
         fetchShowPopular(view, english, goodquality)
         fetchCast(view)
+        fetchNetflix(view, english, goodquality)
+        fetchNetflixMovie(view, english, goodquality)
     }
 
     private fun fetchNowShowing(view: View, english: Boolean, goodquality: Boolean) {
@@ -477,9 +515,6 @@ class MainFragment : Fragment() {
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                activity?.runOnUiThread {
-                    view.findViewById<ProgressBar>(R.id.fm_loading_popular).visibility = GONE
-                }
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -505,9 +540,9 @@ class MainFragment : Fragment() {
     private fun fetchShowAiring(view: View, english: Boolean, goodquality: Boolean) {
         var url = ""
         url = if (english) {
-            "https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&region=US"
+            "https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&region=US&timezone=VN"
         } else {
-            "https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US"
+            "https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US&timezone=VN"
         }
         val request1 = Request.Builder()
             .url(url)
@@ -571,6 +606,78 @@ class MainFragment : Fragment() {
                     }
                     view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).adapter =
                         adapterShowNowShowing
+                }
+            }
+        })
+    }
+
+    private fun fetchNetflix(view: View, english: Boolean, goodquality: Boolean) {
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/4/list/136507?api_key=d4a7514dbdd976453d2679e036009283"
+        } else {
+            "https://api.themoviedb.org/4/list/136507?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
+        }
+
+        val request = Request.Builder().url(url).build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, MyListShowV4::class.java)
+
+                listNetflix.clear()
+                listNetflix = result.results
+                listNetflix.shuffle()
+
+                stringNetflixID = body!!.substringAfter("comments").substringBefore("sort_by")
+
+                activity?.runOnUiThread {
+                    adapterNetflix.clear()
+                    for (m in listNetflix) {
+                        adapterNetflix.add(ShowItem(m, goodquality))
+                    }
+                    fs_list_netflix.adapter = adapterNetflix
+                }
+            }
+        })
+    }
+
+    private fun fetchNetflixMovie(view: View, english: Boolean, goodquality: Boolean) {
+        var url = ""
+        url = if (english) {
+            "https://api.themoviedb.org/4/list/136515?api_key=d4a7514dbdd976453d2679e036009283"
+        } else {
+            "https://api.themoviedb.org/4/list/136515?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
+        }
+
+        val request = Request.Builder().url(url).build()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                val gSon = GsonBuilder().create()
+                val result = gSon.fromJson(body, MyListV4::class.java)
+
+                listNetflixM.clear()
+                listNetflixM = result.results
+                listNetflixM.shuffle()
+
+                stringNetflixMovieID = body!!.substringAfter("comments").substringBefore("sort_by")
+
+                activity?.runOnUiThread {
+                    adapterNetflixM.clear()
+                    for (m in listNetflixM) {
+                        adapterNetflixM.add(MovieItem(m, goodquality))
+                    }
+                    fm_list_netflix.adapter = adapterNetflixM
                 }
             }
         })

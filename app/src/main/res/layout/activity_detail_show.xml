@@ -15,7 +15,6 @@
         android:scaleType="centerCrop" />
 
     <ImageView
-        android:id="@+id/ds_blurImageView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/ds_backdrop"
@@ -110,4 +109,43 @@
         app:itemTextColor="@color/color_bottom_nav"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/navigation_for_show" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/ds_floating"
+        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ds_navigation"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/colorBlueDark"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_more"
+        app:tint="@color/colorWhite" />
+
+    <RelativeLayout
+        android:id="@+id/nf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/nf_text"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gg_regular"
+            android:gravity="center"
+            android:text="Watch on"
+            android:textColor="@color/colorWhite"
+            android:textSize="10dp" />
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@id/nf_text"
+            android:layout_marginTop="11dp"
+            android:src="@drawable/netflix" />
+    </RelativeLayout>
 </RelativeLayout>

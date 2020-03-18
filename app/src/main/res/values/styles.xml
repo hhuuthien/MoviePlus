@@ -14,7 +14,7 @@
     </style>
 
     <style name="MySnackBarStyle" parent="Widget.MaterialComponents.Snackbar">
-        <item name="android:background">@color/colorAccent</item>
+        <item name="android:background">@color/colorWhite</item>
     </style>
 
     <style name="MyProgressBar" parent="@style/Theme.AppCompat">

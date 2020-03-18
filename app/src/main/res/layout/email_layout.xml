@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    tools:ignore="Autofill,HardcodedText,SpUsage">
+
+    <TextView
+        android:id="@+id/el_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/gg_bold"
+        android:text="Nhập địa chỉ email"
+        android:textColor="@color/colorBlueDark"
+        android:textSize="14dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <TextView
+        android:id="@+id/el_info2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/el_info"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/gg_regular"
+        android:lineSpacingMultiplier="1.1"
+        android:text="Nếu địa chỉ email bạn nhập đã từng đăng kí tài khoản, Movius sẽ gửi hướng dẫn lấy lại mật khẩu đến địa chỉ email này. Hãy kiểm tra hộp thư đến và làm theo hướng dẫn."
+        android:textSize="12dp"
+        tools:ignore="HardcodedText,SpUsage" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/el_email_parent"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/el_info2"
+        android:layout_margin="8dp">
+
+        <EditText
+            android:id="@+id/el_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorWhite"
+            android:fontFamily="@font/gg_regular"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textSize="14dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/el_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/el_email_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:fontFamily="@font/gg_regular"
+        android:letterSpacing="0"
+        android:text="Lấy lại mật khẩu"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBlueDark"
+        android:textSize="14dp"
+        app:backgroundTint="@color/colorWhite" />
+</RelativeLayout>

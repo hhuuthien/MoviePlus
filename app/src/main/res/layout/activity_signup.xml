@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sign_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/splash_head_dark"
@@ -30,7 +29,7 @@
         android:gravity="center_vertical"
         android:text="Tạo tài khoản"
         android:textColor="@color/colorWhite"
-        android:textSize="26dp" />
+        android:textSize="22dp" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -60,7 +59,7 @@
                     android:fontFamily="@font/gg_regular"
                     android:hint="Email"
                     android:inputType="textEmailAddress"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -81,11 +80,12 @@
                     android:fontFamily="@font/gg_regular"
                     android:hint="Mật khẩu"
                     android:inputType="textPassword"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/sign_button"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sign_password_parent"
@@ -97,7 +97,7 @@
                 android:text="Tạo tài khoản"
                 android:textAllCaps="false"
                 android:textColor="@color/colorBlueDark"
-                android:textSize="16dp"
+                android:textSize="14dp"
                 app:backgroundTint="@color/colorWhite" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -114,5 +114,19 @@
         android:text="Đăng nhập"
         android:textAllCaps="false"
         android:textColor="@color/colorAccentDark"
-        android:textSize="13dp" />
+        android:textSize="12dp" />
+
+    <Button
+        android:id="@+id/sign_forgot_password"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/sign_link_login"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/gg_regular"
+        android:letterSpacing="0"
+        android:text="Lấy lại mật khẩu"
+        android:textAllCaps="false"
+        android:textColor="@color/colorAccentDark"
+        android:textSize="12dp" />
 </RelativeLayout>

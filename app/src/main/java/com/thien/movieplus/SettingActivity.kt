@@ -1,7 +1,10 @@
 package com.thien.movieplus
 
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_setting.*
@@ -45,6 +48,23 @@ class SettingActivity : AppCompatActivity() {
             editor.putBoolean("goodquality", true)
             editor.apply()
             Toast.makeText(this, "Đã khôi phục cài đặt mặc định", Toast.LENGTH_LONG).show()
+        }
+
+        switch_cache.setOnClickListener {
+            try {
+                Toast.makeText(this, "Đã xoá dữ liệu bộ nhớ đệm", Toast.LENGTH_LONG).show()
+                applicationContext.cacheDir.deleteRecursively()
+            } catch (e: Exception) {
+                Toast.makeText(this, "Đã xảy ra lỗi. Vui lòng thử lại sau", Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+
+        switch_setting.setOnClickListener {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
         }
     }
 

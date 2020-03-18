@@ -98,7 +98,7 @@ class PermissionActivity : AppCompatActivity() {
                         Snackbar.LENGTH_INDEFINITE
                     ).setAction("Đồng ý") {
                         requirePermission1()
-                    }.setActionTextColor(Color.WHITE).show()
+                    }.setTextColor(Color.BLACK).setActionTextColor(Color.BLACK).show()
                 }
                 return
             }
@@ -114,7 +114,7 @@ class PermissionActivity : AppCompatActivity() {
                         Snackbar.LENGTH_INDEFINITE
                     ).setAction("Đồng ý") {
                         requirePermission2()
-                    }.setActionTextColor(Color.WHITE).show()
+                    }.setTextColor(Color.BLACK).setActionTextColor(Color.BLACK).show()
                 }
                 return
             }

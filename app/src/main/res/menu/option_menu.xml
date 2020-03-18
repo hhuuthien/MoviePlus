@@ -9,4 +9,11 @@
         android:icon="@drawable/ic_search_white_24"
         android:title="Tìm kiếm"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_search_voice"
+        android:icon="@drawable/ic_mic"
+        android:title="Tìm kiếm bằng giọng nói"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
 </menu>

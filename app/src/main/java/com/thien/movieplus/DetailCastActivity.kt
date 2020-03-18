@@ -7,9 +7,15 @@ import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
@@ -17,6 +23,7 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_detail_cast.*
+import kotlinx.android.synthetic.main.love_layout.view.*
 import kotlinx.android.synthetic.main.product_of_cast_item.view.*
 import okhttp3.*
 import java.io.IOException
@@ -37,6 +44,10 @@ class DetailCastActivity : AppCompatActivity() {
     private val adapterShow = GroupAdapter<ViewHolder>()
     private val adapterImage = GroupAdapter<ViewHolder>()
     private val adapterTagImage = GroupAdapter<ViewHolder>()
+
+    companion object {
+        var exist: Boolean = false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,6 +128,102 @@ class DetailCastActivity : AppCompatActivity() {
         dc_tvshow.layoutManager = layoutManager2
         dc_image.layoutManager = StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL)
         dc_tagimage.layoutManager = StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL)
+
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+        if (currentUser == null) {
+            dc_floating.visibility = GONE
+        } else {
+            dc_floating.visibility = View.VISIBLE
+
+            dc_floating.setOnClickListener {
+                val layoutInflater = layoutInflater.inflate(R.layout.love_layout, null)
+                val dialog = AlertDialog.Builder(this)
+                    .setView(layoutInflater)
+                    .setCancelable(true)
+                    .show()
+                //check if exist
+                val myRef = FirebaseDatabase.getInstance().getReference(currentUser.uid)
+                    .child("love_people")
+
+                val listener = object : ValueEventListener {
+                    override fun onDataChange(p0: DataSnapshot) {
+                        val string = p0.toString()
+                        if (string.contains(castID.toString())) {
+                            layoutInflater.dummytext.text = "Xoá khỏi danh sách yêu thích"
+                            layoutInflater.dummytext.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                R.drawable.ic_delete_from_list,
+                                0,
+                                0,
+                                0
+                            )
+                            exist = true
+                        } else {
+                            layoutInflater.dummytext.text = "Thêm vào danh sách yêu thích"
+                            layoutInflater.dummytext.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                R.drawable.ic_add_to_list,
+                                0,
+                                0,
+                                0
+                            )
+                            exist = false
+                        }
+                    }
+
+                    override fun onCancelled(p0: DatabaseError) {}
+                }
+                myRef.addListenerForSingleValueEvent(listener)
+
+                layoutInflater.dummytext.setOnClickListener {
+                    try {
+                        dialog.dismiss()
+                        val myRef2 =
+                            FirebaseDatabase.getInstance().getReference(currentUser.uid)
+                                .child("love_people")
+                                .child(castID.toString())
+                        if (!exist) {
+                            val timestamp = System.currentTimeMillis()
+                            myRef2.setValue(
+                                Cast(
+                                    intent.getStringExtra("CAST_NAME")!! + "@#$timestamp",
+                                    intent.getStringExtra("CAST_POSTER"),
+                                    castID,
+                                    ""
+                                )
+                            ).addOnSuccessListener {
+                                Toast.makeText(
+                                    this,
+                                    "Đã thêm vào danh sách yêu thích",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }.addOnFailureListener {
+                                Toast.makeText(
+                                    this,
+                                    "Có lỗi xảy ra. Vui lòng thử lại",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        } else {
+                            myRef2.removeValue().addOnSuccessListener {
+                                Toast.makeText(
+                                    this,
+                                    "Đã xoá khỏi danh sách yêu thích",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }.addOnFailureListener {
+                                Toast.makeText(
+                                    this,
+                                    "Có lỗi xảy ra. Vui lòng thử lại",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.d("error", e.toString())
+                    }
+                }
+            }
+        }
 
         adapterShow.setOnItemClickListener { item, _ ->
             val intent = Intent(this, DetailShowActivity::class.java)
@@ -230,7 +337,6 @@ class DetailCastActivity : AppCompatActivity() {
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {

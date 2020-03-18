@@ -88,7 +88,6 @@ class FragmentDMImage : Fragment() {
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {

@@ -1,21 +1,27 @@
 package com.thien.movieplus
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.activity_detail_show.*
-import kotlinx.android.synthetic.main.list_create_layout.view.*
+import kotlinx.android.synthetic.main.love_layout.view.*
 import okhttp3.*
 import java.io.IOException
 
@@ -99,6 +105,23 @@ class DetailShowActivity : AppCompatActivity(),
                 ds_title.text = showTitle
             }
 
+            //check if NETFLIX
+            val stringID = intent.getStringExtra("NETFLIX_ID")
+            if (stringID != null && stringID != "") {
+                nf.visibility = VISIBLE
+                try {
+                    nf.setOnClickListener {
+                        val id = stringID.substringAfter("tv:$showId\":\"").substringBefore("\",\"")
+                        val link = "https://www.netflix.com/title/$id"
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Có lỗi xảy ra", Toast.LENGTH_LONG).show()
+                }
+            } else {
+                nf.visibility = GONE
+            }
+
             fetchExID(showId.toString())
         }
 
@@ -167,179 +190,102 @@ class DetailShowActivity : AppCompatActivity(),
         }
 
         val currentUser = FirebaseAuth.getInstance().currentUser
-//        if (currentUser == null) {
-//            slayout_2.visibility = View.GONE
-//        } else {
-//            slayout_2.visibility = View.VISIBLE
-//            //check if exist
-//            val database = FirebaseDatabase.getInstance()
-//            val myRef = database.getReference(currentUser.uid).child("love_show")
-//
-//            val listener = object : ValueEventListener {
-//                override fun onDataChange(p0: DataSnapshot) {
-//                    val string = p0.toString()
-//                    if (string.contains(showId.toString())) {
-//                        ds_love.setImageResource(R.drawable.ic_favorite_yes)
-//                        exist = true
-//                    } else {
-//                        ds_love.setImageResource(R.drawable.ic_favorite_no)
-//                        exist = false
-//                    }
-//                }
-//
-//                override fun onCancelled(p0: DatabaseError) {}
-//            }
-//            myRef.addListenerForSingleValueEvent(listener)
-//        }
+        if (currentUser == null) {
+            ds_floating.visibility = GONE
+        } else {
+            ds_floating.visibility = VISIBLE
 
-//        ds_love.setOnClickListener {
-//            try {
-//                if (!exist) {
-//                    val myRef = FirebaseDatabase.getInstance().getReference(currentUser!!.uid)
-//                        .child("love_show")
-//                        .child(showId.toString())
-//                    myRef.setValue(
-//                        Show(
-//                            intent.getStringExtra("SHOW_POSTER"),
-//                            showId,
-//                            intent.getStringExtra("SHOW_TITLE"),
-//                            intent.getDoubleExtra("SHOW_VOTE", -1.0),
-//                            intent.getStringExtra("SHOW_BACKDROP"),
-//                            ""
-//                        )
-//                    ).addOnSuccessListener {
-//                        Toast.makeText(
-//                            this,
-//                            "Đã thêm vào danh sách yêu thích",
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                        ds_love.setImageResource(R.drawable.ic_favorite_yes)
-//                        exist = true
-//                    }.addOnFailureListener {
-//                        Toast.makeText(
-//                            this,
-//                            "Có lỗi xảy ra. Vui lòng thử lại",
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                        ds_love.setImageResource(R.drawable.ic_favorite_no)
-//                        exist = false
-//                    }
-//                } else {
-//                    val myRef = FirebaseDatabase.getInstance().getReference(currentUser!!.uid)
-//                        .child("love_show")
-//                        .child(showId.toString())
-//                    myRef.removeValue().addOnSuccessListener {
-//                        Toast.makeText(
-//                            this,
-//                            "Đã xoá khỏi danh sách yêu thích",
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                        ds_love.setImageResource(R.drawable.ic_favorite_no)
-//                        exist = false
-//                    }.addOnFailureListener {
-//                        Toast.makeText(
-//                            this,
-//                            "Có lỗi xảy ra. Vui lòng thử lại",
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                        ds_love.setImageResource(R.drawable.ic_favorite_yes)
-//                        exist = true
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                Log.d("error", e.toString())
-//            }
-//        }
-//
-//        ds_add.setOnClickListener {
-//            try {
-//                val list = ArrayList<UserList>()
-//                val adapterter = GroupAdapter<ViewHolder>()
-//
-//                val myLayout = layoutInflater.inflate(R.layout.list_layout, null)
-//
-//                val dialog = AlertDialog.Builder(this)
-//                    .setView(myLayout)
-//                    .create()
-//                dialog.show()
-//
-//                myLayout.layoutlist_create.setOnClickListener {
-//                    createList()
-//                }
-//
-//                val ref =
-//                    FirebaseDatabase.getInstance().getReference(currentUser!!.uid).child("list")
-//                val listener = object : ValueEventListener {
-//                    override fun onCancelled(p0: DatabaseError) {
-//                    }
-//
-//                    override fun onDataChange(p0: DataSnapshot) {
-//                        adapterter.clear()
-//                        list.clear()
-//
-//                        if (p0.hasChildren()) {
-//                            myLayout.layoutlist_text.text = "Thêm vào list"
-//                            myLayout.layoutlist_create.text = "Tạo list khác"
-//                            myLayout.layoutlist_list.visibility = View.VISIBLE
-//                            for (p in p0.children) {
-//                                val name =
-//                                    p.value.toString()
-//                                        .substringAfterLast("name=")
-//                                        .substringBefore(", id=")
-//                                val id =
-//                                    p.value.toString()
-//                                        .substringAfterLast("id=")
-//                                        .substring(0, 13)
-//                                val userList = UserList(id, name)
-//                                list.add(userList)
-//                                adapterter.add(ListItem(userList))
-//                            }
-//                        } else {
-//                            myLayout.layoutlist_text.text = "Chưa có list nào"
-//                            myLayout.layoutlist_create.text = "Tạo list mới"
-//                            myLayout.layoutlist_list.visibility = View.GONE
-//                        }
-//                    }
-//                }
-//                ref.addValueEventListener(listener)
-//
-//                val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-//                myLayout.layoutlist_list.layoutManager = layoutManager
-//
-//                myLayout.layoutlist_list.adapter = adapterter
-//                adapterter.notifyDataSetChanged()
-//
-//                adapterter.setOnItemClickListener { item, _ ->
-//                    val auth = FirebaseAuth.getInstance()
-//                    val data = FirebaseDatabase.getInstance()
-//                    val myItem = item as ListItem
-//                    val listId = myItem.list.id
-//                    val refe = data.getReference(auth.currentUser!!.uid)
-//                        .child("list/$listId/shows/$showId")
-//                    refe.setValue(
-//                        Show(
-//                            intent.getStringExtra("SHOW_POSTER"),
-//                            showId,
-//                            intent.getStringExtra("SHOW_TITLE"),
-//                            intent.getDoubleExtra("SHOW_VOTE", -1.0),
-//                            intent.getStringExtra("SHOW_BACKDROP"),
-//                            ""
-//                        )
-//                    ).addOnCompleteListener {
-//                        dialog.dismiss()
-//                        val showName = intent.getStringExtra("SHOW_TITLE")
-//                        val listName = item.list.name
-//                        Toast.makeText(
-//                            this,
-//                            "Đã thêm \"$showName\" vào list \"$listName\"",
-//                            Toast.LENGTH_LONG
-//                        ).show()
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                Log.d("error", e.toString())
-//            }
-//        }
+            ds_floating.setOnClickListener {
+                val layoutInflater = layoutInflater.inflate(R.layout.love_layout, null)
+                val dialog = AlertDialog.Builder(this)
+                    .setView(layoutInflater)
+                    .setCancelable(true)
+                    .show()
+
+                //check if exist
+                val database = FirebaseDatabase.getInstance()
+                val myRef = database.getReference(currentUser.uid).child("love_show")
+
+                val listener = object : ValueEventListener {
+                    override fun onDataChange(p0: DataSnapshot) {
+                        val string = p0.toString()
+                        if (string.contains(showId.toString())) {
+                            layoutInflater.dummytext.text = "Xoá khỏi danh sách yêu thích"
+                            layoutInflater.dummytext.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                R.drawable.ic_delete_from_list,
+                                0,
+                                0,
+                                0
+                            )
+                            exist = true
+                        } else {
+                            layoutInflater.dummytext.text = "Thêm vào danh sách yêu thích"
+                            layoutInflater.dummytext.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                R.drawable.ic_add_to_list,
+                                0,
+                                0,
+                                0
+                            )
+                            exist = false
+                        }
+                    }
+
+                    override fun onCancelled(p0: DatabaseError) {}
+                }
+                myRef.addListenerForSingleValueEvent(listener)
+
+                layoutInflater.dummytext.setOnClickListener {
+                    try {
+                        dialog.dismiss()
+                        val myRef2 =
+                            FirebaseDatabase.getInstance().getReference(currentUser.uid)
+                                .child("love_show")
+                                .child(showId.toString())
+                        if (!exist) {
+                            val timestamp = System.currentTimeMillis()
+                            myRef2.setValue(
+                                Show(
+                                    intent.getStringExtra("SHOW_POSTER"),
+                                    showId,
+                                    intent.getStringExtra("SHOW_TITLE") + "@#$timestamp",
+                                    intent.getDoubleExtra("SHOW_VOTE", -1.0),
+                                    intent.getStringExtra("SHOW_BACKDROP"),
+                                    ""
+                                )
+                            ).addOnSuccessListener {
+                                Toast.makeText(
+                                    this,
+                                    "Đã thêm vào danh sách yêu thích",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }.addOnFailureListener {
+                                Toast.makeText(
+                                    this,
+                                    "Có lỗi xảy ra. Vui lòng thử lại",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        } else {
+                            myRef2.removeValue().addOnSuccessListener {
+                                Toast.makeText(
+                                    this,
+                                    "Đã xoá khỏi danh sách yêu thích",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }.addOnFailureListener {
+                                Toast.makeText(
+                                    this,
+                                    "Có lỗi xảy ra. Vui lòng thử lại",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.d("error", e.toString())
+                    }
+                }
+            }
+        }
     }
 
     private fun fetchExID(id: String) {
@@ -350,7 +296,6 @@ class DetailShowActivity : AppCompatActivity(),
         val client = OkHttpClient()
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -382,7 +327,6 @@ class DetailShowActivity : AppCompatActivity(),
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("onFetchingResult", e.toString())
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -403,33 +347,6 @@ class DetailShowActivity : AppCompatActivity(),
                 }
             }
         })
-    }
-
-    private fun createList() {
-        try {
-            val myLayout = layoutInflater.inflate(R.layout.list_create_layout, null)
-            val dialog = AlertDialog.Builder(this)
-                .setView(myLayout)
-                .create()
-            dialog.show()
-
-            myLayout.listcreate_ok.setOnClickListener {
-                val auth = FirebaseAuth.getInstance()
-                val database = FirebaseDatabase.getInstance()
-
-                val name = myLayout.listcreate_name.text.toString().trim()
-                val timestamp = System.currentTimeMillis()
-                val id = timestamp.toString()
-
-                val ref = database.getReference(auth.currentUser!!.uid).child("list").child(id)
-                ref.setValue(UserList(id, name)).addOnSuccessListener {
-                    Toast.makeText(this, "Đã tạo list", Toast.LENGTH_LONG).show()
-                }
-                dialog.dismiss()
-            }
-        } catch (e: Exception) {
-            Log.d("error", e.toString())
-        }
     }
 }
 
