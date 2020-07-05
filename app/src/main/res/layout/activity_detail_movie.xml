@@ -33,9 +33,10 @@
         android:src="@drawable/bg_blur" />
 
     <ImageView
+        android:id="@+id/dm_backdrop_netflix"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/bg_blur3" />
+        android:src="@drawable/bg_blur_verse" />
 
     <RelativeLayout
         android:id="@+id/dm_layout_poster"
@@ -118,7 +119,7 @@
             android:fontFamily="@font/gg_regular"
             android:gravity="center_vertical"
             android:textColor="@color/colorWhite"
-            android:textSize="14dp" />
+            android:textSize="13dp" />
 
         <TextView
             android:id="@+id/dm_date"
@@ -134,7 +135,7 @@
             android:fontFamily="@font/gg_regular"
             android:gravity="center_vertical"
             android:textColor="@color/colorWhite"
-            android:textSize="14dp" />
+            android:textSize="13dp" />
     </RelativeLayout>
 
     <androidx.viewpager.widget.ViewPager
@@ -179,19 +180,19 @@
 
         <TextView
             android:id="@+id/mnf_text"
-            android:layout_width="72dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gg_regular"
             android:gravity="center"
             android:text="Watch on"
             android:textColor="@color/colorWhite"
-            android:textSize="10dp" />
+            android:textSize="9dp" />
 
         <ImageView
-            android:layout_width="72dp"
-            android:layout_height="30dp"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
             android:layout_alignTop="@id/mnf_text"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/netflix" />
     </RelativeLayout>
 </RelativeLayout>

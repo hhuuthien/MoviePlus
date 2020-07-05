@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/genre_name"
-    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="5dp"
-    android:fontFamily="@font/gg_regular"
-    android:letterSpacing="0"
-    android:textAllCaps="false"
-    android:textColor="@android:color/white"
-    android:textSize="12dp"
-    tools:ignore="SpUsage" />
+    android:layout_height="wrap_content">
+
+    <TextView xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/genre_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@drawable/bg_genre"
+        android:elevation="3dp"
+        android:fontFamily="@font/gg_regular"
+        android:letterSpacing="0"
+        android:padding="12dp"
+        android:text="@string/app_name"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="12dp"
+        tools:ignore="SpUsage" />
+</RelativeLayout>

@@ -32,11 +32,6 @@
         android:layout_height="200dp"
         android:src="@drawable/bg_blur" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/bg_blur3" />
-
     <RelativeLayout
         android:id="@+id/dc_layout_poster"
         android:layout_width="match_parent"

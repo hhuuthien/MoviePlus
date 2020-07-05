@@ -1,52 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBlueDark">
 
-    <LinearLayout
-        android:id="@+id/spinner_layout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/m_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:layout_margin="12dp"
-        android:orientation="horizontal">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/Theme.MaterialComponents"
+        app:popupTheme="@style/Theme.MaterialComponents"
+        app:titleTextAppearance="@style/ToolbarStyle" />
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_margin="4dp"
-            android:layout_weight="1" />
-
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_margin="4dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/text_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/m_toolbar"
+        android:layout_margin="15dp"
+        android:fontFamily="@font/gg_regular"
+        android:lineSpacingMultiplier="1.2"
+        android:textColor="@color/colorWhite"
+        android:textSize="13dp"
+        tools:ignore="SpUsage" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_cinema"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/spinner_layout"
+        android:layout_below="@id/text_number"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
         android:scrollbars="vertical" />
-
-    <TextView
-        android:id="@+id/text_noti"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/spinner_layout"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        android:textAlignment="center"
-        android:textColor="@color/colorWhite"
-        android:textSize="12dp"
-        tools:ignore="SpUsage" />
 </RelativeLayout>

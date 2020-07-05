@@ -42,10 +42,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="Phim đang chiếu ở rạp"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 tools:ignore="SpUsage" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -71,10 +71,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="Thể loại"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fm_list_category"
@@ -99,10 +99,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="Phim sắp chiếu"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fm_list_upcoming"
@@ -127,10 +127,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="Thịnh hành trên Netflix"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fm_list_netflix"
@@ -155,10 +155,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="Top phim"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fm_list_list2"
@@ -183,10 +183,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="Phim phổ biến"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fm_list_popular"
@@ -197,13 +197,6 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:scrollbars="horizontal" />
-
-            <ProgressBar
-                android:id="@+id/fm_loading_popular"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/fm_text_popular"
-                android:layout_alignStart="@id/fm_text_popular" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -218,10 +211,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="Danh sách gợi ý cho bạn"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fm_list_list"
@@ -246,10 +239,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="TV show hôm nay"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_airing"
@@ -274,10 +267,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="TV show đang chiếu"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_nowshowing"
@@ -302,10 +295,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="Thịnh hành trên Netflix"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_netflix"
@@ -330,10 +323,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="TV show phổ biến"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fs_list_popular"
@@ -357,10 +350,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:fontFamily="@font/gg_bold"
+                android:fontFamily="@font/gg_medium"
                 android:text="Trending people"
                 android:textColor="@color/colorWhite"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fp_list_popular"

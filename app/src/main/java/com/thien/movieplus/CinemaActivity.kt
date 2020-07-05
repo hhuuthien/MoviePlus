@@ -6,11 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.xwray.groupie.GroupAdapter
@@ -18,6 +15,7 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_cinema.*
 import kotlinx.android.synthetic.main.cinema_item.view.*
+import kotlinx.android.synthetic.main.dialog_filter_cinema.view.*
 import java.io.File
 import java.io.FileOutputStream
 
@@ -25,10 +23,14 @@ class CinemaActivity : AppCompatActivity() {
 
     private var list = ArrayList<Cinema>()
     private val adapterCinema = GroupAdapter<ViewHolder>()
+    private var numCum = 2
+    private var numCity = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cinema)
+
+        setSupportActionBar(m_toolbar)
         supportActionBar?.title = "Rạp chiếu phim"
 
         copyDB()
@@ -37,115 +39,14 @@ class CinemaActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView_cinema.layoutManager = layoutManager
 
-        val listCum = ArrayList<String>()
-        listCum.add("Tất cả rạp")
-        listCum.add("BHD")
-        listCum.add("CGV")
-        listCum.add("Cinestar")
-        listCum.add("Dcine")
-        listCum.add("Galaxy")
-        listCum.add("Lotte")
-        listCum.add("Mega GS")
-
-        val listCity = ArrayList<String>()
-        listCity.add("Bến Tre")
-        listCity.add("Bình Dương")
-        listCity.add("Hồ Chí Minh")
-        listCity.add("Tiền Giang")
-
-        val adapter = ArrayAdapter(this, R.layout.spinner_item, listCum)
-        adapter.setDropDownViewResource(R.layout.spinner_item_choice)
-        val adapter2 = ArrayAdapter(this, R.layout.spinner_item, listCity)
-        adapter2.setDropDownViewResource(R.layout.spinner_item_choice)
-
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                var cum = listCum[i]
-                val tencum = cum
-                val city = listCity[spinner2.selectedItemPosition]
-
-                when (cum) {
-                    "BHD" -> cum = "bhd"
-                    "CGV" -> cum = "cgv"
-                    "Cinestar" -> cum = "cin"
-                    "Dcine" -> cum = "dci"
-                    "Galaxy" -> cum = "glx"
-                    "Lotte" -> cum = "lot"
-                    "Mega GS" -> cum = "meg"
-                }
-
-                list = if (cum == "Tất cả rạp") {
-                    dbHelper.getCinemaALLbyCity(city)
-                } else {
-                    dbHelper.getCinemaALL(cum, city)
-                }
-
-                if (list.size == 0) {
-                    recyclerView_cinema.visibility = GONE
-                    text_noti.visibility = VISIBLE
-                    text_noti.text = "Không tìm thấy rạp nào"
-                } else {
-                    recyclerView_cinema.visibility = VISIBLE
-                    text_noti.visibility = GONE
-
-                    adapterCinema.clear()
-                    for (m in list) {
-                        adapterCinema.add(CinemaItem(m))
-                    }
-                    recyclerView_cinema.adapter = adapterCinema
-                }
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>) {
-            }
+        list.clear()
+        list = dbHelper.getCinemaALL("cgv", "Hồ Chí Minh")
+        adapterCinema.clear()
+        for (m in list) {
+            adapterCinema.add(CinemaItem(m))
         }
-        spinner.adapter = adapter
-        spinner.setSelection(2)
-
-
-        spinner2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                var cum = listCum[spinner.selectedItemPosition]
-                val tencum = cum
-                val city = listCity[i]
-
-                when (cum) {
-                    "BHD" -> cum = "bhd"
-                    "CGV" -> cum = "cgv"
-                    "Cinestar" -> cum = "cin"
-                    "Dcine" -> cum = "dci"
-                    "Galaxy" -> cum = "glx"
-                    "Lotte" -> cum = "lot"
-                    "Mega GS" -> cum = "meg"
-                }
-
-                list = if (cum == "Tất cả rạp") {
-                    dbHelper.getCinemaALLbyCity(city)
-                } else {
-                    dbHelper.getCinemaALL(cum, city)
-                }
-
-                if (list.size == 0) {
-                    recyclerView_cinema.visibility = GONE
-                    text_noti.visibility = VISIBLE
-                    text_noti.text = "Không tìm thấy rạp nào"
-                } else {
-                    recyclerView_cinema.visibility = VISIBLE
-                    text_noti.visibility = GONE
-
-                    adapterCinema.clear()
-                    for (m in list) {
-                        adapterCinema.add(CinemaItem(m))
-                    }
-                    recyclerView_cinema.adapter = adapterCinema
-                }
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>) {
-            }
-        }
-        spinner2.adapter = adapter2
-        spinner2.setSelection(2)
+        recyclerView_cinema.adapter = adapterCinema
+        text_number.text = "Đang hiển thị ${list.size} rạp CGV ở Hồ Chí Minh"
 
         adapterCinema.setOnItemClickListener { item, _ ->
             val myItem = item as CinemaItem
@@ -184,14 +85,87 @@ class CinemaActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.option_menu, menu)
+        menuInflater.inflate(R.menu.option_menu_cinema, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_search -> {
                 startActivity(Intent(this, FindCinemaActivity::class.java))
+            }
+            R.id.menu_filter -> {
+                val inflater = layoutInflater.inflate(R.layout.dialog_filter_cinema, null)
+                val dialogBuilder = AlertDialog.Builder(this)
+                dialogBuilder.setView(inflater)
+                dialogBuilder.setCancelable(true)
+                val dialog = dialogBuilder.create()
+
+                val listCum = ArrayList<String>()
+                listCum.add("Tất cả rạp")
+                listCum.add("BHD")
+                listCum.add("CGV")
+                listCum.add("Cinestar")
+                listCum.add("Dcine")
+                listCum.add("Galaxy")
+                listCum.add("Lotte")
+                listCum.add("Mega GS")
+                val adapterA = ArrayAdapter(this, R.layout.spinner_item, listCum)
+                adapterA.setDropDownViewResource(R.layout.spinner_item_choice)
+                val spinnerA = inflater.spinner_a
+                spinnerA.adapter = adapterA
+                spinnerA.setSelection(numCum)
+
+                val listCity = ArrayList<String>()
+                listCity.add("Bến Tre")
+                listCity.add("Bình Dương")
+                listCity.add("Hồ Chí Minh")
+                listCity.add("Tiền Giang")
+                val adapterB = ArrayAdapter(this, R.layout.spinner_item, listCity)
+                adapterB.setDropDownViewResource(R.layout.spinner_item_choice)
+                val spinnerB = inflater.spinner_b
+                spinnerB.adapter = adapterB
+                spinnerB.setSelection(numCity)
+
+                val buttonApply = inflater.button_apply
+                buttonApply.setOnClickListener {
+                    dialog.dismiss()
+                    numCum = spinnerA.selectedItemPosition
+                    var cum = listCum[numCum]
+                    val tenCum = cum
+                    numCity = spinnerB.selectedItemPosition
+                    val city = listCity[numCity]
+                    when (cum) {
+                        "BHD" -> cum = "bhd"
+                        "CGV" -> cum = "cgv"
+                        "Cinestar" -> cum = "cin"
+                        "Dcine" -> cum = "dci"
+                        "Galaxy" -> cum = "glx"
+                        "Lotte" -> cum = "lot"
+                        "Mega GS" -> cum = "meg"
+                    }
+                    val dbHelper = DBHelper(this)
+                    list.clear()
+                    if (cum == "Tất cả rạp") {
+                        list = dbHelper.getCinemaALLbyCity(city)
+                        text_number.text = "Đang hiển thị tất cả ${list.size} rạp ở $city"
+                    } else {
+                        list = dbHelper.getCinemaALL(cum, city)
+                        if (list.size == 0) {
+                            text_number.text = "Không tìm thấy rạp $tenCum nào ở $city"
+                        } else {
+                            text_number.text = "Đang hiển thị ${list.size} rạp $tenCum ở $city"
+                        }
+                    }
+                    adapterCinema.clear()
+                    for (m in list) {
+                        adapterCinema.add(CinemaItem(m))
+                    }
+                    recyclerView_cinema.adapter = adapterCinema
+                }
+
+                dialog.show()
             }
         }
         return super.onOptionsItemSelected(item)

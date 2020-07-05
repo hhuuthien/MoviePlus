@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@color/colorBlueDark"
     tools:context=".OoopsActivity">
 
     <RelativeLayout
@@ -24,7 +24,7 @@
             android:lineSpacingMultiplier="1.2"
             android:text="Ooops...!!\nKhông có kết nối Internet"
             android:textAlignment="center"
-            android:textColor="@color/colorBlueDark"
+            android:textColor="@color/colorAccent2"
             android:textSize="16dp"
             tools:ignore="HardcodedText,SpUsage" />
 

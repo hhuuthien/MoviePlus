@@ -111,8 +111,8 @@ class DetailMovieActivity : AppCompatActivity(),
             }
 
             val movieDate = intent.getStringExtra("MOVIE_DATE")
-            if (movieDate == null || movieDate.isEmpty()) {
-                dm_date.text = null
+            if (movieDate == null || movieDate.isEmpty() || movieDate == "") {
+                dm_date.visibility = GONE
             } else {
                 val day = movieDate.substring(8, 10)
                 val month = movieDate.substring(5, 7)
@@ -124,6 +124,7 @@ class DetailMovieActivity : AppCompatActivity(),
             val stringID = intent.getStringExtra("NETFLIX_ID")
             if (stringID != null && stringID != "") {
                 mnf.visibility = VISIBLE
+                dm_backdrop_netflix.visibility = VISIBLE
                 try {
                     mnf.setOnClickListener {
                         val id =
@@ -136,6 +137,7 @@ class DetailMovieActivity : AppCompatActivity(),
                 }
             } else {
                 mnf.visibility = GONE
+                dm_backdrop_netflix.visibility = GONE
             }
 
             fetch(movieId.toString(), english)
@@ -306,7 +308,7 @@ class DetailMovieActivity : AppCompatActivity(),
     }
 
     private fun fetch(movieId: String, english: Boolean) {
-        //to get IMDB ID
+        //to get IMDB ID and Collection
         var url = ""
         url = if (english) {
             "https://api.themoviedb.org/3/movie/$movieId?api_key=d4a7514dbdd976453d2679e036009283"
@@ -331,12 +333,12 @@ class DetailMovieActivity : AppCompatActivity(),
                         fetchRapidAPI(imdbId, english)
                     } else {
                         if (detailMovie.runtime == null || detailMovie.runtime == 0) {
-                            dm_time.text = "n/a"
+                            dm_time.visibility = GONE
                         } else {
                             dm_time.text = "${detailMovie.runtime} phút"
                         }
 
-                        dm_star.text = "n/a"
+                        dm_star.visibility = GONE
                         dm_star2.visibility = GONE
                     }
                 }
@@ -366,13 +368,13 @@ class DetailMovieActivity : AppCompatActivity(),
                 runOnUiThread {
                     try {
                         if (detailMovie.Runtime == null || detailMovie.Runtime == "N/A") {
-                            dm_time.text = "n/a"
+                            dm_time.visibility = GONE
                         } else {
                             dm_time.text = detailMovie.Runtime.replace("min", "phút")
                         }
 
                         if (detailMovie.imdbRating == null || detailMovie.imdbRating == "N/A") {
-                            dm_star.text = "n/a"
+                            dm_star.visibility = GONE
                         } else {
                             dm_star.text = detailMovie.imdbRating
                         }

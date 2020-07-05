@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/permissionLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBlueDark">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/m_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/Theme.MaterialComponents"
+        app:popupTheme="@style/Theme.MaterialComponents"
+        app:titleTextAppearance="@style/ToolbarStyle" />
 
     <ProgressBar
         android:id="@+id/progress_circular"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:theme="@style/MyProgressBar" />
 </RelativeLayout>

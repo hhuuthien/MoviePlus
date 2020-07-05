@@ -27,7 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/m_poster_small"
-            android:background="@drawable/bg_title"
             android:ellipsize="end"
             android:fontFamily="@font/gg_regular"
             android:gravity="bottom"
@@ -40,3 +39,5 @@
             android:textSize="11dp" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
+
+    <!--    android:background="@drawable/bg_title"-->

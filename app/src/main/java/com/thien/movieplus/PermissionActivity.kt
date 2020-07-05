@@ -47,6 +47,7 @@ class PermissionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_permission)
 
+        setSupportActionBar(m_toolbar)
         progress_circular.visibility = VISIBLE
 
         if (intent.getStringExtra("type") == "toChangeImage") {

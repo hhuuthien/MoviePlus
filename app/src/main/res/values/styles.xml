@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -6,11 +6,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="snackbarStyle">@style/MySnackBarStyle</item>
         <item name="android:windowFullscreen">true</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="MySnackBarStyle" parent="Widget.MaterialComponents.Snackbar">
@@ -21,9 +16,32 @@
         <item name="colorAccent">@color/colorAccent2</item>
     </style>
 
-    <!-- Splash Screen Theme -->
-    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- Splash Screen Theme (replaced by NoActionBarWithSplash)-->
+    <!--    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">-->
+    <!--        <item name="android:windowBackground">@drawable/splash</item>-->
+    <!--        <item name="android:windowFullscreen">true</item>-->
+    <!--    </style>-->
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBarWithSplash">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/splash</item>
         <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="NavigationDrawerStyle">
+        <item name="android:textSize" tools:ignore="SpUsage">13dp</item>
+        <item name="android:fontFamily">@font/gg_regular</item>
+    </style>
+
+    <style name="ToolbarStyle">
+        <!--        for main activity only-->
+        <item name="android:textSize" tools:ignore="SpUsage">15dp</item>
+        <item name="android:fontFamily">@font/gg_medium</item>
     </style>
 </resources>

@@ -137,6 +137,32 @@ class FragmentDMInfo : Fragment() {
                         dm_company.append(company[size - 1].name)
                     }
 
+                    if (detailMovie.belongs_to_collection == null) {
+                        dm_collection.visibility = GONE
+                    } else {
+                        //collection
+                        dm_collection.visibility = VISIBLE
+                        val colText =
+                            "Xem series " + detailMovie.belongs_to_collection.name.replace(
+                                "Collection",
+                                ""
+                            )
+                        dm_collection.text = colText
+                        dm_collection.setOnClickListener {
+                            val intent = Intent(context, CollectionActivity::class.java)
+                            intent.putExtra("COLLECTION_ID", detailMovie.belongs_to_collection.id)
+                            intent.putExtra(
+                                "COLLECTION_NAME",
+                                detailMovie.belongs_to_collection.name
+                            )
+                            intent.putExtra(
+                                "COLLECTION_BACKDROP",
+                                detailMovie.belongs_to_collection.backdrop_path
+                            )
+                            startActivity(intent)
+                        }
+                    }
+
                     view.findViewById<ProgressBar>(R.id.dm_loading_1).visibility = GONE
                     view.findViewById<RelativeLayout>(R.id.dm_info_layout_child).visibility =
                         VISIBLE
@@ -263,7 +289,7 @@ class FragmentDMInfo : Fragment() {
 
                     activity?.runOnUiThread {
                         dm_revenue.text =
-                            "• $doanhthuDomestic (Domestic)\n• $doanhthuInternational (International)\n• $doanhthuWorldwide (Worldwide)"
+                            "$doanhthuDomestic (Domestic)\n$doanhthuInternational (International)\n$doanhthuWorldwide (Worldwide)"
                     }
                 } catch (e: Exception) {
                     activity?.runOnUiThread {
@@ -324,7 +350,15 @@ class DetailMovie(
     val homepage: String?,
     val production_companies: ArrayList<Company>?,
     val imdb_id: String?,
-    val original_language: String?
+    val original_language: String?,
+    val belongs_to_collection: CollectionTMDB?
+)
+
+class CollectionTMDB(
+    val id: Int,
+    val name: String,
+    val poster_path: String?,
+    val backdrop_path: String?
 )
 
 class DetailMovieRapidAPI(

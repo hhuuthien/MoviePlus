@@ -26,11 +26,11 @@
         android:layout_marginBottom="6dp"
         android:layout_toEndOf="@id/cine_image"
         android:ellipsize="end"
+        android:fontFamily="@font/gg_medium"
         android:lines="1"
         android:maxLines="1"
         android:textColor="@color/colorWhite"
-        android:textSize="14dp"
-        android:textStyle="bold" />
+        android:textSize="14dp" />
 
     <TextView
         android:id="@+id/cine_address"
@@ -44,6 +44,7 @@
         android:drawableStart="@drawable/ic_place2"
         android:drawablePadding="4dp"
         android:ellipsize="end"
+        android:fontFamily="@font/gg_regular"
         android:lines="1"
         android:maxLines="1"
         android:textColor="@color/colorAccent2"
@@ -61,6 +62,7 @@
         android:drawableStart="@drawable/ic_city"
         android:drawablePadding="4dp"
         android:ellipsize="end"
+        android:fontFamily="@font/gg_regular"
         android:lines="1"
         android:maxLines="1"
         android:textColor="@color/colorAccent2"

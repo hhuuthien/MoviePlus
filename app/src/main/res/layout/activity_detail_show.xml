@@ -33,9 +33,10 @@
         android:src="@drawable/bg_blur" />
 
     <ImageView
+        android:id="@+id/ds_backdrop_netflix"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/bg_blur3" />
+        android:src="@drawable/bg_blur_verse" />
 
     <RelativeLayout
         android:id="@+id/ds_layout_poster"
@@ -133,19 +134,19 @@
 
         <TextView
             android:id="@+id/nf_text"
-            android:layout_width="72dp"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gg_regular"
             android:gravity="center"
             android:text="Watch on"
             android:textColor="@color/colorWhite"
-            android:textSize="10dp" />
+            android:textSize="9dp" />
 
         <ImageView
-            android:layout_width="72dp"
-            android:layout_height="30dp"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
             android:layout_alignTop="@id/nf_text"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="10dp"
             android:src="@drawable/netflix" />
     </RelativeLayout>
 </RelativeLayout>

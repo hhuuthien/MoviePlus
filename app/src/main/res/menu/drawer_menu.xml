@@ -30,11 +30,6 @@
         android:title="Rạp chiếu phim (beta)" />
 
     <item
-        android:id="@+id/nav_news"
-        android:icon="@drawable/ic_news"
-        android:title="Tin điện ảnh (beta)" />
-
-    <item
         android:id="@+id/nav_setting"
         android:icon="@drawable/ic_settings"
         android:title="Cài đặt" />

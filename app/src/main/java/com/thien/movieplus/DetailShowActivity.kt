@@ -109,6 +109,7 @@ class DetailShowActivity : AppCompatActivity(),
             val stringID = intent.getStringExtra("NETFLIX_ID")
             if (stringID != null && stringID != "") {
                 nf.visibility = VISIBLE
+                ds_backdrop_netflix.visibility = VISIBLE
                 try {
                     nf.setOnClickListener {
                         val id = stringID.substringAfter("tv:$showId\":\"").substringBefore("\",\"")
@@ -120,6 +121,7 @@ class DetailShowActivity : AppCompatActivity(),
                 }
             } else {
                 nf.visibility = GONE
+                ds_backdrop_netflix.visibility = GONE
             }
 
             fetchExID(showId.toString())
@@ -306,7 +308,7 @@ class DetailShowActivity : AppCompatActivity(),
                 runOnUiThread {
                     val imdb = result.imdb_id
                     if (imdb == null || imdb == "") {
-                        ds_star.text = "n/a"
+                        ds_star.visibility = GONE
                     } else {
                         fetchRapidAPI(imdb)
                     }
@@ -337,7 +339,7 @@ class DetailShowActivity : AppCompatActivity(),
                 runOnUiThread {
                     try {
                         if (result.imdbRating == null || result.imdbRating == "N/A") {
-                            ds_star.text = "n/a"
+                            ds_star.visibility = GONE
                         } else {
                             ds_star.text = result.imdbRating
                         }

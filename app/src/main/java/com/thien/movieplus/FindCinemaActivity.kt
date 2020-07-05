@@ -20,7 +20,10 @@ class FindCinemaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_cinema)
-        supportActionBar?.title = "Tìm kiếm rạp chiếu phim"
+
+        setSupportActionBar(m_toolbar)
+        supportActionBar?.title = "Tìm rạp chiếu phim"
+
         val dbHelper = DBHelper(this)
 
         list.clear()

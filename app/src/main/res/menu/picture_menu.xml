@@ -8,5 +8,5 @@
         android:id="@+id/menu_download"
         android:icon="@drawable/ic_download"
         android:title="Tải hình ảnh"
-        app:showAsAction="always" />
+        app:showAsAction="never" />
 </menu>

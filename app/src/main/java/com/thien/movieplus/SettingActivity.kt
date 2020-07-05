@@ -15,6 +15,7 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
 
+        setSupportActionBar(m_toolbar)
         supportActionBar?.title = "Cài đặt"
 
         val pref =

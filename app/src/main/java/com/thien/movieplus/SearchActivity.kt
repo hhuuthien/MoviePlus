@@ -119,7 +119,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun fetchSearch(keyWord: String, mode: Int, english: Boolean) {
-        Log.d("rhieere", "     $keyWord     $mode")
         var url = ""
         url = if (english) {
             "https://api.themoviedb.org/3/search/multi?api_key=d4a7514dbdd976453d2679e036009283&query=$keyWord"

@@ -4,15 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.gson.GsonBuilder
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -23,12 +17,13 @@ import java.io.IOException
 class ListActivity : AppCompatActivity() {
 
     private var list = ArrayList<Movie>()
-    private var listS = ArrayList<Show>()
     private val adapter = GroupAdapter<ViewHolder>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
+
+        setSupportActionBar(m_toolbar)
 
         val pref = this.getSharedPreferences("SettingPref", 0)
         val english = pref.getBoolean("english", false)
@@ -36,39 +31,14 @@ class ListActivity : AppCompatActivity() {
 
         when (intent.getIntExtra("type", 0)) {
             0 -> finish()
-            1 -> {
-                fetch("124045", english, goodquality)
-                list_img.setImageResource(R.drawable.marvel)
-            }
-            2 -> {
-                fetch("124046", english, goodquality)
-                list_img.setImageResource(R.drawable.vietnam)
-            }
-            3 -> {
-                fetch("124047", english, goodquality)
-                list_img.setImageResource(R.drawable.pixar)
-            }
-            4 -> {
-                fetch("124053", english, goodquality)
-                list_img.setImageResource(R.drawable.oscar)
-            }
-            5 -> {
-                fetch("134631", english, goodquality)
-                list_img.setImageResource(R.drawable.oscar2)
-            }
-            6 -> {
-                fetch("134629", english, goodquality)
-                list_img.setImageResource(R.drawable.top20)
-            }
-            7 -> {
-                fetch("134632", english, goodquality)
-                list_img.setImageResource(R.drawable.imdblist)
-            }
-            8 -> {
-                fetch("134633", english, goodquality)
-                list_img.setImageResource(R.drawable.animation)
-            }
-            101 -> fetchUserList(goodquality)
+            1 -> fetch("124045", english, goodquality)
+            2 -> fetch("124046", english, goodquality)
+            3 -> fetch("124047", english, goodquality)
+            4 -> fetch("124053", english, goodquality)
+            5 -> fetch("134631", english, goodquality)
+            6 -> fetch("134629", english, goodquality)
+            7 -> fetch("134632", english, goodquality)
+            8 -> fetch("134633", english, goodquality)
         }
 
         val layoutManager = GridLayoutManager(this, 3, LinearLayoutManager.VERTICAL, false)
@@ -98,103 +68,6 @@ class ListActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchUserList(goodquality: Boolean) {
-        list_list.visibility = INVISIBLE
-        list_progress.visibility = VISIBLE
-
-        val listId = intent.getStringExtra("listID")
-        if (listId != null && listId.isNotEmpty()) {
-            val listName = intent.getStringExtra("listName")
-
-            val ref =
-                FirebaseDatabase.getInstance()
-                    .getReference(FirebaseAuth.getInstance().currentUser!!.uid).child("list")
-                    .child(listId).child("movies")
-
-            val listener = object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    for (p in p0.children) {
-                        val movieString = p.value.toString()
-                        val movieTitle =
-                            movieString.substringAfter("title=").substringBefore(", poster_path=")
-                        val movieId = movieString.substringAfter("id=").substringBefore(", title=")
-                        val moviePoster =
-                            movieString.substringAfter("poster_path=").substringBeforeLast("}")
-                        val movieBackdrop =
-                            movieString.substringAfter("backdrop_path=")
-                                .substringBefore(", overview=")
-                        val movieDate =
-                            movieString.substringAfter("release_date=")
-                                .substringBefore(", vote_average=")
-                        val movieVote =
-                            movieString.substringAfter("vote_average=").substringBefore(", id=")
-                        val movie = Movie(
-                            moviePoster,
-                            movieBackdrop,
-                            movieId.toInt(),
-                            movieTitle,
-                            movieDate,
-                            movieVote.toDouble(),
-                            "Mô tả phim đang được cập nhật"
-                        )
-                        list.add(movie)
-                        adapter.add(MovieItemRow(movie, goodquality))
-                    }
-                }
-            }
-            ref.addValueEventListener(listener)
-
-            val ref2 =
-                FirebaseDatabase.getInstance()
-                    .getReference(FirebaseAuth.getInstance().currentUser!!.uid).child("list")
-                    .child(listId).child("shows")
-
-            val listener2 = object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-                }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    for (p in p0.children) {
-                        val string = p.value.toString()
-                        val showTitle =
-                            string.substringAfter("name=").substringBefore(", id=")
-                        val showId = string.substringAfter("id=").substringBefore(", poster_path=")
-                        val showPoster =
-                            string.substringAfter("poster_path=").substringBeforeLast("}")
-                        val showBackdrop =
-                            string.substringAfter("backdrop_path=").substringBefore(", overview=")
-                        val showVote =
-                            string.substringAfter("vote_average=").substringBeforeLast(", name=")
-                        val show = Show(
-                            showPoster,
-                            showId.toInt(),
-                            showTitle,
-                            showVote.toDouble(),
-                            showBackdrop,
-                            "Mô tả TV show đang được cập nhật"
-                        )
-                        listS.add(show)
-                        adapter.add(ShowItemRow(show, goodquality))
-                    }
-                }
-            }
-            ref2.addValueEventListener(listener2)
-
-            list_list.adapter = adapter
-            adapter.notifyDataSetChanged()
-
-            list_list.visibility = VISIBLE
-            list_progress.visibility = INVISIBLE
-
-        } else {
-            Toast.makeText(this, "Có lỗi xảy ra. Vui lòng thử lại", Toast.LENGTH_LONG).show()
-            return
-        }
-    }
-
     private fun fetch(type: String, english: Boolean, goodquality: Boolean) {
         list_list.visibility = INVISIBLE
         list_progress.visibility = VISIBLE
@@ -221,7 +94,7 @@ class ListActivity : AppCompatActivity() {
                 list = detailList.items
 
                 runOnUiThread {
-                    list_name.text = detailList.name
+                    supportActionBar?.title = detailList.name
 
                     adapter.clear()
                     for (m in list) {

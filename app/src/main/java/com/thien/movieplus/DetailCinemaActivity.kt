@@ -5,53 +5,46 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.mapbox.mapboxsdk.Mapbox
-import com.mapbox.mapboxsdk.annotations.MarkerOptions
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.maps.MapView
-import com.mapbox.mapboxsdk.maps.Style
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_detail_cinema.*
 
-class DetailCinemaActivity : AppCompatActivity() {
+class DetailCinemaActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private var mapViewCine: MapView? = null
+    private lateinit var mMap: GoogleMap
+    private var lat = 0.0
+    private var lng = 0.0
+    private var name = ""
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Mapbox.getInstance(
-            this,
-            "pk.eyJ1IjoiaGh1dXRoaWVuIiwiYSI6ImNrNzIxbTMwMjBiajczZm1sanNlcjNraWQifQ.MhsGYcW5jEtzImmZfIG6LA"
-        )
         setContentView(R.layout.activity_detail_cinema)
-        supportActionBar?.title = "Rạp chiếu phim"
+
+        //maps
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+        setSupportActionBar(m_toolbar)
+        supportActionBar?.title = "Chi tiết rạp chiếu phim"
 
         val dbHelper = DBHelper(this)
         val cinema = dbHelper.getCinemabyName(intent.getStringExtra("tenrap")!!)
 
-        mapViewCine = findViewById(R.id.mapViewCine)
-        mapViewCine?.onCreate(savedInstanceState)
-        mapViewCine?.getMapAsync { mapboxMap ->
-            mapboxMap.setStyle(Style.MAPBOX_STREETS)
-            if (cinema.lat != null && cinema.lng != null) {
-                val position = CameraPosition.Builder()
-                    .target(LatLng(cinema.lat!!, cinema.lng!!))
-                    .zoom(15.0)
-                    .build()
-                mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000)
-                mapboxMap.addMarker(
-                    MarkerOptions()
-                        .position(LatLng(cinema.lat!!, cinema.lng!!))
-                        .title(cinema.tenrap)
-                )
-            }
-        }
-
-        deci_name.text = cinema.tenrap
+        name = cinema.tenrap
+        deci_name.text = name
         deci_address.text = cinema.diachi + ", " + cinema.quan + ", " + cinema.thanhpho
         deci_info.text = cinema.gioithieu
+        if (cinema.lat != null) {
+            lat = cinema.lat!!
+        }
+        if (cinema.lng != null) {
+            lng = cinema.lng!!
+        }
 
         when (cinema.cumrap) {
             "glx" -> deci_image.setImageResource(R.drawable.glx)
@@ -77,5 +70,12 @@ class DetailCinemaActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
             startActivity(intent)
         }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        val cinemaLatLng = LatLng(lat, lng)
+        mMap.addMarker(MarkerOptions().position(cinemaLatLng).title(name))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cinemaLatLng, 17F))
     }
 }

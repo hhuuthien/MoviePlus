@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:ignore="HardcodedText">
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/gg_medium"
+        android:text="Bộ lọc kết quả"
+        android:textColor="#ffffff"
+        android:textSize="16dp"
+        tools:ignore="SpUsage" />
+
+    <TextView
+        android:id="@+id/text_spinner"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/spinner_a"
+        android:layout_alignBottom="@id/spinner_a"
+        android:fontFamily="@font/gg_regular"
+        android:gravity="center_vertical"
+        android:text="Năm phát hành:"
+        android:textColor="#ffffff"
+        android:textSize="14dp"
+        tools:ignore="SpUsage" />
+
+    <Spinner
+        android:id="@+id/spinner_a"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_title"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="25dp"
+        android:layout_toEndOf="@id/text_spinner"
+        android:backgroundTint="@color/colorWhite"
+        android:gravity="center_vertical" />
+
+    <Button
+        android:id="@+id/button_apply"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_spinner"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
+        android:backgroundTint="#fff"
+        android:fontFamily="@font/gg_regular"
+        android:letterSpacing="0.0"
+        android:text="Áp dụng"
+        android:textAllCaps="false"
+        android:textSize="14dp"
+        tools:ignore="SpUsage" />
+</RelativeLayout>

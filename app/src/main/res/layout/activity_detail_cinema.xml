@@ -8,10 +8,21 @@
     tools:context=".DetailCinemaActivity"
     tools:ignore="HardcodedText,SpUsage">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/m_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/Theme.MaterialComponents"
+        app:popupTheme="@style/Theme.MaterialComponents"
+        app:titleTextAppearance="@style/ToolbarStyle" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/deci_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_below="@id/m_toolbar"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:src="@drawable/logo_accent"
@@ -26,10 +37,11 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@id/deci_image"
+        android:fontFamily="@font/gg_medium"
         android:gravity="bottom"
         android:lineSpacingMultiplier="1.2"
         android:textColor="@color/colorWhite"
-        android:textSize="16dp"
+        android:textSize="14dp"
         android:textStyle="bold" />
 
     <TextView
@@ -41,32 +53,24 @@
         android:layout_marginTop="6dp"
         android:layout_marginEnd="10dp"
         android:layout_toEndOf="@id/deci_image"
-        android:drawableStart="@drawable/ic_place2"
-        android:drawablePadding="5dp"
+        android:fontFamily="@font/gg_regular"
         android:lineSpacingMultiplier="1.2"
         android:textColor="@color/colorWhite"
-        android:textSize="12dp" />
+        android:textSize="11dp" />
 
-    <FrameLayout xmlns:mapbox="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/mapView"
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
         android:layout_below="@id/deci_image"
-        android:layout_margin="15dp">
-
-        <com.mapbox.mapboxsdk.maps.MapView
-            android:id="@+id/mapViewCine"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            mapbox:mapbox_cameraTargetLat="0"
-            mapbox:mapbox_cameraTargetLng="0"
-            mapbox:mapbox_cameraZoom="22" />
-    </FrameLayout>
+        android:layout_margin="15dp"
+        tools:context=".MapsActivity" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/mapView">
+        android:layout_below="@id/map">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -78,33 +82,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:lineSpacingMultiplier="1.2"
+                android:fontFamily="@font/gg_regular"
+                android:lineSpacingMultiplier="1.1"
                 android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/deci_suat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/deci_info"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:lineSpacingMultiplier="1.2"
-                android:text="Ứng dụng chưa hỗ trợ xem lịch chiếu của rạp này."
-                android:textColor="@color/colorWhite"
-                android:textSize="12dp" />
+                android:textSize="13dp" />
 
             <Button
                 android:id="@+id/deci_access"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/deci_suat"
+                android:layout_below="@id/deci_info"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="20dp"
+                android:backgroundTint="@color/colorWhite"
+                android:fontFamily="@font/gg_regular"
+                android:letterSpacing="0.0"
                 android:text="Truy cập website"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textSize="14dp" />
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

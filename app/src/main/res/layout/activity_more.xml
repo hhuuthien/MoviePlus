@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/splash_head_dark"
+    tools:ignore="ContentDescription, Autofill, HardcodedText, SpUsage">
+
+    <ImageView
+        android:id="@+id/more_logo"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="56dp"
+        android:src="@drawable/logo_accent" />
+
+    <TextView
+        android:id="@+id/more_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/more_logo"
+        android:layout_alignBottom="@id/more_logo"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@id/more_logo"
+        android:fontFamily="@font/gg_medium"
+        android:gravity="center_vertical"
+        android:text="Khám phá"
+        android:textColor="@color/colorWhite"
+        android:textSize="20dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/more_title"
+        android:layout_marginTop="30dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/filter_genre_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="18dp">
+
+                <TextView
+                    android:id="@+id/filter_genre_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gg_medium"
+                    android:text="Filter by genre"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16dp"
+                    tools:ignore="SpUsage" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card1"
+                    style="@style/Widget.MaterialComponents.CardView"
+                    android:layout_width="110dp"
+                    android:layout_height="70dp"
+                    android:layout_below="@id/filter_genre_text"
+                    android:layout_marginTop="14dp"
+                    app:cardCornerRadius="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@color/colorAccent2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/gg_regular"
+                            android:gravity="center"
+                            android:text="Movie"
+                            android:textColor="@color/colorBlueDark"
+                            android:textSize="14dp" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card2"
+                    style="@style/Widget.MaterialComponents.CardView"
+                    android:layout_width="110dp"
+                    android:layout_height="70dp"
+                    android:layout_below="@id/filter_genre_text"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_toEndOf="@id/card1"
+                    app:cardCornerRadius="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@color/colorAccent2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/gg_regular"
+                            android:gravity="center"
+                            android:text="TV show"
+                            android:textColor="@color/colorBlueDark"
+                            android:textSize="14dp" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/filter_company_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/filter_genre_layout"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="18dp">
+
+                <TextView
+                    android:id="@+id/filter_company_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gg_medium"
+                    android:text="Movie production companies"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16dp"
+                    tools:ignore="SpUsage" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/company_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/filter_company_text"
+                    android:layout_marginTop="8dp"
+                    android:scrollbars="horizontal" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/filter_network_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/filter_company_layout"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="18dp">
+
+                <TextView
+                    android:id="@+id/filter_network_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gg_medium"
+                    android:text="Television networks"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="16dp"
+                    tools:ignore="SpUsage" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/network_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/filter_network_text"
+                    android:layout_marginTop="8dp"
+                    android:scrollbars="horizontal" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

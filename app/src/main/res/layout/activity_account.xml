@@ -28,10 +28,10 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="18dp"
         android:layout_toEndOf="@id/acc_info_image"
-        android:fontFamily="@font/gg_bold"
+        android:fontFamily="@font/gg_medium"
         android:gravity="center_vertical"
         android:textColor="@color/colorWhite"
-        android:textSize="22dp" />
+        android:textSize="20dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -56,10 +56,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:fontFamily="@font/gg_bold"
+                    android:fontFamily="@font/gg_medium"
                     android:text="Your favorite movies"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     tools:ignore="SpUsage" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -87,10 +87,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:fontFamily="@font/gg_bold"
+                    android:fontFamily="@font/gg_medium"
                     android:text="Your favorite TV shows"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     tools:ignore="SpUsage" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -120,10 +120,10 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/gg_bold"
+                    android:fontFamily="@font/gg_medium"
                     android:text="Your favorite people"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     tools:ignore="SpUsage" />
 
                 <androidx.recyclerview.widget.RecyclerView

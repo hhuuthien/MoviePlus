@@ -1,6 +1,7 @@
 package com.thien.movieplus
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,11 +9,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
@@ -23,6 +22,7 @@ import ir.apend.slider.ui.Slider
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.genre_item.view.*
 import kotlinx.android.synthetic.main.list_item.view.*
+import kotlinx.android.synthetic.main.load_more.view.*
 import kotlinx.android.synthetic.main.movie_item.view.*
 import kotlinx.android.synthetic.main.movie_item_row.view.*
 import kotlinx.android.synthetic.main.movie_item_small.view.*
@@ -85,7 +85,7 @@ class MainFragment : Fragment() {
         view.findViewById<RecyclerView>(R.id.fm_list_list2).layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fm_list_category).layoutManager =
-            StaggeredGridLayoutManager(2, LinearLayoutManager.HORIZONTAL)
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fs_list_airing).layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).layoutManager =
@@ -255,7 +255,7 @@ class MainFragment : Fragment() {
 
         adapterGenre.setOnItemClickListener { item, _ ->
             val myItem = item as GenreItem
-            val intent = Intent(context, DiscoverActivity::class.java)
+            val intent = Intent(context, DiscoverMovieActivity::class.java)
             intent.putExtra("genre_id", myItem.genre.id)
             startActivity(intent)
         }
@@ -370,7 +370,7 @@ class MainFragment : Fragment() {
             try {
                 var movie = Movie("", "", 0, "", "", 0.0, "")
                 val mID = slideList[i].id
-                for (m in listMovieUpComing) {
+                for (m in listMovieNowShowing) {
                     if (m.id == mID) {
                         movie = m
                         break
@@ -399,377 +399,640 @@ class MainFragment : Fragment() {
         fetchShowNowShowing(view, english, goodquality)
         fetchShowPopular(view, english, goodquality)
         fetchCast(view)
-        fetchNetflix(view, english, goodquality)
+        fetchNetflixShow(view, english, goodquality)
         fetchNetflixMovie(view, english, goodquality)
     }
 
     private fun fetchNowShowing(view: View, english: Boolean, goodquality: Boolean) {
-        var url = ""
-        url = if (english) {
-            "https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&region=VN"
-        } else {
-            "https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi"
-        }
-        val requestNowShowing = Request.Builder()
-            .url(url)
-            .build()
-        val client = OkHttpClient()
-        client.newCall(requestNowShowing).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
+        val dataPref1 = context!!.getSharedPreferences("DataPref_NowShowing_Movie", 0)
+
+        val data = dataPref1.getString("data", "nothing")
+        val savedTime = dataPref1.getLong("time", 0)
+        val time = System.currentTimeMillis() - savedTime
+
+        if (data == null || data.isBlank() || data.isEmpty() || data == "nothing" || time > 86400000) {
+            val url: String = if (english) {
+                "https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&region=VN"
+            } else {
+                "https://api.themoviedb.org/3/movie/now_playing?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi"
             }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, Result::class.java)
-
-                listMovieNowShowing.clear()
-                listMovieNowShowing = result.results
-
-                activity?.runOnUiThread {
-                    adapterNowShowing.clear()
-                    for (m in listMovieNowShowing) {
-                        if (m.poster_path != null) adapterNowShowing.add(MovieItem(m, goodquality))
-                    }
-                    view.findViewById<RecyclerView>(R.id.fm_list_nowshowing).adapter =
-                        adapterNowShowing
+            val requestNowShowing = Request.Builder()
+                .url(url)
+                .build()
+            val client = OkHttpClient()
+            client.newCall(requestNowShowing).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
                 }
-            }
-        })
-    }
 
-    private fun fetchUpComing(view: View, english: Boolean, goodquality: Boolean) {
-        var url = ""
-        url = if (english) {
-            "https://api.themoviedb.org/3/movie/upcoming?api_key=d4a7514dbdd976453d2679e036009283&region=VN"
-        } else {
-            "https://api.themoviedb.org/3/movie/upcoming?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi"
-        }
-        val requestUpComing = Request.Builder()
-            .url(url)
-            .build()
-        val client = OkHttpClient()
-        client.newCall(requestUpComing).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-            }
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    //put to Share Preferences
+                    val editor1: SharedPreferences.Editor = dataPref1.edit()
+                    editor1.putString("data", body)
+                    editor1.putLong("time", System.currentTimeMillis())
+                    editor1.apply()
+                    val gSon = GsonBuilder().create()
+                    val result = gSon.fromJson(body, Result::class.java)
 
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, Result::class.java)
+                    listMovieNowShowing.clear()
+                    listMovieNowShowing = result.results
 
-                listMovieUpComing.clear()
-                listMovieUpComing = result.results
-                listMovieUpComing.sortWith(compareBy { it.release_date })
-
-                activity?.runOnUiThread {
-                    adapterUpComing.clear()
-                    for (m in listMovieUpComing) {
-                        if (m.poster_path != null) adapterUpComing.add(MovieItem(m, goodquality))
-                    }
-                    view.findViewById<RecyclerView>(R.id.fm_list_upcoming).adapter = adapterUpComing
-
-                    slideList.clear()
-                    if (goodquality) {
-                        for (m in listMovieUpComing) {
-                            if (m.backdrop_path != null) {
-                                slideList.add(
-                                    Slide(
-                                        m.id,
-                                        "https://image.tmdb.org/t/p/w500/${m.backdrop_path}",
-                                        0
-                                    )
+                    activity?.runOnUiThread {
+                        adapterNowShowing.clear()
+                        for (m in listMovieNowShowing) {
+                            if (m.poster_path != null) adapterNowShowing.add(
+                                MovieItem(
+                                    m,
+                                    goodquality
                                 )
+                            )
+                        }
+                        view.findViewById<RecyclerView>(R.id.fm_list_nowshowing).adapter =
+                            adapterNowShowing
+
+                        slideList.clear()
+                        if (goodquality) {
+                            for (m in listMovieNowShowing) {
+                                if (m.backdrop_path != null) {
+                                    slideList.add(
+                                        Slide(
+                                            m.id,
+                                            "https://image.tmdb.org/t/p/w500/${m.backdrop_path}",
+                                            0
+                                        )
+                                    )
+                                }
+                            }
+                        } else {
+                            for (m in listMovieNowShowing) {
+                                if (m.backdrop_path != null) {
+                                    slideList.add(
+                                        Slide(
+                                            m.id,
+                                            "https://image.tmdb.org/t/p/w300/${m.backdrop_path}",
+                                            0
+                                        )
+                                    )
+                                }
                             }
                         }
-                    } else {
-                        for (m in listMovieUpComing) {
-                            if (m.backdrop_path != null) {
-                                slideList.add(
-                                    Slide(
-                                        m.id,
-                                        "https://image.tmdb.org/t/p/w300/${m.backdrop_path}",
-                                        0
-                                    )
-                                )
-                            }
-                        }
+                        view.findViewById<Slider>(R.id.image_slider).addSlides(slideList)
                     }
-                    view.findViewById<Slider>(R.id.image_slider).addSlides(slideList)
                 }
-            }
-        })
-    }
-
-    private fun fetchPopular(view: View, english: Boolean, goodquality: Boolean) {
-        var url = ""
-        url = if (english) {
-            "https://api.themoviedb.org/3/movie/popular?api_key=d4a7514dbdd976453d2679e036009283&region=VN"
+            })
         } else {
-            "https://api.themoviedb.org/3/movie/popular?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi"
-        }
-        view.findViewById<ProgressBar>(R.id.fm_loading_popular).visibility = VISIBLE
-        val request = Request.Builder()
-            .url(url)
-            .build()
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
+            val gSon = GsonBuilder().create()
+            val result = gSon.fromJson(data, Result::class.java)
+
+            listMovieNowShowing.clear()
+            listMovieNowShowing = result.results
+
+            adapterNowShowing.clear()
+            for (m in listMovieNowShowing) {
+                if (m.poster_path != null) adapterNowShowing.add(MovieItem(m, goodquality))
             }
+            view.findViewById<RecyclerView>(R.id.fm_list_nowshowing).adapter =
+                adapterNowShowing
 
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, Result::class.java)
-
-                listMoviePopular.clear()
-                listMoviePopular = result.results
-
-                activity?.runOnUiThread {
-                    adapterPopular.clear()
-                    for (m in listMoviePopular) {
-                        adapterPopular.add(MovieItem(m, goodquality))
-                    }
-                    fm_list_popular.adapter = adapterPopular
-                    view.findViewById<ProgressBar>(R.id.fm_loading_popular).visibility = GONE
-                }
-            }
-        })
-    }
-
-    private fun fetchShowAiring(view: View, english: Boolean, goodquality: Boolean) {
-        var url = ""
-        url = if (english) {
-            "https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&region=US&timezone=VN"
-        } else {
-            "https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US&timezone=VN"
-        }
-        val request1 = Request.Builder()
-            .url(url)
-            .build()
-        val client = OkHttpClient()
-        client.newCall(request1).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, ResultShow::class.java)
-
-                listShowAiring.clear()
-                listShowAiring = result.results
-
-                activity?.runOnUiThread {
-                    adapterShowAiring.clear()
-                    for (m in listShowAiring) {
-                        if (m.poster_path != null) adapterShowAiring.add(ShowItem(m, goodquality))
-                    }
-                    view.findViewById<RecyclerView>(R.id.fs_list_airing).adapter = adapterShowAiring
-                }
-            }
-        })
-    }
-
-    private fun fetchShowNowShowing(view: View, english: Boolean, goodquality: Boolean) {
-        var url = ""
-        url = if (english) {
-            "https://api.themoviedb.org/3/tv/on_the_air?api_key=d4a7514dbdd976453d2679e036009283&region=US"
-        } else {
-            "https://api.themoviedb.org/3/tv/on_the_air?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US"
-        }
-        val request2 = Request.Builder()
-            .url(url)
-            .build()
-        val client = OkHttpClient()
-        client.newCall(request2).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, ResultShow::class.java)
-
-                listShowNowShowing.clear()
-                listShowNowShowing = result.results
-
-                activity?.runOnUiThread {
-                    adapterShowNowShowing.clear()
-                    for (m in listShowNowShowing) {
-                        if (m.poster_path != null) adapterShowNowShowing.add(
-                            ShowItem(
-                                m,
-                                goodquality
+            slideList.clear()
+            if (goodquality) {
+                for (m in listMovieNowShowing) {
+                    if (m.backdrop_path != null) {
+                        slideList.add(
+                            Slide(
+                                m.id,
+                                "https://image.tmdb.org/t/p/w500/${m.backdrop_path}",
+                                0
                             )
                         )
                     }
-                    view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).adapter =
-                        adapterShowNowShowing
+                }
+            } else {
+                for (m in listMovieNowShowing) {
+                    if (m.backdrop_path != null) {
+                        slideList.add(
+                            Slide(
+                                m.id,
+                                "https://image.tmdb.org/t/p/w300/${m.backdrop_path}",
+                                0
+                            )
+                        )
+                    }
                 }
             }
-        })
+            view.findViewById<Slider>(R.id.image_slider).addSlides(slideList)
+        }
     }
 
-    private fun fetchNetflix(view: View, english: Boolean, goodquality: Boolean) {
-        var url = ""
-        url = if (english) {
-            "https://api.themoviedb.org/4/list/136507?api_key=d4a7514dbdd976453d2679e036009283"
-        } else {
-            "https://api.themoviedb.org/4/list/136507?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
-        }
+    private fun fetchUpComing(view: View, english: Boolean, goodquality: Boolean) {
+        val dataPref1 = context!!.getSharedPreferences("DataPref_Upcoming_Movie", 0)
 
-        val request = Request.Builder().url(url).build()
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
+        val data = dataPref1.getString("data", "nothing")
+        val savedTime = dataPref1.getLong("time", 0)
+        val time = System.currentTimeMillis() - savedTime
+
+        if (data == null || data.isBlank() || data.isEmpty() || data == "nothing" || time > 86400000) {
+            var url = ""
+            url = if (english) {
+                "https://api.themoviedb.org/3/movie/upcoming?api_key=d4a7514dbdd976453d2679e036009283&region=VN"
+            } else {
+                "https://api.themoviedb.org/3/movie/upcoming?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi"
             }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, MyListShowV4::class.java)
-
-                listNetflix.clear()
-                listNetflix = result.results
-                listNetflix.shuffle()
-
-                stringNetflixID = body!!.substringAfter("comments").substringBefore("sort_by")
-
-                activity?.runOnUiThread {
-                    adapterNetflix.clear()
-                    for (m in listNetflix) {
-                        adapterNetflix.add(ShowItem(m, goodquality))
-                    }
-                    fs_list_netflix.adapter = adapterNetflix
+            val requestUpComing = Request.Builder()
+                .url(url)
+                .build()
+            val client = OkHttpClient()
+            client.newCall(requestUpComing).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
                 }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    //put to Share Preferences
+                    val editor1: SharedPreferences.Editor = dataPref1.edit()
+                    editor1.putString("data", body)
+                    editor1.putLong("time", System.currentTimeMillis())
+                    editor1.apply()
+                    val gSon = GsonBuilder().create()
+                    val result = gSon.fromJson(body, Result::class.java)
+
+                    listMovieUpComing.clear()
+                    listMovieUpComing = result.results
+                    listMovieUpComing.sortWith(compareBy { it.release_date })
+
+                    activity?.runOnUiThread {
+                        adapterUpComing.clear()
+                        for (m in listMovieUpComing) {
+                            if (m.poster_path != null) adapterUpComing.add(
+                                MovieItem(
+                                    m,
+                                    goodquality
+                                )
+                            )
+                        }
+                        view.findViewById<RecyclerView>(R.id.fm_list_upcoming).adapter =
+                            adapterUpComing
+                    }
+                }
+            })
+        } else {
+            val gSon = GsonBuilder().create()
+            val result = gSon.fromJson(data, Result::class.java)
+
+            listMovieUpComing.clear()
+            listMovieUpComing = result.results
+            listMovieUpComing.sortWith(compareBy { it.release_date })
+
+            adapterUpComing.clear()
+            for (m in listMovieUpComing) {
+                if (m.poster_path != null) adapterUpComing.add(MovieItem(m, goodquality))
             }
-        })
+            view.findViewById<RecyclerView>(R.id.fm_list_upcoming).adapter = adapterUpComing
+        }
+    }
+
+    private fun fetchPopular(view: View, english: Boolean, goodquality: Boolean) {
+        val dataPref1 = context!!.getSharedPreferences("DataPref_Popular_Movie", 0)
+
+        val data = dataPref1.getString("data", "nothing")
+        val savedTime = dataPref1.getLong("time", 0)
+        val time = System.currentTimeMillis() - savedTime
+
+        if (data == null || data.isBlank() || data.isEmpty() || data == "nothing" || time > 86400000) {
+            var url = ""
+            url = if (english) {
+                "https://api.themoviedb.org/3/movie/popular?api_key=d4a7514dbdd976453d2679e036009283&region=VN"
+            } else {
+                "https://api.themoviedb.org/3/movie/popular?api_key=d4a7514dbdd976453d2679e036009283&region=VN&language=vi"
+            }
+            val request = Request.Builder()
+                .url(url)
+                .build()
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    //put to Share Preferences
+                    val editor1: SharedPreferences.Editor = dataPref1.edit()
+                    editor1.putString("data", body)
+                    editor1.putLong("time", System.currentTimeMillis())
+                    editor1.apply()
+                    val gSon = GsonBuilder().create()
+                    val result = gSon.fromJson(body, Result::class.java)
+
+                    listMoviePopular.clear()
+                    listMoviePopular = result.results
+
+                    activity?.runOnUiThread {
+                        adapterPopular.clear()
+                        for (m in listMoviePopular) {
+                            adapterPopular.add(MovieItem(m, goodquality))
+                        }
+                        fm_list_popular.adapter = adapterPopular
+                    }
+                }
+            })
+        } else {
+            val gSon = GsonBuilder().create()
+            val result = gSon.fromJson(data, Result::class.java)
+
+            listMoviePopular.clear()
+            listMoviePopular = result.results
+
+            adapterPopular.clear()
+            for (m in listMoviePopular) {
+                adapterPopular.add(MovieItem(m, goodquality))
+            }
+            view.findViewById<RecyclerView>(R.id.fm_list_popular).adapter = adapterPopular
+        }
+    }
+
+    private fun fetchShowAiring(view: View, english: Boolean, goodquality: Boolean) {
+        val dataPref1 = context!!.getSharedPreferences("DataPref_Airing_Show", 0)
+
+        val data = dataPref1.getString("data", "nothing")
+        val savedTime = dataPref1.getLong("time", 0)
+        val time = System.currentTimeMillis() - savedTime
+
+        if (data == null || data.isBlank() || data.isEmpty() || data == "nothing" || time > 86400000) {
+            var url = ""
+            url = if (english) {
+                "https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&region=US&timezone=VN"
+            } else {
+                "https://api.themoviedb.org/3/tv/airing_today?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US&timezone=VN"
+            }
+            val request1 = Request.Builder()
+                .url(url)
+                .build()
+            val client = OkHttpClient()
+            client.newCall(request1).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    //put to Share Preferences
+                    val editor1: SharedPreferences.Editor = dataPref1.edit()
+                    editor1.putString("data", body)
+                    editor1.putLong("time", System.currentTimeMillis())
+                    editor1.apply()
+                    val gSon = GsonBuilder().create()
+                    val result = gSon.fromJson(body, ResultShow::class.java)
+
+                    listShowAiring.clear()
+                    listShowAiring = result.results
+
+                    activity?.runOnUiThread {
+                        adapterShowAiring.clear()
+                        for (m in listShowAiring) {
+                            if (m.poster_path != null) adapterShowAiring.add(
+                                ShowItem(
+                                    m,
+                                    goodquality
+                                )
+                            )
+                        }
+                        view.findViewById<RecyclerView>(R.id.fs_list_airing).adapter =
+                            adapterShowAiring
+                    }
+                }
+            })
+        } else {
+            val gSon = GsonBuilder().create()
+            val result = gSon.fromJson(data, ResultShow::class.java)
+
+            listShowAiring.clear()
+            listShowAiring = result.results
+
+            adapterShowAiring.clear()
+            for (m in listShowAiring) {
+                if (m.poster_path != null) adapterShowAiring.add(ShowItem(m, goodquality))
+            }
+            view.findViewById<RecyclerView>(R.id.fs_list_airing).adapter = adapterShowAiring
+        }
+    }
+
+    private fun fetchShowNowShowing(view: View, english: Boolean, goodquality: Boolean) {
+        val dataPref1 = context!!.getSharedPreferences("DataPref_NowShowing_Show", 0)
+
+        val data = dataPref1.getString("data", "nothing")
+        val savedTime = dataPref1.getLong("time", 0)
+        val time = System.currentTimeMillis() - savedTime
+
+        if (data == null || data.isBlank() || data.isEmpty() || data == "nothing" || time > 86400000) {
+            var url = ""
+            url = if (english) {
+                "https://api.themoviedb.org/3/tv/on_the_air?api_key=d4a7514dbdd976453d2679e036009283&region=US"
+            } else {
+                "https://api.themoviedb.org/3/tv/on_the_air?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US"
+            }
+            val request2 = Request.Builder()
+                .url(url)
+                .build()
+            val client = OkHttpClient()
+            client.newCall(request2).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    //put to Share Preferences
+                    val editor1: SharedPreferences.Editor = dataPref1.edit()
+                    editor1.putString("data", body)
+                    editor1.putLong("time", System.currentTimeMillis())
+                    editor1.apply()
+                    val gSon = GsonBuilder().create()
+                    val result = gSon.fromJson(body, ResultShow::class.java)
+
+                    listShowNowShowing.clear()
+                    listShowNowShowing = result.results
+
+                    activity?.runOnUiThread {
+                        adapterShowNowShowing.clear()
+                        for (m in listShowNowShowing) {
+                            if (m.poster_path != null) adapterShowNowShowing.add(
+                                ShowItem(
+                                    m,
+                                    goodquality
+                                )
+                            )
+                        }
+                        view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).adapter =
+                            adapterShowNowShowing
+                    }
+                }
+            })
+        } else {
+            val gSon = GsonBuilder().create()
+            val result = gSon.fromJson(data, ResultShow::class.java)
+
+            listShowNowShowing.clear()
+            listShowNowShowing = result.results
+
+            adapterShowNowShowing.clear()
+            for (m in listShowNowShowing) {
+                if (m.poster_path != null) adapterShowNowShowing.add(
+                    ShowItem(
+                        m,
+                        goodquality
+                    )
+                )
+            }
+            view.findViewById<RecyclerView>(R.id.fs_list_nowshowing).adapter = adapterShowNowShowing
+        }
+    }
+
+    private fun fetchNetflixShow(view: View, english: Boolean, goodquality: Boolean) {
+        val dataPref1 = context!!.getSharedPreferences("DataPref_Netflix_Show", 0)
+
+        val data = dataPref1.getString("data", "nothing")
+        val savedTime = dataPref1.getLong("time", 0)
+        val time = System.currentTimeMillis() - savedTime
+
+        if (data == null || data.isBlank() || data.isEmpty() || data == "nothing" || time > 86400000) {
+            var url = ""
+            url = if (english) {
+                "https://api.themoviedb.org/4/list/136507?api_key=d4a7514dbdd976453d2679e036009283"
+            } else {
+                "https://api.themoviedb.org/4/list/136507?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
+            }
+
+            val request = Request.Builder().url(url).build()
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    //put to Share Preferences
+                    val editor1: SharedPreferences.Editor = dataPref1.edit()
+                    editor1.putString("data", body)
+                    editor1.putLong("time", System.currentTimeMillis())
+                    editor1.apply()
+                    val gSon = GsonBuilder().create()
+                    val result = gSon.fromJson(body, MyListShowV4::class.java)
+
+                    listNetflix.clear()
+                    listNetflix = result.results
+                    listNetflix.shuffle()
+
+                    stringNetflixID = body!!.substringAfter("comments").substringBefore("sort_by")
+
+                    activity?.runOnUiThread {
+                        adapterNetflix.clear()
+                        for (m in listNetflix) {
+                            adapterNetflix.add(ShowItem(m, goodquality))
+                        }
+                        fs_list_netflix.adapter = adapterNetflix
+                    }
+                }
+            })
+        } else {
+            val gSon = GsonBuilder().create()
+            val result = gSon.fromJson(data, MyListShowV4::class.java)
+
+            listNetflix.clear()
+            listNetflix = result.results
+            listNetflix.shuffle()
+
+            stringNetflixID = data.substringAfter("comments").substringBefore("sort_by")
+
+            adapterNetflix.clear()
+            for (m in listNetflix) {
+                adapterNetflix.add(ShowItem(m, goodquality))
+            }
+            view.findViewById<RecyclerView>(R.id.fs_list_netflix).adapter = adapterNetflix
+        }
     }
 
     private fun fetchNetflixMovie(view: View, english: Boolean, goodquality: Boolean) {
-        var url = ""
-        url = if (english) {
-            "https://api.themoviedb.org/4/list/136515?api_key=d4a7514dbdd976453d2679e036009283"
-        } else {
-            "https://api.themoviedb.org/4/list/136515?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
-        }
+        val dataPref1 = context!!.getSharedPreferences("DataPref_Netflix_Movie", 0)
 
-        val request = Request.Builder().url(url).build()
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
+        val data = dataPref1.getString("data", "nothing")
+        val savedTime = dataPref1.getLong("time", 0)
+        val time = System.currentTimeMillis() - savedTime
+
+        if (data == null || data.isBlank() || data.isEmpty() || data == "nothing" || time > 86400000) {
+            var url = ""
+            url = if (english) {
+                "https://api.themoviedb.org/4/list/136515?api_key=d4a7514dbdd976453d2679e036009283"
+            } else {
+                "https://api.themoviedb.org/4/list/136515?api_key=d4a7514dbdd976453d2679e036009283&language=vi"
             }
 
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, MyListV4::class.java)
-
-                listNetflixM.clear()
-                listNetflixM = result.results
-                listNetflixM.shuffle()
-
-                stringNetflixMovieID = body!!.substringAfter("comments").substringBefore("sort_by")
-
-                activity?.runOnUiThread {
-                    adapterNetflixM.clear()
-                    for (m in listNetflixM) {
-                        adapterNetflixM.add(MovieItem(m, goodquality))
-                    }
-                    fm_list_netflix.adapter = adapterNetflixM
+            val request = Request.Builder().url(url).build()
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
                 }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    //put to Share Preferences
+                    val editor1: SharedPreferences.Editor = dataPref1.edit()
+                    editor1.putString("data", body)
+                    editor1.putLong("time", System.currentTimeMillis())
+                    editor1.apply()
+                    val gSon = GsonBuilder().create()
+                    val result = gSon.fromJson(body, MyListV4::class.java)
+
+                    listNetflixM.clear()
+                    listNetflixM = result.results
+                    listNetflixM.shuffle()
+
+                    stringNetflixMovieID =
+                        body!!.substringAfter("comments").substringBefore("sort_by")
+
+                    activity?.runOnUiThread {
+                        adapterNetflixM.clear()
+                        for (m in listNetflixM) {
+                            adapterNetflixM.add(MovieItem(m, goodquality))
+                        }
+                        fm_list_netflix.adapter = adapterNetflixM
+                    }
+                }
+            })
+        } else {
+            val gSon = GsonBuilder().create()
+            val result = gSon.fromJson(data, MyListV4::class.java)
+
+            listNetflixM.clear()
+            listNetflixM = result.results
+            listNetflixM.shuffle()
+
+            stringNetflixMovieID = data.substringAfter("comments").substringBefore("sort_by")
+
+            adapterNetflixM.clear()
+            for (m in listNetflixM) {
+                adapterNetflixM.add(MovieItem(m, goodquality))
             }
-        })
+            view.findViewById<RecyclerView>(R.id.fm_list_netflix).adapter = adapterNetflixM
+        }
     }
 
     private fun fetchShowPopular(view: View, english: Boolean, goodquality: Boolean) {
-        var url = ""
-        url = if (english) {
-            "https://api.themoviedb.org/3/tv/popular?api_key=d4a7514dbdd976453d2679e036009283&region=US"
-        } else {
-            "https://api.themoviedb.org/3/tv/popular?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US"
-        }
-        val request2 = Request.Builder()
-            .url(url)
-            .build()
-        val client = OkHttpClient()
-        client.newCall(request2).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
+        val dataPref1 = context!!.getSharedPreferences("DataPref_Popular_Show", 0)
+
+        val data = dataPref1.getString("data", "nothing")
+        val savedTime = dataPref1.getLong("time", 0)
+        val time = System.currentTimeMillis() - savedTime
+
+        if (data == null || data.isBlank() || data.isEmpty() || data == "nothing" || time > 86400000) {
+            var url = ""
+            url = if (english) {
+                "https://api.themoviedb.org/3/tv/popular?api_key=d4a7514dbdd976453d2679e036009283&region=US"
+            } else {
+                "https://api.themoviedb.org/3/tv/popular?api_key=d4a7514dbdd976453d2679e036009283&language=vi&region=US"
             }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, ResultShow::class.java)
-
-                listShowPopular.clear()
-                listShowPopular = result.results
-
-                activity?.runOnUiThread {
-                    adapterShowPopular.clear()
-                    for (m in listShowPopular) {
-                        if (m.poster_path != null) adapterShowPopular.add(ShowItem(m, goodquality))
-                    }
-                    view.findViewById<RecyclerView>(R.id.fs_list_popular).adapter =
-                        adapterShowPopular
+            val request2 = Request.Builder()
+                .url(url)
+                .build()
+            val client = OkHttpClient()
+            client.newCall(request2).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
                 }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    //put to Share Preferences
+                    val editor1: SharedPreferences.Editor = dataPref1.edit()
+                    editor1.putString("data", body)
+                    editor1.putLong("time", System.currentTimeMillis())
+                    editor1.apply()
+                    val gSon = GsonBuilder().create()
+                    val result = gSon.fromJson(body, ResultShow::class.java)
+
+                    listShowPopular.clear()
+                    listShowPopular = result.results
+
+                    activity?.runOnUiThread {
+                        adapterShowPopular.clear()
+                        for (m in listShowPopular) {
+                            if (m.poster_path != null) adapterShowPopular.add(
+                                ShowItem(
+                                    m,
+                                    goodquality
+                                )
+                            )
+                        }
+                        view.findViewById<RecyclerView>(R.id.fs_list_popular).adapter =
+                            adapterShowPopular
+                    }
+                }
+            })
+        } else {
+            val gSon = GsonBuilder().create()
+            val result = gSon.fromJson(data, ResultShow::class.java)
+
+            listShowPopular.clear()
+            listShowPopular = result.results
+
+            adapterShowPopular.clear()
+            for (m in listShowPopular) {
+                if (m.poster_path != null) adapterShowPopular.add(ShowItem(m, goodquality))
             }
-        })
+            view.findViewById<RecyclerView>(R.id.fs_list_popular).adapter = adapterShowPopular
+        }
     }
 
     private fun fetchCast(view: View) {
-        val url =
-            "https://api.themoviedb.org/3/trending/person/day?api_key=d4a7514dbdd976453d2679e036009283"
-        val request = Request.Builder()
-            .url(url)
-            .build()
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-            }
+        val dataPref1 = context!!.getSharedPreferences("DataPref_Cast", 0)
 
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, TrendingPeopleClass::class.java)
+        val data = dataPref1.getString("data", "nothing")
+        val savedTime = dataPref1.getLong("time", 0)
+        val time = System.currentTimeMillis() - savedTime
 
-                fetchCast2(view, result.results)
-            }
-        })
-    }
+        if (data == null || data.isBlank() || data.isEmpty() || data == "nothing" || time > 86400000) {
+            val url =
+                "https://api.themoviedb.org/3/trending/person/day?api_key=d4a7514dbdd976453d2679e036009283"
+            val request = Request.Builder()
+                .url(url)
+                .build()
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                }
 
-    private fun fetchCast2(view: View, listBefore: ArrayList<People>) {
-        val url =
-            "https://api.themoviedb.org/3/trending/person/day?api_key=d4a7514dbdd976453d2679e036009283&page=2"
-        val request = Request.Builder()
-            .url(url)
-            .build()
-        val client = OkHttpClient()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-            }
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    //put to Share Preferences
+                    val editor1: SharedPreferences.Editor = dataPref1.edit()
+                    editor1.putString("data", body)
+                    editor1.putLong("time", System.currentTimeMillis())
+                    editor1.apply()
+                    val gSon = GsonBuilder().create()
+                    val result = gSon.fromJson(body, TrendingPeopleClass::class.java)
+                    val list = result.results
 
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                val gSon = GsonBuilder().create()
-                val result = gSon.fromJson(body, TrendingPeopleClass::class.java)
-
-                val list = result.results
-                listBefore.addAll(list)
-
-                activity?.runOnUiThread {
-                    adapterPeople.clear()
-                    for (m in listBefore) {
-                        if (m.known_for_department == "Acting") {
-                            adapterPeople.add(PeopleItem(m))
+                    activity?.runOnUiThread {
+                        adapterPeople.clear()
+                        for (m in list) {
+                            if (m.known_for_department == "Acting") {
+                                adapterPeople.add(PeopleItem(m))
+                            }
                         }
+                        view.findViewById<RecyclerView>(R.id.fp_list_popular).adapter =
+                            adapterPeople
                     }
-                    view.findViewById<RecyclerView>(R.id.fp_list_popular).adapter =
-                        adapterPeople
+                }
+            })
+        } else {
+            val gSon = GsonBuilder().create()
+            val result = gSon.fromJson(data, TrendingPeopleClass::class.java)
+            val list = result.results
+
+            adapterPeople.clear()
+            for (m in list) {
+                if (m.known_for_department == "Acting") {
+                    adapterPeople.add(PeopleItem(m))
                 }
             }
-        })
+            view.findViewById<RecyclerView>(R.id.fp_list_popular).adapter = adapterPeople
+        }
     }
 }
 
@@ -819,7 +1082,7 @@ class MovieItem(val movie: Movie, val goodquality: Boolean) : Item<ViewHolder>()
                 }
             }
 
-            viewHolder.itemView.m_title.text = movie.title
+//            viewHolder.itemView.m_title.text = movie.title
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }
@@ -849,7 +1112,7 @@ class MovieItemSmall(val movie: Movie, val goodquality: Boolean) : Item<ViewHold
                 }
             }
 
-            viewHolder.itemView.m_title_small.text = movie.title
+//            viewHolder.itemView.m_title_small.text = movie.title
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }
@@ -998,7 +1261,7 @@ class ShowItem(val show: Show, val goodquality: Boolean) : Item<ViewHolder>() {
                 }
             }
 
-            viewHolder.itemView.m_title.text = show.name
+//            viewHolder.itemView.m_title.text = show.name
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
         }
@@ -1028,9 +1291,25 @@ class ShowItemSmall(val show: Show, val goodquality: Boolean) : Item<ViewHolder>
                 }
             }
 
-            viewHolder.itemView.m_title_small.text = show.name
+//            viewHolder.itemView.m_title_small.text = show.name
         } catch (e: Exception) {
             Log.d("error_here", e.toString())
+        }
+    }
+}
+
+class ItemLoadMore(var spin: Boolean) : Item<ViewHolder>() {
+    override fun getLayout(): Int {
+        return R.layout.load_more
+    }
+
+    override fun bind(viewHolder: ViewHolder, position: Int) {
+        if (spin) {
+            viewHolder.itemView.loadmore_load.visibility = VISIBLE
+            viewHolder.itemView.loadmore_text.visibility = GONE
+        } else {
+            viewHolder.itemView.loadmore_load.visibility = GONE
+            viewHolder.itemView.loadmore_text.visibility = VISIBLE
         }
     }
 }

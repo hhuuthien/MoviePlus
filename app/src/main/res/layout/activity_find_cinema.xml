@@ -7,29 +7,43 @@
     android:background="@color/colorBlueDark"
     tools:ignore="ContentDescription, HardcodedText, SpUsage, Autofill">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/m_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/Theme.MaterialComponents"
+        app:popupTheme="@style/Theme.MaterialComponents"
+        app:titleTextAppearance="@style/ToolbarStyle" />
+
     <EditText
         android:id="@+id/find_key"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/m_toolbar"
         android:layout_margin="8dp"
         android:background="@android:color/transparent"
         android:drawableStart="@drawable/ic_search_white_24"
         android:drawablePadding="8dp"
+        android:fontFamily="@font/gg_regular"
         android:hint="Bạn muốn tìm rạp nào?"
         android:inputType="text"
-        android:padding="15dp"
+        android:padding="10dp"
         android:singleLine="true"
         android:textColor="@color/colorWhite"
         android:textColorHint="@color/colorAccent2"
         android:textCursorDrawable="@null"
-        android:textSize="14dp" />
+        android:textSize="13dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/find_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/find_key"
-        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/colorBlueDark"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -39,7 +53,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/find_key"
-        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/gg_regular"
         android:text="Không tìm thấy kết quả"
         android:textAlignment="center"
         android:textColor="@color/colorWhite"

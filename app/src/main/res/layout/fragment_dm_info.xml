@@ -15,24 +15,11 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/dm_overview_text"
+                android:id="@+id/dm_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="6dp"
-                android:fontFamily="@font/gg_bold"
-                android:text="Giới thiệu"
-                android:textColor="@color/colorWhite"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/dm_overview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/dm_overview_text"
-                android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/gg_regular"
@@ -42,10 +29,26 @@
                 android:textSize="14dp" />
 
             <TextView
+                android:id="@+id/dm_collection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dm_overview"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="10dp"
+                android:drawableEnd="@drawable/ic_open"
+                android:drawablePadding="5dp"
+                android:fontFamily="@font/gg_bold"
+                android:text="Collections"
+                android:textColor="@color/colorWhite"
+                android:textSize="14dp" />
+
+            <TextView
                 android:id="@+id/dm_genre_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/dm_overview"
+                android:layout_below="@id/dm_collection"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
